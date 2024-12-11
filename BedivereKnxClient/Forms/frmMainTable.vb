@@ -242,7 +242,7 @@ Public Class frmMainTable
     Private Sub KnxMessageTransmission(e As KnxMsgEventArgs, log As String)
         Dim v As String = vbNullString
         If Not IsNothing(e.Value) Then v = $" = {e.Value.ToString}"
-        lstTelLog.Items.Insert(0, $"[{Now:yyyy-MM-dd HH:mm:ss.fff}]{e.MessageType}|{e.EventType}: {e.SourceAddress} -> {e.DestinationAddress}{v} ({e.MessagePriority})")
+        lstTelLog.Items.Insert(0, $"[{Now:yyyy-MM-dd HH:mm:ss.fff}]{e.MessageType}|{e.EventType}: {e.SourceAddress} -> {e.DestinationAddress}{v} ({e.MessagePriority}, Hop={e.HopCount})")
     End Sub
 
     Private Sub tabMain_Selected(sender As Object, e As TabControlEventArgs) Handles tabMain.Selected

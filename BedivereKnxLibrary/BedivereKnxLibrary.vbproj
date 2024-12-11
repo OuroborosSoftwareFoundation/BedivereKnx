@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <RootNamespace>BedivereKnxLibrary</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Version>0.3.0</Version>
     <Authors>BHC666</Authors>
     <Company>Ouroboros Software Foundation</Company>
@@ -21,8 +21,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="3.0.2" />
-    <PackageReference Include="Knx.Falcon.Sdk" Version="6.1.6264" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
+    <PackageReference Include="Knx.Falcon.Sdk" Version="6.3.7959" />
   </ItemGroup>
 
 </Project>
