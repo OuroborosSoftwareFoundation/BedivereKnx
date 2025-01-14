@@ -134,15 +134,15 @@ Public Class frmMainTable
     Private Sub DgvObjectsOptimize()
         Dim OnlySwCtl As Boolean = True
         For Each r As DataGridViewRow In dgvObject.Rows
-            If Not (IsDBNull(r.Cells("Val_CtlAddr").Value) And IsDBNull(r.Cells("Val_FdbAddr").Value)) Then
+            If Not (IsDBNull(r.Cells("GrpAddr-Val_Ctl").Value) And IsDBNull(r.Cells("GrpAddr-Val_Fdb").Value)) Then
                 OnlySwCtl = False
                 Exit For
             End If
         Next
         If OnlySwCtl Then
-            dgvObject.Columns("Val_DPT").Visible = False
-            dgvObject.Columns("Val_CtlAddr").Visible = False
-            dgvObject.Columns("Val_FdbAddr").Visible = False
+            dgvObject.Columns("GrpDpt-Val").Visible = False
+            dgvObject.Columns("GrpAddr-Val_Ctl").Visible = False
+            dgvObject.Columns("GrpAddr-Val_Fdb").Visible = False
             dgvObject.Columns("Val_FdbValue").Visible = False
         End If
     End Sub
@@ -275,7 +275,7 @@ Public Class frmMainTable
         If isBusy Then Exit Sub
         If IsNothing(dgvObject.CurrentRow) OrElse (dgvObject.SelectedRows.Count = 0) Then Exit Sub
         For Each r As DataGridViewRow In dgvObject.SelectedRows
-            If IsDBNull(r.Cells("Val_CtlAddr").Value) Then
+            If IsDBNull(r.Cells("GrpAddr-Val_Ctl").Value) Then
                 numObjVal.Enabled = False
                 numObjVal.Value = 0
             Else
@@ -296,7 +296,7 @@ Public Class frmMainTable
         If isBusy Then Exit Sub
         If IsNothing(dgvObject.CurrentRow) OrElse (dgvObject.SelectedRows.Count = 0) Then Exit Sub
         For Each r As DataGridViewRow In dgvObject.SelectedRows
-            Dim ga As New GroupAddress(r.Cells($"{PartCol}_CtlAddr").Value.ToString)
+            Dim ga As New GroupAddress(r.Cells($"GrpAddr-{PartCol}_Ctl").Value.ToString)
             KS.WriteGroupAddress(r.Cells("InterfaceCode").Value.ToString, ga, Val)
         Next
     End Sub
@@ -387,6 +387,7 @@ Public Class frmMainTable
         Else
             slblIfCount.ForeColor = Color.Red
         End If
+        slblIfDefault.Visible = (KS.Bus.Default.ConnectionState = BusConnectionState.Connected)
 
         '（以下已转移至frmInterface）
         'For Each r As DataGridViewRow In dgvIf.Rows

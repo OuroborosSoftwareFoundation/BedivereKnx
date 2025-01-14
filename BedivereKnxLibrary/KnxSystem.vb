@@ -416,7 +416,7 @@ Public Class KnxSystem
     Private Function IfCode__KnxBus(IfCode As String) As KnxBus()
         Dim k As New List(Of KnxBus)
         If String.IsNullOrEmpty(IfCode) Then '接口编号为空的情况使用默认接口
-            If IsNothing(_Bus.Default) Then
+            If IsNothing(_Bus.Default) Then '不可能出现没有默认接口的情况
                 Throw New NullReferenceException("No available KNX Interface.")
             Else
                 k.Add(_Bus.Default) '默认接口

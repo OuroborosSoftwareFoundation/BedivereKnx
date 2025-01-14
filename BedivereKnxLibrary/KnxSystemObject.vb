@@ -27,7 +27,7 @@ Public Class KnxSystemObjectCollection
     ''' <returns></returns>
     Default Public ReadOnly Property Item(index As Integer) As KnxObjectGroup
         Get
-            If _Item.Keys.Contains(index) Then
+            If _Item.ContainsKey(index) Then
                 Return _Item(index)
             Else
                 Throw New ArgumentNullException($"Can't found Object with ID = {index}.")
@@ -114,11 +114,11 @@ Public Class KnxSystemObjectCollection
                 If Not [Enum].TryParse(dr("ObjectType"), GrpType) Then '字符串转枚举
                     Throw New ArgumentException($"Wrong ObjectType in Objects: [{dr("ObjectCode")}]{dr("ObjectName")}.")
                 End If
-                Dim obj As New KnxObjectGroup(GrpType, dr("Id"), dr("ObjectCode").ToString, dr("ObjectName").ToString, dr("InterfaceCode"))
-                Dim SwDpt As Integer() = StringToDptNum(dr("Sw_DPT").ToString) '开关DPT数字
-                obj.SwitchPart = New KnxGroupPart(SwDpt(0), SwDpt(1), dr("Sw_CtlAddr").ToString, dr("Sw_FdbAddr").ToString)
-                Dim ValDpt As Integer() = StringToDptNum(dr("Val_DPT").ToString) '数值DPT数字
-                obj.ValuePart = New KnxGroupPart(ValDpt(0), ValDpt(1), dr("Val_CtlAddr").ToString, dr("Val_FdbAddr").ToString)
+                Dim obj As New KnxObjectGroup(GrpType, dr("Id"), dr("ObjectCode").ToString, dr("ObjectName").ToString, dr("InterfaceCode").ToString)
+                Dim SwDpt As Integer() = StringToDptNum(dr("GrpDpt-Sw").ToString) '开关DPT数字
+                obj.SwitchPart = New KnxGroupPart(SwDpt(0), SwDpt(1), dr("GrpAddr-Sw_Ctl").ToString, dr("GrpAddr-Sw_Fdb").ToString)
+                Dim ValDpt As Integer() = StringToDptNum(dr("GrpDpt-Val").ToString) '数值DPT数字
+                obj.ValuePart = New KnxGroupPart(ValDpt(0), ValDpt(1), dr("GrpAddr-Val_Ctl").ToString, dr("GrpAddr-Val_Fdb").ToString)
                 _Item.Add(obj.Id, obj)
                 AddHandler obj.GroupWriteRequest, AddressOf _GroupWriteRequest
                 AddHandler obj.GroupReadRequest, AddressOf _GroupReadRequest

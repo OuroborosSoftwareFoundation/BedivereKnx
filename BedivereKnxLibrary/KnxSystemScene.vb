@@ -24,7 +24,7 @@ Public Class KnxSystemSceneCollection
     ''' <returns></returns>
     Default Public ReadOnly Property Item(index As Integer) As KnxSceneGroup
         Get
-            If _Item.Keys.Contains(index) Then
+            If _Item.ContainsKey(index) Then
                 Return _Item(index)
             Else
                 Throw New ArgumentNullException($"Can't found Scene with ID = {index}.")
@@ -67,8 +67,8 @@ Public Class KnxSystemSceneCollection
         _Table = dt
         For Each dr As DataRow In _Table.Rows
             '_dicIdCode.Add(dr("Id"), dr("SceneCode"))
-            Dim ga As GroupAddress = New GroupAddress(dr("GroupAddress").ToString)
-            Dim scn As New KnxSceneGroup(dr("Id"), dr("SceneCode"), dr("SceneName"), ga, dr("InterfaceCode"))
+            Dim ga As New GroupAddress(dr("GroupAddress").ToString)
+            Dim scn As New KnxSceneGroup(dr("Id"), dr("SceneCode").ToString, dr("SceneName").ToString, ga, dr("InterfaceCode").ToString)
             Dim sv As String() = dr("SceneValues").ToString.Split(","c) '场景值的数组
             For i = 0 To sv.Length - 1
                 Dim v As String() = sv(i).Split("="c) '{场景地址, 场景名}

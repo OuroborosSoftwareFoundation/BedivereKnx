@@ -46,6 +46,34 @@ Public Class frmInterface
     ''' KNX接口状态变化事件
     ''' </summary>
     Public Sub KnxConnectionChanged(sender As KnxBus, e As EventArgs)
+        'Dim AllOK As Boolean = True
+        'For Each r As DataGridViewRow In dgvIf.Rows
+        '    If IsDBNull(r.Cells("NetState").Value) Then Continue For
+        '    Select Case r.Cells("NetState").Value
+        '        Case IPStatus.Success, IPStatus.Unknown
+        '            Select Case r.Cells("CnState").Value
+        '                Case BusConnectionState.Connected
+        '                    r.DefaultCellStyle.BackColor = Color.PaleGreen
+        '                Case BusConnectionState.Broken, BusConnectionState.MediumFailure
+        '                    r.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow
+        '                    AllOK = False
+        '                Case Else
+        '                    r.DefaultCellStyle.BackColor = Color.LightGray
+        '                    AllOK = False
+        '            End Select
+        '        Case Else
+        '            r.DefaultCellStyle.BackColor = Color.LightCoral
+        '            AllOK = False
+        '    End Select
+        'Next
+        Dim AllOk As Boolean = dgvIfColoring()
+        Dim DCS As BusConnectionState = KS.Bus.Default.ConnectionState
+        lblIfDefault.Text = DCS.ToString
+        lblIfDefault.ForeColor = IIf(DCS = BusConnectionState.Connected, Color.Green, Color.Red)
+        'If AllOK Then Me.Hide()
+    End Sub
+
+    Private Function dgvIfColoring() As Boolean
         Dim AllOK As Boolean = True
         For Each r As DataGridViewRow In dgvIf.Rows
             If IsDBNull(r.Cells("NetState").Value) Then Continue For
@@ -66,7 +94,11 @@ Public Class frmInterface
                     AllOK = False
             End Select
         Next
-        'If AllOK Then Me.Hide()
+        Return AllOK
+    End Function
+
+    Private Sub dgvIf_Sorted(sender As Object, e As EventArgs) Handles dgvIf.Sorted
+        dgvIfColoring()
     End Sub
 
     Private Sub frmInterface_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing

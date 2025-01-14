@@ -41,10 +41,10 @@ Partial Class frmMainTable
         dgvScene = New DataGridView()
         tlpScene = New TableLayoutPanel()
         btnCtlScn = New Button()
-        tpSchedule = New TabPage()
-        dgvSchedule = New DataGridView()
         tpDevice = New TabPage()
         dgvDevice = New DataGridView()
+        tpSchedule = New TabPage()
+        dgvSchedule = New DataGridView()
         tpInterface = New TabPage()
         dgvIf = New DataGridView()
         TableLayoutPanel1 = New TableLayoutPanel()
@@ -57,6 +57,7 @@ Partial Class frmMainTable
         tmPoll = New Timer(components)
         StsStrip = New StatusStrip()
         slblIf = New ToolStripStatusLabel()
+        slblIfDefault = New ToolStripStatusLabel()
         slblIfCount = New ToolStripStatusLabel()
         slblBlank = New ToolStripStatusLabel()
         slblScd = New ToolStripStatusLabel()
@@ -73,10 +74,10 @@ Partial Class frmMainTable
         tpScene.SuspendLayout()
         CType(dgvScene, ComponentModel.ISupportInitialize).BeginInit()
         tlpScene.SuspendLayout()
-        tpSchedule.SuspendLayout()
-        CType(dgvSchedule, ComponentModel.ISupportInitialize).BeginInit()
         tpDevice.SuspendLayout()
         CType(dgvDevice, ComponentModel.ISupportInitialize).BeginInit()
+        tpSchedule.SuspendLayout()
+        CType(dgvSchedule, ComponentModel.ISupportInitialize).BeginInit()
         tpInterface.SuspendLayout()
         CType(dgvIf, ComponentModel.ISupportInitialize).BeginInit()
         TableLayoutPanel1.SuspendLayout()
@@ -99,7 +100,6 @@ Partial Class frmMainTable
         dgvObject.ReadOnly = True
         dgvObject.RowHeadersVisible = False
         dgvObject.RowHeadersWidth = 51
-        dgvObject.RowTemplate.Height = 29
         dgvObject.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         dgvObject.ShowCellErrors = False
         dgvObject.ShowCellToolTips = False
@@ -301,7 +301,6 @@ Partial Class frmMainTable
         dgvScene.ReadOnly = True
         dgvScene.RowHeadersVisible = False
         dgvScene.RowHeadersWidth = 51
-        dgvScene.RowTemplate.Height = 29
         dgvScene.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         dgvScene.ShowCellErrors = False
         dgvScene.ShowCellToolTips = False
@@ -340,6 +339,42 @@ Partial Class frmMainTable
         btnCtlScn.Text = "场景控制"
         btnCtlScn.UseVisualStyleBackColor = True
         ' 
+        ' tpDevice
+        ' 
+        tpDevice.Controls.Add(dgvDevice)
+        tpDevice.Location = New Point(4, 29)
+        tpDevice.Name = "tpDevice"
+        tpDevice.Size = New Size(936, 435)
+        tpDevice.TabIndex = 4
+        tpDevice.Tag = "Device"
+        tpDevice.Text = "设备"
+        tpDevice.UseVisualStyleBackColor = True
+        ' 
+        ' dgvDevice
+        ' 
+        dgvDevice.AllowUserToAddRows = False
+        dgvDevice.AllowUserToDeleteRows = False
+        dgvDevice.AllowUserToResizeRows = False
+        dgvDevice.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
+        dgvDevice.BackgroundColor = SystemColors.Window
+        dgvDevice.ColumnHeadersHeight = 29
+        dgvDevice.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        dgvDevice.Dock = DockStyle.Fill
+        dgvDevice.Location = New Point(0, 0)
+        dgvDevice.Name = "dgvDevice"
+        dgvDevice.ReadOnly = True
+        dgvDevice.RowHeadersVisible = False
+        dgvDevice.RowHeadersWidth = 51
+        dgvDevice.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        dgvDevice.ShowCellErrors = False
+        dgvDevice.ShowCellToolTips = False
+        dgvDevice.ShowEditingIcon = False
+        dgvDevice.ShowRowErrors = False
+        dgvDevice.Size = New Size(936, 435)
+        dgvDevice.TabIndex = 2
+        dgvDevice.Tag = "Objects"
+        dgvDevice.VirtualMode = True
+        ' 
         ' tpSchedule
         ' 
         tpSchedule.BackColor = SystemColors.Control
@@ -368,7 +403,6 @@ Partial Class frmMainTable
         dgvSchedule.ReadOnly = True
         dgvSchedule.RowHeadersVisible = False
         dgvSchedule.RowHeadersWidth = 51
-        dgvSchedule.RowTemplate.Height = 29
         dgvSchedule.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         dgvSchedule.ShowCellErrors = False
         dgvSchedule.ShowCellToolTips = False
@@ -376,43 +410,6 @@ Partial Class frmMainTable
         dgvSchedule.ShowRowErrors = False
         dgvSchedule.Size = New Size(936, 435)
         dgvSchedule.TabIndex = 1
-        ' 
-        ' tpDevice
-        ' 
-        tpDevice.Controls.Add(dgvDevice)
-        tpDevice.Location = New Point(4, 29)
-        tpDevice.Name = "tpDevice"
-        tpDevice.Size = New Size(936, 435)
-        tpDevice.TabIndex = 4
-        tpDevice.Tag = "Device"
-        tpDevice.Text = "设备"
-        tpDevice.UseVisualStyleBackColor = True
-        ' 
-        ' dgvDevice
-        ' 
-        dgvDevice.AllowUserToAddRows = False
-        dgvDevice.AllowUserToDeleteRows = False
-        dgvDevice.AllowUserToResizeRows = False
-        dgvDevice.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
-        dgvDevice.BackgroundColor = SystemColors.Window
-        dgvDevice.ColumnHeadersHeight = 29
-        dgvDevice.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        dgvDevice.Dock = DockStyle.Fill
-        dgvDevice.Location = New Point(0, 0)
-        dgvDevice.Name = "dgvDevice"
-        dgvDevice.ReadOnly = True
-        dgvDevice.RowHeadersVisible = False
-        dgvDevice.RowHeadersWidth = 51
-        dgvDevice.RowTemplate.Height = 29
-        dgvDevice.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-        dgvDevice.ShowCellErrors = False
-        dgvDevice.ShowCellToolTips = False
-        dgvDevice.ShowEditingIcon = False
-        dgvDevice.ShowRowErrors = False
-        dgvDevice.Size = New Size(936, 435)
-        dgvDevice.TabIndex = 2
-        dgvDevice.Tag = "Objects"
-        dgvDevice.VirtualMode = True
         ' 
         ' tpInterface
         ' 
@@ -443,7 +440,6 @@ Partial Class frmMainTable
         dgvIf.ReadOnly = True
         dgvIf.RowHeadersVisible = False
         dgvIf.RowHeadersWidth = 51
-        dgvIf.RowTemplate.Height = 29
         dgvIf.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         dgvIf.ShowCellErrors = False
         dgvIf.ShowCellToolTips = False
@@ -480,7 +476,6 @@ Partial Class frmMainTable
         lstTelLog.ContextMenuStrip = menuTelLog
         lstTelLog.Dock = DockStyle.Fill
         lstTelLog.FormattingEnabled = True
-        lstTelLog.ItemHeight = 20
         lstTelLog.Location = New Point(253, 477)
         lstTelLog.Name = "lstTelLog"
         lstTelLog.Size = New Size(944, 94)
@@ -517,7 +512,7 @@ Partial Class frmMainTable
         ' StsStrip
         ' 
         StsStrip.ImageScalingSize = New Size(20, 20)
-        StsStrip.Items.AddRange(New ToolStripItem() {slblIf, slblIfCount, slblBlank, slblScd, slblScdState, slblSpring, slblGithub})
+        StsStrip.Items.AddRange(New ToolStripItem() {slblIf, slblIfCount, slblIfDefault, slblBlank, slblScd, slblScdState, slblSpring, slblGithub})
         StsStrip.Location = New Point(0, 574)
         StsStrip.Name = "StsStrip"
         StsStrip.Size = New Size(1200, 26)
@@ -529,6 +524,14 @@ Partial Class frmMainTable
         slblIf.Name = "slblIf"
         slblIf.Size = New Size(84, 20)
         slblIf.Text = "接口连接："
+        ' 
+        ' slblIfDefault
+        ' 
+        slblIfDefault.ForeColor = Color.Green
+        slblIfDefault.Name = "slblIfDefault"
+        slblIfDefault.Size = New Size(39, 20)
+        slblIfDefault.Text = "(+1)"
+        slblIfDefault.Visible = False
         ' 
         ' slblIfCount
         ' 
@@ -557,7 +560,7 @@ Partial Class frmMainTable
         ' slblSpring
         ' 
         slblSpring.Name = "slblSpring"
-        slblSpring.Size = New Size(399, 20)
+        slblSpring.Size = New Size(321, 20)
         slblSpring.Spring = True
         ' 
         ' slblGithub
@@ -592,10 +595,10 @@ Partial Class frmMainTable
         tpScene.ResumeLayout(False)
         CType(dgvScene, ComponentModel.ISupportInitialize).EndInit()
         tlpScene.ResumeLayout(False)
-        tpSchedule.ResumeLayout(False)
-        CType(dgvSchedule, ComponentModel.ISupportInitialize).EndInit()
         tpDevice.ResumeLayout(False)
         CType(dgvDevice, ComponentModel.ISupportInitialize).EndInit()
+        tpSchedule.ResumeLayout(False)
+        CType(dgvSchedule, ComponentModel.ISupportInitialize).EndInit()
         tpInterface.ResumeLayout(False)
         CType(dgvIf, ComponentModel.ISupportInitialize).EndInit()
         TableLayoutPanel1.ResumeLayout(False)
@@ -646,4 +649,5 @@ Partial Class frmMainTable
     Friend WithEvents slblGithub As ToolStripStatusLabel
     Friend WithEvents tpDevice As TabPage
     Friend WithEvents dgvDevice As DataGridView
+    Friend WithEvents slblIfDefault As ToolStripStatusLabel
 End Class

@@ -1,6 +1,5 @@
 ﻿Imports System.Data
 Imports Knx.Falcon
-Imports Knx.Falcon.Sdk
 
 Public Enum IndAddressState As Integer
     BusError = -2
@@ -33,7 +32,7 @@ Public Class KnxSystemDeviceCollection
     ''' <returns></returns>
     Default Public ReadOnly Property Item(index As Integer) As KnxDeviceInfo
         Get
-            If _Item.Keys.Contains(index) Then
+            If _Item.ContainsKey(index) Then
                 Return _Item(index)
             Else
                 Throw New ArgumentNullException($"Can't found Device with ID = {index}.")
@@ -69,8 +68,8 @@ Public Class KnxSystemDeviceCollection
             .Columns.Item("Reachable").Caption = "设备状态"
             For Each dr As DataRow In _Table.Rows
                 'dr("Online") = IndAddressState.Unknown
-                Dim IndAddr As IndividualAddress = New IndividualAddress(dr("Address").ToString)
-                Dim kdi As New KnxDeviceInfo(dr("Id"), dr("DeviceCode"), dr("DeviceName"), IndAddr, dr("InterfaceCode"))
+                Dim IndAddr As New IndividualAddress(dr("IndividualAddress").ToString)
+                Dim kdi As New KnxDeviceInfo(dr("Id"), dr("DeviceCode").ToString, dr("DeviceName").ToString, IndAddr, dr("InterfaceCode").ToString)
                 _Item.Add(kdi.Id, kdi)
                 AddHandler kdi.DeviceStateChanged, AddressOf _DeviceStateChanged
             Next

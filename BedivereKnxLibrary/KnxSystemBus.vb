@@ -13,7 +13,6 @@ Public Class KnxSystemBusCollection
 
     Private _Table As DataTable
     Private _Item As New Dictionary(Of String, KnxBus)
-    Private _DefaultId As Integer = -1 '默认的接口ID
 
     Public Event ConnectionChanged As EventHandler '接口连接状态变化事件
     Public Event GroupMessageReceived As KnxMessageHandler '组地址报文接收事件
@@ -24,15 +23,6 @@ Public Class KnxSystemBusCollection
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property [Default] As KnxBus
-        Get
-            If _DefaultId < 0 Then
-                Throw New NullReferenceException("Can't found default KNX bus.")
-                Return Nothing
-            Else
-                Return Item(_DefaultId)
-            End If
-        End Get
-    End Property
 
     ''' <summary>
     ''' 对象DataTable
@@ -52,7 +42,7 @@ Public Class KnxSystemBusCollection
 
     Default Public ReadOnly Property Item(code As String) As KnxBus
         Get
-            If _Item.Keys.Contains(code) Then
+            If _Item.ContainsKey(code) Then
                 Return _Item(code)
             Else
                 Return [Default] '找不到接口编号的情况下直接引用默认接口
@@ -71,17 +61,9 @@ Public Class KnxSystemBusCollection
     End Property
 
     Public Sub New(dt As DataTable)
-        If dt.Rows.Count = 0 Then
-            'Throw New NullReferenceException($"No interface detected in data file.")
-            Dim dr As DataRow = dt.NewRow
-            dr("Id") = 0
-            dr("InterfaceCode") = "Default"
-            dr("InterfaceName") = "Default"
-            dr("InterfaceType") = "IpRouter"
-            dr("Address") = "224.0.23.12"
-            dr("Port") = "3671"
-            dt.Rows.Add(dr)
-        End If
+        _Default = New KnxBus("Type=IpRouting") '默认接口
+        AddHandler _Default.ConnectionStateChanged, AddressOf _ConnectionChanged
+        AddHandler _Default.GroupMessageReceived, AddressOf _GroupMessageReceived
         _Table = dt
         With _Table
             '.PrimaryKey = { .Columns("InterfaceCode")}
@@ -96,13 +78,12 @@ Public Class KnxSystemBusCollection
                     Case "usb"
                         cp = New UsbConnectorParameters
                     Case "iptunnel"
-                        cp = New IpTunnelingConnectorParameters(dr("Address"), dr("Port"))
+                        cp = New IpTunnelingConnectorParameters(dr("InterfaceAddress"), Convert.ToInt32(dr("Port")))
                     Case "iprouter"
-                        cp = New IpRoutingConnectorParameters(Net.IPAddress.Parse(dr("Address")))
-                        If _DefaultId < 0 Then '只允许一个IpRouting接口，如果之前读过则报错
-                            _DefaultId = dr("Id")
+                        If Net.IPAddress.Parse(dr("InterfaceAddress")) = IpRoutingConnectorParameters.DefaultMulticastAddress AndAlso Convert.ToInt32(dr("Port")) = IpRoutingConnectorParameters.DefaultIpPort Then
+                            Continue For '跳过默认路由接口（使用默认接口代替）
                         Else
-                            Throw New ArgumentException($"Only ONE IpRouting interface is allowed.")
+                            cp = New IpRoutingConnectorParameters(Net.IPAddress.Parse(dr("InterfaceAddress")))
                         End If
                     Case Else '其他情况报错
                         Throw New ArgumentNullException($"Invalid interface type: '{dr("InterfaceType")}'.")
@@ -120,7 +101,6 @@ Public Class KnxSystemBusCollection
     End Sub
 
     Public Ready As Boolean = False '总线就绪
-    Private ReadOnly _Default As KnxBus
 
     ''' <summary>
     ''' 打开全部接口
@@ -132,13 +112,14 @@ Public Class KnxSystemBusCollection
 
     Private Async Sub _AllConnect(Optional GroupPoll As Boolean = False)
         Ready = False
+        Await Me.Default.ConnectAsync() '打开默认接口
         For Each dr As DataRow In _Table.Rows
             Try
                 If dr("CnState") = BusConnectionState.Closed Then '只处理Close状态的接口
                     Dim IfCode As String = dr("InterfaceCode").ToString
                     If dr("InterfaceType").ToString.ToLower.Contains("iptunnel") Then '网络接口
                         Dim p As New Ping
-                        Dim pr As PingReply = p.Send(dr("Address").ToString, 100)
+                        Dim pr As PingReply = p.Send(dr("InterfaceAddress").ToString, 100)
                         dr("NetState") = pr.Status
                         RaiseEvent ConnectionChanged(Nothing, Nothing) '触发事件
                         If pr.Status = IPStatus.Success Then
