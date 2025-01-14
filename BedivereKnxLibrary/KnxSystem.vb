@@ -77,6 +77,8 @@ Public Class KnxSystem
         End Get
     End Property
 
+    Public ReadOnly Property Links As DataTable
+
     ''' <summary>
     ''' 报文日志DataTable
     ''' </summary>
@@ -104,6 +106,7 @@ Public Class KnxSystem
             _Schedules = New KnxSystemSchedule(dicDt("Schedules"))
             ScheduleEventsInit() '初始化定时事件表
             AddHandler _Schedules.ScheduleEventTriggered, AddressOf _ScheduleEventTriggered
+            _Links = dicDt("Links")
             MsgLogTableInit() '初始化报文日志表
         Catch ex As Exception
             Throw

@@ -108,6 +108,16 @@ Public Class frmMainTable
             {"Id", "AreaCode", "InterfaceCode"})
         DgvBindingInit(dgvSchedule, KS.Schedules.Table,
             {"Id"})
+        DgvBindingInit(dgvLink, KS.Links,
+            {"Id", "Account", "Password"})
+        Dim colBtn As New DataGridViewButtonColumn
+        With colBtn
+            .Name = "btnPwd"
+            .HeaderText = "账号密码"
+            .Text = "查看"
+            .UseColumnTextForButtonValue = True
+        End With
+        dgvLink.Columns.Add(colBtn)
     End Sub
 
     ''' <summary>
@@ -121,9 +131,11 @@ Public Class frmMainTable
         dgv.ClearSelection() '取消选定
         For Each col As DataGridViewColumn In dgv.Columns
             Dim ColName As String = col.Name
-            col.HeaderText = dt.Columns(ColName).Caption '设置列标题
-            If HiddenCols.Contains(ColName) Then
-                col.Visible = False '隐藏不需要显示的列
+            If dt.Columns.Contains(ColName) Then
+                col.HeaderText = dt.Columns(ColName).Caption '设置列标题
+                If HiddenCols.Contains(ColName) Then
+                    col.Visible = False '隐藏不需要显示的列
+                End If
             End If
         Next
     End Sub
@@ -334,6 +346,19 @@ Public Class frmMainTable
         If IsNothing(sender.CurrentRow) OrElse (sender.SelectedRows.Count = 0) Then Exit Sub
         Dim DevId As Integer = Convert.ToInt32(sender.SelectedRows(0).Cells("Id").Value)
         KS.DeviceCheck(DevId)
+    End Sub
+
+    Private Sub dgvLink_CellClick(sender As DataGridView, e As DataGridViewCellEventArgs) Handles dgvLink.CellClick
+        If e.ColumnIndex = sender.Columns("btnPwd").Index Then '点击按钮的情况
+            Dim r As DataGridViewRow = sender.Rows(e.RowIndex)
+            MessageBox.Show($"Account: {r.Cells("Account").Value}{vbCrLf}Password: {r.Cells("Password").Value}", "Information")
+        End If
+    End Sub
+
+    Private Sub dgvLink_CellDoubleClick(sender As DataGridView, e As DataGridViewCellEventArgs) Handles dgvLink.CellDoubleClick
+        Dim psi As New ProcessStartInfo(sender.CurrentRow.Cells("LinkUrl").Value.ToString)
+        psi.UseShellExecute = True
+        Process.Start(psi)
     End Sub
 
     Private Sub dgvIf_SelectionChanged(sender As DataGridView, e As EventArgs) Handles dgvIf.SelectionChanged

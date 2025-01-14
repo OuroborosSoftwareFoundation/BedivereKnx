@@ -6,7 +6,7 @@ Imports DocumentFormat.OpenXml.Spreadsheet
 
 Module mdlDataFile_Excel
 
-    Private ReadOnly DataSheets As String() = {"Interfaces", "Areas", "Objects", "Scenes", "Devices", "Schedules"}
+    Private ReadOnly DataSheets As String() = {"Interfaces", "Areas", "Objects", "Scenes", "Devices", "Schedules", "Links"}
 
     Public Function ReadExcelToDataTables(FilePath As String, Optional HasSubTitle As Boolean = False, Optional AddIdCol As Boolean = False) As Dictionary(Of String, DataTable)
         If String.IsNullOrEmpty(FilePath) Then

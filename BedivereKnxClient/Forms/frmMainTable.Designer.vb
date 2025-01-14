@@ -57,13 +57,15 @@ Partial Class frmMainTable
         tmPoll = New Timer(components)
         StsStrip = New StatusStrip()
         slblIf = New ToolStripStatusLabel()
-        slblIfDefault = New ToolStripStatusLabel()
         slblIfCount = New ToolStripStatusLabel()
+        slblIfDefault = New ToolStripStatusLabel()
         slblBlank = New ToolStripStatusLabel()
         slblScd = New ToolStripStatusLabel()
         slblScdState = New ToolStripStatusLabel()
         slblSpring = New ToolStripStatusLabel()
         slblGithub = New ToolStripStatusLabel()
+        tpLink = New TabPage()
+        dgvLink = New DataGridView()
         CType(dgvObject, ComponentModel.ISupportInitialize).BeginInit()
         tlpMain.SuspendLayout()
         tlpTool.SuspendLayout()
@@ -83,6 +85,8 @@ Partial Class frmMainTable
         TableLayoutPanel1.SuspendLayout()
         menuTelLog.SuspendLayout()
         StsStrip.SuspendLayout()
+        tpLink.SuspendLayout()
+        CType(dgvLink, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' dgvObject
@@ -177,6 +181,7 @@ Partial Class frmMainTable
         tabMain.Controls.Add(tpScene)
         tabMain.Controls.Add(tpDevice)
         tabMain.Controls.Add(tpSchedule)
+        tabMain.Controls.Add(tpLink)
         tabMain.Controls.Add(tpInterface)
         tabMain.Dock = DockStyle.Fill
         tabMain.Location = New Point(253, 3)
@@ -525,6 +530,11 @@ Partial Class frmMainTable
         slblIf.Size = New Size(84, 20)
         slblIf.Text = "接口连接："
         ' 
+        ' slblIfCount
+        ' 
+        slblIfCount.Name = "slblIfCount"
+        slblIfCount.Size = New Size(0, 20)
+        ' 
         ' slblIfDefault
         ' 
         slblIfDefault.ForeColor = Color.Green
@@ -532,11 +542,6 @@ Partial Class frmMainTable
         slblIfDefault.Size = New Size(39, 20)
         slblIfDefault.Text = "(+1)"
         slblIfDefault.Visible = False
-        ' 
-        ' slblIfCount
-        ' 
-        slblIfCount.Name = "slblIfCount"
-        slblIfCount.Size = New Size(0, 20)
         ' 
         ' slblBlank
         ' 
@@ -560,7 +565,7 @@ Partial Class frmMainTable
         ' slblSpring
         ' 
         slblSpring.Name = "slblSpring"
-        slblSpring.Size = New Size(321, 20)
+        slblSpring.Size = New Size(399, 20)
         slblSpring.Spring = True
         ' 
         ' slblGithub
@@ -569,6 +574,41 @@ Partial Class frmMainTable
         slblGithub.Name = "slblGithub"
         slblGithub.Size = New Size(520, 20)
         slblGithub.Text = "https://github.com/OuroborosSoftwareFoundation/BedivereKnxClient"
+        ' 
+        ' tpLink
+        ' 
+        tpLink.Controls.Add(dgvLink)
+        tpLink.Location = New Point(4, 29)
+        tpLink.Name = "tpLink"
+        tpLink.Size = New Size(936, 435)
+        tpLink.TabIndex = 5
+        tpLink.Text = "链接"
+        tpLink.UseVisualStyleBackColor = True
+        ' 
+        ' dgvLink
+        ' 
+        dgvLink.AllowUserToAddRows = False
+        dgvLink.AllowUserToDeleteRows = False
+        dgvLink.AllowUserToResizeRows = False
+        dgvLink.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
+        dgvLink.BackgroundColor = SystemColors.Window
+        dgvLink.ColumnHeadersHeight = 29
+        dgvLink.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        dgvLink.Dock = DockStyle.Fill
+        dgvLink.Location = New Point(0, 0)
+        dgvLink.Name = "dgvLink"
+        dgvLink.ReadOnly = True
+        dgvLink.RowHeadersVisible = False
+        dgvLink.RowHeadersWidth = 51
+        dgvLink.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        dgvLink.ShowCellErrors = False
+        dgvLink.ShowCellToolTips = False
+        dgvLink.ShowEditingIcon = False
+        dgvLink.ShowRowErrors = False
+        dgvLink.Size = New Size(936, 435)
+        dgvLink.TabIndex = 3
+        dgvLink.Tag = "Objects"
+        dgvLink.VirtualMode = True
         ' 
         ' frmMainTable
         ' 
@@ -605,6 +645,8 @@ Partial Class frmMainTable
         menuTelLog.ResumeLayout(False)
         StsStrip.ResumeLayout(False)
         StsStrip.PerformLayout()
+        tpLink.ResumeLayout(False)
+        CType(dgvLink, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -650,4 +692,6 @@ Partial Class frmMainTable
     Friend WithEvents tpDevice As TabPage
     Friend WithEvents dgvDevice As DataGridView
     Friend WithEvents slblIfDefault As ToolStripStatusLabel
+    Friend WithEvents tpLink As TabPage
+    Friend WithEvents dgvLink As DataGridView
 End Class
