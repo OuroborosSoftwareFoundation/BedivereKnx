@@ -18,11 +18,11 @@ Public Class frmAuth
             .Items.Add("Product", "Product", 1)
             .Items.Add("Version", "Version", 2)
             .Items.Add("DOE", "Expiration Date", 3)
-            .Items.Add("Status", "Status", 4)
+            .Items.Add("FeedbackStatus", "FeedbackStatus", 4)
             .Items("UserName").SubItems.Add(_AuthInfo.UserName)
             .Items("Product").SubItems.Add(_AuthInfo.Product)
             .Items("Version").SubItems.Add(_AuthInfo.Version.ToString)
-            .Items("Status").SubItems.Add(_AuthInfo.Status.ToString)
+            .Items("FeedbackStatus").SubItems.Add(_AuthInfo.Status.ToString)
             If _AuthInfo.DOE.Date < DateTime.MaxValue.Date Then
                 .Items("DOE").SubItems.Add("(Hidden)")
             Else

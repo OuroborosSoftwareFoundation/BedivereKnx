@@ -15,6 +15,12 @@ Module mdlPublic
         cfg.Save(ConfigurationSaveMode.Modified)
     End Sub
 
+    Public Sub OpenUrl(url As String)
+        Dim psi As New ProcessStartInfo(url)
+        psi.UseShellExecute = True
+        Process.Start(psi)
+    End Sub
+
     'Public Sub GetEncodingNames()
     '    Console.WriteLine("Encode")
     '    For Each e In System.Text.Encoding.GetEncodings

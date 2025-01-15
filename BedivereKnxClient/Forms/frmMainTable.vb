@@ -8,15 +8,15 @@ Imports Knx.Falcon.Sdk
 
 Public Class frmMainTable
 
-    Friend fp As String
+    'Friend fp As String
     Dim isBusy As Boolean = True
     WithEvents menuColFilter As New ContextMenuStrip '筛选DataGridView列的右键菜单
 
     Private Sub frmMainTable_Load(sender As Object, e As EventArgs) Handles Me.Load
-        KS = New KnxSystem(fp)
-        AddHandler KS.Bus.ConnectionChanged, AddressOf KnxConnectionChanged
+        'KS = New KnxSystem(fp)
+        'AddHandler KS.Bus.ConnectionChanged, AddressOf KnxConnectionChanged
+        'AddHandler KS.Schedules.ScheduleTimerStateChanged, AddressOf ScheduleTimerStateChanged
         AddHandler KS.MessageTransmission, AddressOf KnxMessageTransmission
-        AddHandler KS.Schedules.ScheduleTimerStateChanged, AddressOf ScheduleTimerStateChanged
         For Each tp As TabPage In tabMain.TabPages
             tabMain.SelectedTab = tp
             If tp.Tag = "Interface" Then tabMain.TabPages.Remove(tp)
@@ -34,9 +34,9 @@ Public Class frmMainTable
 
     Private Sub frmMainTable_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         isBusy = False
-        KS.Bus.AllConnect(_InitRead) '打开全部KNX接口并初始化读取
-        KS.Schedules.TimerStart() '开启定时器
-        'frmInterface.Show() '启动时展示接口
+        'KS.Bus.AllConnect(_InitRead) '打开全部KNX接口并初始化读取
+        'KS.Schedules.TimerStart() '开启定时器
+        ''frmInterface.Show() '启动时展示接口
     End Sub
 
     Private Sub btnConnect_Click(sender As Object, e As EventArgs) Handles btnConnect.Click
@@ -110,14 +110,16 @@ Public Class frmMainTable
             {"Id"})
         DgvBindingInit(dgvLink, KS.Links,
             {"Id", "Account", "Password"})
-        Dim colBtn As New DataGridViewButtonColumn
-        With colBtn
-            .Name = "btnPwd"
-            .HeaderText = "账号密码"
-            .Text = "查看"
-            .UseColumnTextForButtonValue = True
-        End With
-        dgvLink.Columns.Add(colBtn)
+        If dgvLink.Rows.Count > 0 Then
+            Dim colBtn As New DataGridViewButtonColumn
+            With colBtn
+                .Name = "btnPwd"
+                .HeaderText = "账号密码"
+                .Text = "查看"
+                .UseColumnTextForButtonValue = True
+            End With
+            dgvLink.Columns.Add(colBtn)
+        End If
     End Sub
 
     ''' <summary>
@@ -127,6 +129,7 @@ Public Class frmMainTable
     ''' <param name="dt">DataTable对象</param>
     ''' <param name="HiddenCols">需要隐藏的列</param>
     Friend Sub DgvBindingInit(dgv As DataGridView, dt As DataTable, HiddenCols As String())
+        If (dt Is Nothing) OrElse (dt.Rows.Count = 0) Then Exit Sub
         dgv.DataSource = dt
         dgv.ClearSelection() '取消选定
         For Each col As DataGridViewColumn In dgv.Columns
@@ -144,17 +147,18 @@ Public Class frmMainTable
     ''' 优化对象表显示
     ''' </summary>
     Private Sub DgvObjectsOptimize()
+        If dgvObject.Rows.Count = 0 Then Exit Sub
         Dim OnlySwCtl As Boolean = True
         For Each r As DataGridViewRow In dgvObject.Rows
-            If Not (IsDBNull(r.Cells("GrpAddr-Val_Ctl").Value) And IsDBNull(r.Cells("GrpAddr-Val_Fdb").Value)) Then
+            If Not (IsDBNull(r.Cells("Val-GrpAddr_Ctl").Value) And IsDBNull(r.Cells("Val-GrpAddr_Fdb").Value)) Then
                 OnlySwCtl = False
                 Exit For
             End If
         Next
         If OnlySwCtl Then
-            dgvObject.Columns("GrpDpt-Val").Visible = False
-            dgvObject.Columns("GrpAddr-Val_Ctl").Visible = False
-            dgvObject.Columns("GrpAddr-Val_Fdb").Visible = False
+            dgvObject.Columns("Val-GrpDpt").Visible = False
+            dgvObject.Columns("Val-GrpAddr_Ctl").Visible = False
+            dgvObject.Columns("Val-GrpAddr_Fdb").Visible = False
             dgvObject.Columns("Val_FdbValue").Visible = False
         End If
     End Sub
@@ -287,7 +291,7 @@ Public Class frmMainTable
         If isBusy Then Exit Sub
         If IsNothing(dgvObject.CurrentRow) OrElse (dgvObject.SelectedRows.Count = 0) Then Exit Sub
         For Each r As DataGridViewRow In dgvObject.SelectedRows
-            If IsDBNull(r.Cells("GrpAddr-Val_Ctl").Value) Then
+            If IsDBNull(r.Cells("Val-GrpAddr_Ctl").Value) Then
                 numObjVal.Enabled = False
                 numObjVal.Value = 0
             Else
@@ -308,7 +312,7 @@ Public Class frmMainTable
         If isBusy Then Exit Sub
         If IsNothing(dgvObject.CurrentRow) OrElse (dgvObject.SelectedRows.Count = 0) Then Exit Sub
         For Each r As DataGridViewRow In dgvObject.SelectedRows
-            Dim ga As New GroupAddress(r.Cells($"GrpAddr-{PartCol}_Ctl").Value.ToString)
+            Dim ga As New GroupAddress(r.Cells($"{PartCol}-GrpAddr_Ctl").Value.ToString)
             KS.WriteGroupAddress(r.Cells("InterfaceCode").Value.ToString, ga, Val)
         Next
     End Sub
@@ -356,9 +360,7 @@ Public Class frmMainTable
     End Sub
 
     Private Sub dgvLink_CellDoubleClick(sender As DataGridView, e As DataGridViewCellEventArgs) Handles dgvLink.CellDoubleClick
-        Dim psi As New ProcessStartInfo(sender.CurrentRow.Cells("LinkUrl").Value.ToString)
-        psi.UseShellExecute = True
-        Process.Start(psi)
+        OpenUrl(sender.CurrentRow.Cells("LinkUrl").Value.ToString)
     End Sub
 
     Private Sub dgvIf_SelectionChanged(sender As DataGridView, e As EventArgs) Handles dgvIf.SelectionChanged
@@ -398,63 +400,68 @@ Public Class frmMainTable
         frmScheduleSeq.Show()
     End Sub
 
-    ''' <summary>
-    ''' KNX接口状态变化事件
-    ''' </summary>
-    Public Sub KnxConnectionChanged(sender As KnxBus, e As EventArgs)
-        Dim cnt As Integer = 0
-        For Each k As KnxBus In KS.Bus
-            If k.ConnectionState = BusConnectionState.Connected Then cnt += 1
-        Next
-        slblIfCount.Text = $"{cnt}/{KS.Bus.Count}"
-        If cnt = KS.Bus.Count Then
-            slblIfCount.ForeColor = Color.Green
-        Else
-            slblIfCount.ForeColor = Color.Red
-        End If
-        slblIfDefault.Visible = (KS.Bus.Default.ConnectionState = BusConnectionState.Connected)
+    '''' <summary>
+    '''' KNX接口状态变化事件
+    '''' </summary>
+    'Public Sub KnxConnectionChanged(sender As KnxBus, e As EventArgs)
+    'slblIfDefault.Visible = (KS.Bus.Default.ConnectionState = BusConnectionState.Connected)
+    'If KS.Bus.Count = 0 Then
+    '    slblIfDefault.Text = KS.Bus.Default.ConnectionState.ToString
+    '    slblIfCount.Visible = False
+    'Else
+    '    slblIfDefault.Text = "(+1)"
+    '    slblIfCount.Visible = True
+    '    Dim ConnectedCount As Integer = 0
+    '    For Each k As KnxBus In KS.Bus
+    '        If k.ConnectionState = BusConnectionState.Connected Then ConnectedCount += 1
+    '    Next
+    '    slblIfCount.Text = $"{ConnectedCount}/{KS.Bus.Count}"
+    '    If ConnectedCount = KS.Bus.Count Then
+    '        slblIfCount.ForeColor = Color.Green
+    '    Else
+    '        slblIfCount.ForeColor = Color.Red
+    '    End If
+    'End If
 
-        '（以下已转移至frmInterface）
-        'For Each r As DataGridViewRow In dgvIf.Rows
-        '    If IsDBNull(r.Cells("NetState").Value) Then Continue For
-        '    Select Case r.Cells("NetState").Value
-        '        Case IPStatus.Success, IPStatus.Unknown
-        '            Select Case r.Cells("CnState").Value
-        '                Case BusConnectionState.Connected
-        '                    r.DefaultCellStyle.BackColor = Color.PaleGreen
-        '                Case BusConnectionState.Broken, BusConnectionState.MediumFailure
-        '                    r.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow
-        '                Case Else
-        '                    r.DefaultCellStyle.BackColor = Color.LightGray
-        '            End Select
-        '        Case Else
-        '            r.DefaultCellStyle.BackColor = Color.LightCoral
-        '    End Select
-        'Next
-    End Sub
+    '    '（以下已转移至frmInterface）
+    '    'For Each r As DataGridViewRow In dgvIf.Rows
+    '    '    If IsDBNull(r.Cells("NetState").Value) Then Continue For
+    '    '    Select Case r.Cells("NetState").Value
+    '    '        Case IPStatus.Success, IPStatus.Unknown
+    '    '            Select Case r.Cells("CnState").Value
+    '    '                Case BusConnectionState.Connected
+    '    '                    r.DefaultCellStyle.BackColor = Color.PaleGreen
+    '    '                Case BusConnectionState.Broken, BusConnectionState.MediumFailure
+    '    '                    r.DefaultCellStyle.BackColor = Color.LightGoldenrodYellow
+    '    '                Case Else
+    '    '                    r.DefaultCellStyle.BackColor = Color.LightGray
+    '    '            End Select
+    '    '        Case Else
+    '    '            r.DefaultCellStyle.BackColor = Color.LightCoral
+    '    '    End Select
+    '    'Next
+    'End Sub
 
-    ''' <summary>
-    ''' 定时器状态变化事件
-    ''' </summary>
-    Private Sub ScheduleTimerStateChanged(e As KnxScheduleTimerState)
-        slblScdState.Text = e.ToString
-        Select Case e
-            Case KnxScheduleTimerState.Stoped
-                slblScdState.ForeColor = Color.Gray
-            Case KnxScheduleTimerState.Starting
-                slblScdState.ForeColor = Color.Blue
-            Case KnxScheduleTimerState.Running
-                slblScdState.ForeColor = Color.Green
-            Case Else
-                slblScdState.ForeColor = SystemColors.ControlText
-        End Select
-    End Sub
+    '''' <summary>
+    '''' 定时器状态变化事件
+    '''' </summary>
+    'Private Sub ScheduleTimerStateChanged(e As KnxScheduleTimerState)
+    '    slblScdState.Text = e.ToString
+    '    Select Case e
+    '        Case KnxScheduleTimerState.Stoped
+    '            slblScdState.ForeColor = Color.Gray
+    '        Case KnxScheduleTimerState.Starting
+    '            slblScdState.ForeColor = Color.Blue
+    '        Case KnxScheduleTimerState.Running
+    '            slblScdState.ForeColor = Color.Green
+    '        Case Else
+    '            slblScdState.ForeColor = SystemColors.ControlText
+    '    End Select
+    'End Sub
 
-    Private Sub slblGithub_Click(sender As Object, e As EventArgs) Handles slblGithub.Click
-        Dim psi As New ProcessStartInfo("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnxClient")
-        psi.UseShellExecute = True
-        Process.Start(psi)
-    End Sub
+    'Private Sub slblGithub_Click(sender As Object, e As EventArgs) Handles slblGithub.Click
+    'OpenUrl("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnxClient")
+    'End Sub
 
     Private Sub frmMainTable_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         frmInterface.Close()

@@ -5,7 +5,7 @@
     Private Sub frmAbout_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = $"About {Application.ProductName}"
         lblProdName.Text = Application.ProductName
-        lblVersion.Text = $"Ver {Application.ProductVersion}"
+        lblVersion.Text = $"Ver {My.Application.Info.Version}"
         lblCopyright.Text = $"{My.Application.Info.Copyright}.{vbCrLf}All rights reserved."
         'PicIndex = New Random().Next(1, 4)
         ShowTitlePic(3)
@@ -33,9 +33,7 @@
     End Sub
 
     Private Sub lblGithub_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblGithub.LinkClicked
-        Dim psi As New ProcessStartInfo("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnxClient")
-        psi.UseShellExecute = True
-        Process.Start(psi)
+        OpenUrl("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnxClient")
     End Sub
 
     Private Sub btnLicense_Click(sender As Object, e As EventArgs) Handles btnLicense.Click

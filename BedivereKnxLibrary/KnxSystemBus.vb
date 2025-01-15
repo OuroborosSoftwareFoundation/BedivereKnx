@@ -14,8 +14,16 @@ Public Class KnxSystemBusCollection
     Private _Table As DataTable
     Private _Item As New Dictionary(Of String, KnxBus)
 
-    Public Event ConnectionChanged As EventHandler '接口连接状态变化事件
-    Public Event GroupMessageReceived As KnxMessageHandler '组地址报文接收事件
+    ''' <summary>
+    ''' 接口连接状态变化事件
+    ''' </summary>
+    Public Event ConnectionChanged As EventHandler
+
+    ''' <summary>
+    ''' 组地址报文接收事件
+    ''' </summary>
+    Public Event GroupMessageReceived As KnxMessageHandler
+
     Protected Friend Event GroupPollRequest() '组地址轮询申请事件
 
     ''' <summary>
@@ -59,6 +67,20 @@ Public Class KnxSystemBusCollection
             Return _Item.Count
         End Get
     End Property
+
+    Public Sub New()
+        _Default = New KnxBus("Type=IpRouting") '默认接口
+        AddHandler _Default.ConnectionStateChanged, AddressOf _ConnectionChanged
+        AddHandler _Default.GroupMessageReceived, AddressOf _GroupMessageReceived
+        _Table = New DataTable
+        With _Table
+            .Columns.Add("NetState", GetType(IPStatus)) '网络状态
+            .Columns("NetState").Caption = "网络状态"
+            .Columns.Add("CnState", GetType(BusConnectionState)) '接口连接状态
+            .Columns("CnState").Caption = "连接状态"
+            _Item.Clear()
+        End With
+    End Sub
 
     Public Sub New(dt As DataTable)
         _Default = New KnxBus("Type=IpRouting") '默认接口
@@ -112,7 +134,9 @@ Public Class KnxSystemBusCollection
 
     Private Async Sub _AllConnect(Optional GroupPoll As Boolean = False)
         Ready = False
-        Await Me.Default.ConnectAsync() '打开默认接口
+        If Me.Default.ConnectionState = BusConnectionState.Closed Then
+            Await Me.Default.ConnectAsync() '打开默认接口
+        End If
         For Each dr As DataRow In _Table.Rows
             Try
                 If dr("CnState") = BusConnectionState.Closed Then '只处理Close状态的接口

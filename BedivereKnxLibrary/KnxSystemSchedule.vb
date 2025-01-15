@@ -13,7 +13,14 @@ Public Class KnxSystemSchedule
     Private WithEvents _Timer As Timer '主定时器
     Private _TimerState As KnxScheduleTimerState
 
+    ''' <summary>
+    ''' 时间表触发事件
+    ''' </summary>
     Public Event ScheduleEventTriggered As ScheduleEventHandler
+
+    ''' <summary>
+    ''' 时间表定时器状态变化事件
+    ''' </summary>
     Public Event ScheduleTimerStateChanged As ScheduleTimerHandler
 
     ''' <summary>
@@ -48,6 +55,12 @@ Public Class KnxSystemSchedule
             Return _TimerState
         End Get
     End Property
+
+    Public Sub New()
+        _Sequence = New KnxScheduleSequence
+        _TimerAli = New Timer(1000)
+        _Timer = New Timer(60000)
+    End Sub
 
     Public Sub New(dt As DataTable)
         _Sequence = New KnxScheduleSequence

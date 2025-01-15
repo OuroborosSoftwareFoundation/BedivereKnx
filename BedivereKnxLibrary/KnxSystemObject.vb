@@ -11,7 +11,14 @@ Public Class KnxSystemObjectCollection
     Private _Table As DataTable
     Private _Item As New Dictionary(Of Integer, KnxObjectGroup)
 
+    ''' <summary>
+    ''' 组地址写入请求
+    ''' </summary>
     Protected Friend Event GroupWriteRequest As GroupWriteHandler
+
+    ''' <summary>
+    ''' 组地址读取请求
+    ''' </summary>
     Protected Friend Event GroupReadRequest As GroupReadHandler
 
     Public ReadOnly Property Table As DataTable
@@ -102,6 +109,16 @@ Public Class KnxSystemObjectCollection
         End Get
     End Property
 
+    Public Sub New()
+        _Table = New DataTable
+        With _Table
+            .Columns.Add("Sw_FdbValue", GetType(Byte)) '附加反馈状态列
+            .Columns.Item("Sw_FdbValue").Caption = "开关反馈"
+            .Columns.Add("Val_FdbValue", GetType(Decimal)) '附加反馈状态列
+            .Columns.Item("Val_FdbValue").Caption = "数值反馈"
+        End With
+    End Sub
+
     Public Sub New(dt As DataTable)
         _Table = dt
         With _Table
@@ -115,10 +132,10 @@ Public Class KnxSystemObjectCollection
                     Throw New ArgumentException($"Wrong ObjectType in Objects: [{dr("ObjectCode")}]{dr("ObjectName")}.")
                 End If
                 Dim obj As New KnxObjectGroup(GrpType, dr("Id"), dr("ObjectCode").ToString, dr("ObjectName").ToString, dr("InterfaceCode").ToString)
-                Dim SwDpt As Integer() = StringToDptNum(dr("GrpDpt-Sw").ToString) '开关DPT数字
-                obj.SwitchPart = New KnxGroupPart(SwDpt(0), SwDpt(1), dr("GrpAddr-Sw_Ctl").ToString, dr("GrpAddr-Sw_Fdb").ToString)
-                Dim ValDpt As Integer() = StringToDptNum(dr("GrpDpt-Val").ToString) '数值DPT数字
-                obj.ValuePart = New KnxGroupPart(ValDpt(0), ValDpt(1), dr("GrpAddr-Val_Ctl").ToString, dr("GrpAddr-Val_Fdb").ToString)
+                Dim SwDpt As Integer() = StringToDptNum(dr("Sw-GrpDpt").ToString) '开关DPT数字
+                obj.SwitchPart = New KnxGroupPart(SwDpt(0), SwDpt(1), dr("Sw-GrpAddr_Ctl").ToString, dr("Sw-GrpAddr_Fdb").ToString)
+                Dim ValDpt As Integer() = StringToDptNum(dr("Val-GrpDpt").ToString) '数值DPT数字
+                obj.ValuePart = New KnxGroupPart(ValDpt(0), ValDpt(1), dr("Val-GrpAddr_Ctl").ToString, dr("Val-GrpAddr_Fdb").ToString)
                 _Item.Add(obj.Id, obj)
                 AddHandler obj.GroupWriteRequest, AddressOf _GroupWriteRequest
                 AddHandler obj.GroupReadRequest, AddressOf _GroupReadRequest

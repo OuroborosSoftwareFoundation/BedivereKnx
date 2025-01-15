@@ -10,6 +10,7 @@ Public Class frmInterface
         frmMainTable.DgvBindingInit(dgvIf, KS.Bus.Table,
             {"Id", "AreaCode", "InterfaceCode", "Port"})
         dgvRefresh()
+        Call KnxConnectionChanged(Nothing, Nothing)
     End Sub
 
     Private Sub dgvRefresh()

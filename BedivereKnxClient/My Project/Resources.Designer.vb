@@ -91,6 +91,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  查找 System.Drawing.Bitmap 类型的本地化资源。
+        '''</summary>
+        Friend ReadOnly Property bg() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("bg", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  查找类似                     GNU GENERAL PUBLIC LICENSE
         '''                       Version 3, 29 June 2007
         '''
@@ -135,16 +145,6 @@ Namespace My.Resources
         '''<summary>
         '''  查找 System.Drawing.Bitmap 类型的本地化资源。
         '''</summary>
-        Friend ReadOnly Property menu() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("menu", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查找 System.Drawing.Bitmap 类型的本地化资源。
-        '''</summary>
         Friend ReadOnly Property OSF_logo_256() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("OSF_logo_256", resourceCulture)
@@ -158,6 +158,36 @@ Namespace My.Resources
         Friend ReadOnly Property StartUp() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("StartUp", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找 System.Drawing.Bitmap 类型的本地化资源。
+        '''</summary>
+        Friend ReadOnly Property view_graphics() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("view_graphics", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找 System.Drawing.Bitmap 类型的本地化资源。
+        '''</summary>
+        Friend ReadOnly Property view_grid() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("view_grid", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找 System.Drawing.Bitmap 类型的本地化资源。
+        '''</summary>
+        Friend ReadOnly Property view_panel() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("view_panel", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

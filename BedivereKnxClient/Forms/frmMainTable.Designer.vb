@@ -45,6 +45,8 @@ Partial Class frmMainTable
         dgvDevice = New DataGridView()
         tpSchedule = New TabPage()
         dgvSchedule = New DataGridView()
+        tpLink = New TabPage()
+        dgvLink = New DataGridView()
         tpInterface = New TabPage()
         dgvIf = New DataGridView()
         TableLayoutPanel1 = New TableLayoutPanel()
@@ -64,8 +66,6 @@ Partial Class frmMainTable
         slblScdState = New ToolStripStatusLabel()
         slblSpring = New ToolStripStatusLabel()
         slblGithub = New ToolStripStatusLabel()
-        tpLink = New TabPage()
-        dgvLink = New DataGridView()
         CType(dgvObject, ComponentModel.ISupportInitialize).BeginInit()
         tlpMain.SuspendLayout()
         tlpTool.SuspendLayout()
@@ -80,13 +80,13 @@ Partial Class frmMainTable
         CType(dgvDevice, ComponentModel.ISupportInitialize).BeginInit()
         tpSchedule.SuspendLayout()
         CType(dgvSchedule, ComponentModel.ISupportInitialize).BeginInit()
+        tpLink.SuspendLayout()
+        CType(dgvLink, ComponentModel.ISupportInitialize).BeginInit()
         tpInterface.SuspendLayout()
         CType(dgvIf, ComponentModel.ISupportInitialize).BeginInit()
         TableLayoutPanel1.SuspendLayout()
         menuTelLog.SuspendLayout()
         StsStrip.SuspendLayout()
-        tpLink.SuspendLayout()
-        CType(dgvLink, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' dgvObject
@@ -109,7 +109,7 @@ Partial Class frmMainTable
         dgvObject.ShowCellToolTips = False
         dgvObject.ShowEditingIcon = False
         dgvObject.ShowRowErrors = False
-        dgvObject.Size = New Size(936, 385)
+        dgvObject.Size = New Size(936, 411)
         dgvObject.TabIndex = 1
         dgvObject.Tag = "Objects"
         dgvObject.VirtualMode = True
@@ -129,7 +129,7 @@ Partial Class frmMainTable
         tlpMain.RowCount = 2
         tlpMain.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
         tlpMain.RowStyles.Add(New RowStyle(SizeType.Absolute, 100F))
-        tlpMain.Size = New Size(1200, 574)
+        tlpMain.Size = New Size(1200, 600)
         tlpMain.TabIndex = 0
         ' 
         ' tlpTool
@@ -139,7 +139,7 @@ Partial Class frmMainTable
         tlpTool.Controls.Add(btnInterface, 0, 0)
         tlpTool.Controls.Add(btnSchedule, 0, 1)
         tlpTool.Dock = DockStyle.Fill
-        tlpTool.Location = New Point(3, 477)
+        tlpTool.Location = New Point(3, 503)
         tlpTool.Name = "tlpTool"
         tlpTool.RowCount = 2
         tlpTool.RowStyles.Add(New RowStyle(SizeType.Percent, 50F))
@@ -172,7 +172,7 @@ Partial Class frmMainTable
         tvArea.Dock = DockStyle.Fill
         tvArea.Location = New Point(3, 3)
         tvArea.Name = "tvArea"
-        tvArea.Size = New Size(244, 468)
+        tvArea.Size = New Size(244, 494)
         tvArea.TabIndex = 4
         ' 
         ' tabMain
@@ -187,7 +187,7 @@ Partial Class frmMainTable
         tabMain.Location = New Point(253, 3)
         tabMain.Name = "tabMain"
         tabMain.SelectedIndex = 0
-        tabMain.Size = New Size(944, 468)
+        tabMain.Size = New Size(944, 494)
         tabMain.SizeMode = TabSizeMode.Fixed
         tabMain.TabIndex = 1
         ' 
@@ -198,7 +198,7 @@ Partial Class frmMainTable
         tpObject.Controls.Add(tlpObject)
         tpObject.Location = New Point(4, 29)
         tpObject.Name = "tpObject"
-        tpObject.Size = New Size(936, 435)
+        tpObject.Size = New Size(936, 461)
         tpObject.TabIndex = 1
         tpObject.Tag = "Object"
         tpObject.Text = "对象"
@@ -217,7 +217,7 @@ Partial Class frmMainTable
         tlpObject.Controls.Add(Label1, 2, 0)
         tlpObject.Controls.Add(lblObjVal, 4, 0)
         tlpObject.Dock = DockStyle.Bottom
-        tlpObject.Location = New Point(0, 385)
+        tlpObject.Location = New Point(0, 411)
         tlpObject.Name = "tlpObject"
         tlpObject.RowCount = 1
         tlpObject.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
@@ -416,6 +416,41 @@ Partial Class frmMainTable
         dgvSchedule.Size = New Size(936, 435)
         dgvSchedule.TabIndex = 1
         ' 
+        ' tpLink
+        ' 
+        tpLink.Controls.Add(dgvLink)
+        tpLink.Location = New Point(4, 29)
+        tpLink.Name = "tpLink"
+        tpLink.Size = New Size(936, 435)
+        tpLink.TabIndex = 5
+        tpLink.Text = "链接"
+        tpLink.UseVisualStyleBackColor = True
+        ' 
+        ' dgvLink
+        ' 
+        dgvLink.AllowUserToAddRows = False
+        dgvLink.AllowUserToDeleteRows = False
+        dgvLink.AllowUserToResizeRows = False
+        dgvLink.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
+        dgvLink.BackgroundColor = SystemColors.Window
+        dgvLink.ColumnHeadersHeight = 29
+        dgvLink.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        dgvLink.Dock = DockStyle.Fill
+        dgvLink.Location = New Point(0, 0)
+        dgvLink.Name = "dgvLink"
+        dgvLink.ReadOnly = True
+        dgvLink.RowHeadersVisible = False
+        dgvLink.RowHeadersWidth = 51
+        dgvLink.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        dgvLink.ShowCellErrors = False
+        dgvLink.ShowCellToolTips = False
+        dgvLink.ShowEditingIcon = False
+        dgvLink.ShowRowErrors = False
+        dgvLink.Size = New Size(936, 435)
+        dgvLink.TabIndex = 3
+        dgvLink.Tag = "Objects"
+        dgvLink.VirtualMode = True
+        ' 
         ' tpInterface
         ' 
         tpInterface.BackColor = SystemColors.Control
@@ -481,7 +516,7 @@ Partial Class frmMainTable
         lstTelLog.ContextMenuStrip = menuTelLog
         lstTelLog.Dock = DockStyle.Fill
         lstTelLog.FormattingEnabled = True
-        lstTelLog.Location = New Point(253, 477)
+        lstTelLog.Location = New Point(253, 503)
         lstTelLog.Name = "lstTelLog"
         lstTelLog.Size = New Size(944, 94)
         lstTelLog.TabIndex = 1
@@ -523,6 +558,7 @@ Partial Class frmMainTable
         StsStrip.Size = New Size(1200, 26)
         StsStrip.SizingGrip = False
         StsStrip.TabIndex = 1
+        StsStrip.Visible = False
         ' 
         ' slblIf
         ' 
@@ -565,7 +601,7 @@ Partial Class frmMainTable
         ' slblSpring
         ' 
         slblSpring.Name = "slblSpring"
-        slblSpring.Size = New Size(399, 20)
+        slblSpring.Size = New Size(360, 20)
         slblSpring.Spring = True
         ' 
         ' slblGithub
@@ -574,41 +610,6 @@ Partial Class frmMainTable
         slblGithub.Name = "slblGithub"
         slblGithub.Size = New Size(520, 20)
         slblGithub.Text = "https://github.com/OuroborosSoftwareFoundation/BedivereKnxClient"
-        ' 
-        ' tpLink
-        ' 
-        tpLink.Controls.Add(dgvLink)
-        tpLink.Location = New Point(4, 29)
-        tpLink.Name = "tpLink"
-        tpLink.Size = New Size(936, 435)
-        tpLink.TabIndex = 5
-        tpLink.Text = "链接"
-        tpLink.UseVisualStyleBackColor = True
-        ' 
-        ' dgvLink
-        ' 
-        dgvLink.AllowUserToAddRows = False
-        dgvLink.AllowUserToDeleteRows = False
-        dgvLink.AllowUserToResizeRows = False
-        dgvLink.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
-        dgvLink.BackgroundColor = SystemColors.Window
-        dgvLink.ColumnHeadersHeight = 29
-        dgvLink.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        dgvLink.Dock = DockStyle.Fill
-        dgvLink.Location = New Point(0, 0)
-        dgvLink.Name = "dgvLink"
-        dgvLink.ReadOnly = True
-        dgvLink.RowHeadersVisible = False
-        dgvLink.RowHeadersWidth = 51
-        dgvLink.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-        dgvLink.ShowCellErrors = False
-        dgvLink.ShowCellToolTips = False
-        dgvLink.ShowEditingIcon = False
-        dgvLink.ShowRowErrors = False
-        dgvLink.Size = New Size(936, 435)
-        dgvLink.TabIndex = 3
-        dgvLink.Tag = "Objects"
-        dgvLink.VirtualMode = True
         ' 
         ' frmMainTable
         ' 
@@ -639,14 +640,14 @@ Partial Class frmMainTable
         CType(dgvDevice, ComponentModel.ISupportInitialize).EndInit()
         tpSchedule.ResumeLayout(False)
         CType(dgvSchedule, ComponentModel.ISupportInitialize).EndInit()
+        tpLink.ResumeLayout(False)
+        CType(dgvLink, ComponentModel.ISupportInitialize).EndInit()
         tpInterface.ResumeLayout(False)
         CType(dgvIf, ComponentModel.ISupportInitialize).EndInit()
         TableLayoutPanel1.ResumeLayout(False)
         menuTelLog.ResumeLayout(False)
         StsStrip.ResumeLayout(False)
         StsStrip.PerformLayout()
-        tpLink.ResumeLayout(False)
-        CType(dgvLink, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub

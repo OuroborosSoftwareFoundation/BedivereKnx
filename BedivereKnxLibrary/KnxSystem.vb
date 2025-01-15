@@ -29,16 +29,19 @@ Imports Knx.Falcon.Sdk
 
 Public Class KnxSystem
 
-    Private ReadOnly _Bus As KnxSystemBusCollection
-    Private ReadOnly _Areas As KnxSystemArea
-    Private ReadOnly _Objects As KnxSystemObjectCollection
-    Private ReadOnly _Scenes As KnxSystemSceneCollection
-    Private ReadOnly _Devices As KnxSystemDeviceCollection
-    Private ReadOnly _Schedules As KnxSystemSchedule
+    Private ReadOnly _Bus As New KnxSystemBusCollection
+    Private ReadOnly _Areas As New KnxSystemArea
+    Private ReadOnly _Objects As New KnxSystemObjectCollection
+    Private ReadOnly _Scenes As New KnxSystemSceneCollection
+    Private ReadOnly _Devices As New KnxSystemDeviceCollection
+    Private ReadOnly _Schedules As New KnxSystemSchedule
     Private _NameSpace As String
     Private _MessageLog As New DataTable
     Private IsPolling As Boolean = False '正在轮询
 
+    ''' <summary>
+    ''' 报文收发传输事件
+    ''' </summary>
     Public Event MessageTransmission As KnxMessageHandler
 
     Public ReadOnly Property Bus As KnxSystemBusCollection
@@ -93,20 +96,34 @@ Public Class KnxSystem
         Try
             _NameSpace = System.Reflection.Assembly.GetExecutingAssembly.GetName.Name
             Dim dicDt As Dictionary(Of String, DataTable) = ReadExcelToDataTables(ExcelDataFile, True, True)
-            _Bus = New KnxSystemBusCollection(dicDt("Interfaces"))
-            AddHandler _Bus.GroupMessageReceived, AddressOf _GroupMessageReceived
-            AddHandler _Bus.GroupPollRequest, AddressOf PollObjectsValue
-            _Areas = New KnxSystemArea(dicDt("Areas"))
-            _Objects = New KnxSystemObjectCollection(dicDt("Objects"))
-            AddHandler _Objects.GroupWriteRequest, AddressOf _GroupWriteRequest
-            AddHandler _Objects.GroupReadRequest, AddressOf _GroupReadRequest
-            _Scenes = New KnxSystemSceneCollection(dicDt("Scenes"))
-            AddHandler _Scenes.SceneControlRequest, AddressOf _GroupWriteRequest
-            _Devices = New KnxSystemDeviceCollection(dicDt("Devices"))
-            _Schedules = New KnxSystemSchedule(dicDt("Schedules"))
-            ScheduleEventsInit() '初始化定时事件表
-            AddHandler _Schedules.ScheduleEventTriggered, AddressOf _ScheduleEventTriggered
-            _Links = dicDt("Links")
+            If dicDt.ContainsKey("Interfaces") Then
+                _Bus = New KnxSystemBusCollection(dicDt("Interfaces"))
+                AddHandler _Bus.GroupMessageReceived, AddressOf _GroupMessageReceived
+                AddHandler _Bus.GroupPollRequest, AddressOf PollObjectsValue
+            End If
+            If dicDt.ContainsKey("Areas") Then
+                _Areas = New KnxSystemArea(dicDt("Areas"))
+            End If
+            If dicDt.ContainsKey("Objects") Then
+                _Objects = New KnxSystemObjectCollection(dicDt("Objects"))
+                AddHandler _Objects.GroupWriteRequest, AddressOf _GroupWriteRequest
+                AddHandler _Objects.GroupReadRequest, AddressOf _GroupReadRequest
+            End If
+            If dicDt.ContainsKey("Scenes") Then
+                _Scenes = New KnxSystemSceneCollection(dicDt("Scenes"))
+                AddHandler _Scenes.SceneControlRequest, AddressOf _GroupWriteRequest
+            End If
+            If dicDt.ContainsKey("Devices") Then
+                _Devices = New KnxSystemDeviceCollection(dicDt("Devices"))
+            End If
+            If dicDt.ContainsKey("Schedules") Then
+                _Schedules = New KnxSystemSchedule(dicDt("Schedules"))
+                ScheduleEventsInit() '初始化定时事件表
+                AddHandler _Schedules.ScheduleEventTriggered, AddressOf _ScheduleEventTriggered
+            End If
+            If dicDt.ContainsKey("Links") Then
+                _Links = dicDt("Links")
+            End If
             MsgLogTableInit() '初始化报文日志表
         Catch ex As Exception
             Throw

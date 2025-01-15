@@ -9,6 +9,9 @@ Public Class KnxSystemSceneCollection
     'Private _dicIdCode As New Dictionary(Of Integer, String) 'Id-Code
     Private _Item As New Dictionary(Of Integer, KnxSceneGroup)
 
+    ''' <summary>
+    ''' 场景控制请求
+    ''' </summary>
     Protected Friend Event SceneControlRequest As GroupWriteHandler
 
     Public ReadOnly Property Table As DataTable
@@ -62,6 +65,10 @@ Public Class KnxSystemSceneCollection
             Return _Item.Count
         End Get
     End Property
+
+    Public Sub New()
+
+    End Sub
 
     Public Sub New(dt As DataTable)
         _Table = dt

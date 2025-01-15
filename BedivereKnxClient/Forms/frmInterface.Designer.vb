@@ -94,10 +94,12 @@ Partial Class frmInterface
         ' lblIfDefault
         ' 
         lblIfDefault.Dock = DockStyle.Fill
+        lblIfDefault.ForeColor = Color.Gray
         lblIfDefault.Location = New Point(153, 0)
         lblIfDefault.Name = "lblIfDefault"
         lblIfDefault.Size = New Size(644, 40)
         lblIfDefault.TabIndex = 1
+        lblIfDefault.Text = "Unknown"
         lblIfDefault.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' frmInterface

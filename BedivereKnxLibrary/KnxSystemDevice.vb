@@ -61,6 +61,10 @@ Public Class KnxSystemDeviceCollection
         End Get
     End Property
 
+    Public Sub New()
+
+    End Sub
+
     Public Sub New(dt As DataTable)
         _Table = dt
         With _Table

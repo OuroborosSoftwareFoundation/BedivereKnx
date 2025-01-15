@@ -20,6 +20,10 @@ Public Class KnxSystemArea
     '    End Get
     'End Property
 
+    Public Sub New()
+        _Table = New DataTable
+    End Sub
+
     Public Sub New(dt As DataTable)
         _Table = dt
         AreaTreeNodesInit()
