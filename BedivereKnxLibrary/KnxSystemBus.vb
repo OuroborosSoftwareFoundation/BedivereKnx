@@ -139,6 +139,7 @@ Public Class KnxSystemBusCollection
         End If
         For Each dr As DataRow In _Table.Rows
             Try
+                If dr("Enable").ToString = "0" Then Continue For
                 If dr("CnState") = BusConnectionState.Closed Then '只处理Close状态的接口
                     Dim IfCode As String = dr("InterfaceCode").ToString
                     If dr("InterfaceType").ToString.ToLower.Contains("iptunnel") Then '网络接口

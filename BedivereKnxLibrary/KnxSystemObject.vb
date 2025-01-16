@@ -112,30 +112,30 @@ Public Class KnxSystemObjectCollection
     Public Sub New()
         _Table = New DataTable
         With _Table
-            .Columns.Add("Sw_FdbValue", GetType(Byte)) '附加反馈状态列
-            .Columns.Item("Sw_FdbValue").Caption = "开关反馈"
-            .Columns.Add("Val_FdbValue", GetType(Decimal)) '附加反馈状态列
-            .Columns.Item("Val_FdbValue").Caption = "数值反馈"
+            .Columns.Add("Sw_Fdb_Value", GetType(Byte)) '附加反馈状态列
+            .Columns.Item("Sw_Fdb_Value").Caption = "开关反馈"
+            .Columns.Add("Val_Fdb_Value", GetType(Decimal)) '附加反馈状态列
+            .Columns.Item("Val_Fdb_Value").Caption = "数值反馈"
         End With
     End Sub
 
     Public Sub New(dt As DataTable)
         _Table = dt
         With _Table
-            .Columns.Add("Sw_FdbValue", GetType(Byte)) '附加反馈状态列
-            .Columns.Item("Sw_FdbValue").Caption = "开关反馈"
-            .Columns.Add("Val_FdbValue", GetType(Decimal)) '附加反馈状态列
-            .Columns.Item("Val_FdbValue").Caption = "数值反馈"
+            .Columns.Add("Sw_Fdb_Value", GetType(Byte)) '附加反馈状态列
+            .Columns.Item("Sw_Fdb_Value").Caption = "开关反馈"
+            .Columns.Add("Val_Fdb_Value", GetType(Decimal)) '附加反馈状态列
+            .Columns.Item("Val_Fdb_Value").Caption = "数值反馈"
             For Each dr As DataRow In _Table.Rows
                 Dim GrpType As KnxGroupType '组地址类型
                 If Not [Enum].TryParse(dr("ObjectType"), GrpType) Then '字符串转枚举
                     Throw New ArgumentException($"Wrong ObjectType in Objects: [{dr("ObjectCode")}]{dr("ObjectName")}.")
                 End If
                 Dim obj As New KnxObjectGroup(GrpType, dr("Id"), dr("ObjectCode").ToString, dr("ObjectName").ToString, dr("InterfaceCode").ToString)
-                Dim SwDpt As Integer() = StringToDptNum(dr("Sw-GrpDpt").ToString) '开关DPT数字
-                obj.SwitchPart = New KnxGroupPart(SwDpt(0), SwDpt(1), dr("Sw-GrpAddr_Ctl").ToString, dr("Sw-GrpAddr_Fdb").ToString)
-                Dim ValDpt As Integer() = StringToDptNum(dr("Val-GrpDpt").ToString) '数值DPT数字
-                obj.ValuePart = New KnxGroupPart(ValDpt(0), ValDpt(1), dr("Val-GrpAddr_Ctl").ToString, dr("Val-GrpAddr_Fdb").ToString)
+                Dim SwDpt As Integer() = StringToDptNum(dr("Sw_GrpDpt").ToString) '开关DPT数字
+                obj.SwitchPart = New KnxGroupPart(SwDpt(0), SwDpt(1), dr("Sw_Ctl_GrpAddr").ToString, dr("Sw_Fdb_GrpAddr").ToString)
+                Dim ValDpt As Integer() = StringToDptNum(dr("Val_GrpDpt").ToString) '数值DPT数字
+                obj.ValuePart = New KnxGroupPart(ValDpt(0), ValDpt(1), dr("Val_Ctl_GrpAddr").ToString, dr("Val_Fdb_GrpAddr").ToString)
                 _Item.Add(obj.Id, obj)
                 AddHandler obj.GroupWriteRequest, AddressOf _GroupWriteRequest
                 AddHandler obj.GroupReadRequest, AddressOf _GroupReadRequest
@@ -203,8 +203,8 @@ Public Class KnxSystemObjectCollection
                 Next
                 ObjPart = KnxObjectPart.Value
         End Select
-        For Each dr As DataRow In _Table.Select($"{OptCol}Addr = '{GA}'") '找出组地址所属对象，可能有多个
-            If Not IsNothing(TypVal) Then dr($"{OptCol}Value") = TypVal '表格更新
+        For Each dr As DataRow In _Table.Select($"{OptCol}_GrpAddr = '{GA}'") '找出组地址所属对象，可能有多个
+            If Not IsNothing(TypVal) Then dr($"{OptCol}_Value") = TypVal '表格更新
             Dim id As Integer = dr("Id")
             _Item(id).GetPart(ObjPart).SetPointValue(ObjPoint, GrpVal) '对象值更新
         Next

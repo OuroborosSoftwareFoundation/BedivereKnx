@@ -150,16 +150,16 @@ Public Class frmMainTable
         If dgvObject.Rows.Count = 0 Then Exit Sub
         Dim OnlySwCtl As Boolean = True
         For Each r As DataGridViewRow In dgvObject.Rows
-            If Not (IsDBNull(r.Cells("Val-GrpAddr_Ctl").Value) And IsDBNull(r.Cells("Val-GrpAddr_Fdb").Value)) Then
+            If Not (IsDBNull(r.Cells("Val_Ctl_GrpAddr").Value) And IsDBNull(r.Cells("Val_Fdb_GrpAddr").Value)) Then
                 OnlySwCtl = False
                 Exit For
             End If
         Next
         If OnlySwCtl Then
-            dgvObject.Columns("Val-GrpDpt").Visible = False
-            dgvObject.Columns("Val-GrpAddr_Ctl").Visible = False
-            dgvObject.Columns("Val-GrpAddr_Fdb").Visible = False
-            dgvObject.Columns("Val_FdbValue").Visible = False
+            dgvObject.Columns("Val_GrpDpt").Visible = False
+            dgvObject.Columns("Val_Ctl_GrpAddr").Visible = False
+            dgvObject.Columns("Val_Fdb_GrpAddr").Visible = False
+            dgvObject.Columns("Val_Fdb_Value").Visible = False
         End If
     End Sub
 
@@ -291,7 +291,7 @@ Public Class frmMainTable
         If isBusy Then Exit Sub
         If IsNothing(dgvObject.CurrentRow) OrElse (dgvObject.SelectedRows.Count = 0) Then Exit Sub
         For Each r As DataGridViewRow In dgvObject.SelectedRows
-            If IsDBNull(r.Cells("Val-GrpAddr_Ctl").Value) Then
+            If IsDBNull(r.Cells("Val_Ctl_GrpAddr").Value) Then
                 numObjVal.Enabled = False
                 numObjVal.Value = 0
             Else
@@ -312,7 +312,7 @@ Public Class frmMainTable
         If isBusy Then Exit Sub
         If IsNothing(dgvObject.CurrentRow) OrElse (dgvObject.SelectedRows.Count = 0) Then Exit Sub
         For Each r As DataGridViewRow In dgvObject.SelectedRows
-            Dim ga As New GroupAddress(r.Cells($"{PartCol}-GrpAddr_Ctl").Value.ToString)
+            Dim ga As New GroupAddress(r.Cells($"{PartCol}_Ctl_GrpAddr").Value.ToString)
             KS.WriteGroupAddress(r.Cells("InterfaceCode").Value.ToString, ga, Val)
         Next
     End Sub

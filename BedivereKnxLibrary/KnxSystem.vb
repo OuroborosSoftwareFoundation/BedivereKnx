@@ -264,8 +264,8 @@ Public Class KnxSystem
         '            Next
         '            ObjPart = KnxObjectPart.Value
         '    End Select
-        '    For Each dr As DataRow In _Objects.Table.Select($"{OptCol}Addr = '{GA}'") '找出组地址所属对象，可能有多个
-        '        If Not IsNothing(TypVal) Then dr($"{OptCol}Value") = TypVal '表格更新
+        '    For Each dr As DataRow In _Objects.Table.Select($"{OptCol}_GrpAddr = '{GA}'") '找出组地址所属对象，可能有多个
+        '        If Not IsNothing(TypVal) Then dr($"{OptCol}_Value") = TypVal '表格更新
         '        Dim id As Integer = dr("Id")
         '        _Objects(id).GetPart(ObjPart).SetPointValue(ObjPoint, GrpVal) '对象值更新
         '    Next
