@@ -27,8 +27,9 @@ Public Class KnxSystemSceneCollection
     ''' <returns></returns>
     Default Public ReadOnly Property Item(index As Integer) As KnxSceneGroup
         Get
-            If _Item.ContainsKey(index) Then
-                Return _Item(index)
+            Dim scn As KnxSceneGroup = Nothing
+            If _Item.TryGetValue(index, scn) Then
+                Return scn
             Else
                 Throw New ArgumentNullException($"Can't found Scene with ID = {index}.")
                 Return Nothing

@@ -50,8 +50,9 @@ Public Class KnxSystemBusCollection
 
     Default Public ReadOnly Property Item(code As String) As KnxBus
         Get
-            If _Item.ContainsKey(code) Then
-                Return _Item(code)
+            Dim bus As KnxBus = Nothing
+            If _Item.TryGetValue(code, bus) Then
+                Return bus
             Else
                 Return [Default] '找不到接口编号的情况下直接引用默认接口
             End If

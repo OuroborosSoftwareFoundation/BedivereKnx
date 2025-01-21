@@ -253,7 +253,7 @@ Public Class frmMainTable
     End Sub
 
     ''' <summary>
-    ''' KNX接收报文事件
+    ''' KNX报文传输事件
     ''' </summary>
     Private Sub KnxMessageTransmission(e As KnxMsgEventArgs, log As String)
         Dim v As String = vbNullString

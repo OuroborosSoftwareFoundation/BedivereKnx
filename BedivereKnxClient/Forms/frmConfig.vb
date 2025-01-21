@@ -9,10 +9,11 @@
     End Sub
 
     Private Sub btnOpenDataFile_Click(sender As Object, e As EventArgs) Handles btnOpenDataFile.Click
-        Dim ofd As New OpenFileDialog
-        ofd.InitialDirectory = Application.StartupPath 'My.Computer.FileSystem.SpecialDirectories.MyDocuments
-        ofd.Multiselect = False
-        ofd.Filter = "Excel文件(*.xlsx)|*.xlsx"
+        Dim ofd As New OpenFileDialog With {
+            .InitialDirectory = Application.StartupPath, 'My.Computer.FileSystem.SpecialDirectories.MyDocuments
+            .Multiselect = False,
+            .Filter = "Excel文件(*.xlsx)|*.xlsx"
+        }
         If ofd.ShowDialog(Me) = DialogResult.OK Then
             Dim fn As String = ofd.FileName
             If ofd.FileName.Contains(Application.StartupPath) Then

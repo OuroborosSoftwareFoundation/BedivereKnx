@@ -86,53 +86,53 @@ Partial Class frmMain
         ' 
         Menu_Open.Name = "Menu_Open"
         Menu_Open.ShortcutKeys = Keys.Control Or Keys.O
-        Menu_Open.Size = New Size(224, 26)
+        Menu_Open.Size = New Size(202, 26)
         Menu_Open.Text = "打开(&O)"
         ' 
         ' Menu_Import
         ' 
         Menu_Import.Enabled = False
         Menu_Import.Name = "Menu_Import"
-        Menu_Import.Size = New Size(224, 26)
+        Menu_Import.Size = New Size(202, 26)
         Menu_Import.Text = "导入(&I)"
         ' 
         ' ToolStripSeparator1
         ' 
         ToolStripSeparator1.Name = "ToolStripSeparator1"
-        ToolStripSeparator1.Size = New Size(221, 6)
+        ToolStripSeparator1.Size = New Size(199, 6)
         ' 
         ' Menu_Config
         ' 
         Menu_Config.Name = "Menu_Config"
-        Menu_Config.Size = New Size(224, 26)
+        Menu_Config.Size = New Size(202, 26)
         Menu_Config.Text = "设置(&C)"
         ' 
         ' ToolStripSeparator2
         ' 
         ToolStripSeparator2.Name = "ToolStripSeparator2"
-        ToolStripSeparator2.Size = New Size(221, 6)
+        ToolStripSeparator2.Size = New Size(199, 6)
         ' 
         ' Menu_Auth
         ' 
         Menu_Auth.Name = "Menu_Auth"
-        Menu_Auth.Size = New Size(224, 26)
+        Menu_Auth.Size = New Size(202, 26)
         Menu_Auth.Text = "授权信息"
         ' 
         ' Menu_About
         ' 
         Menu_About.Name = "Menu_About"
-        Menu_About.Size = New Size(224, 26)
+        Menu_About.Size = New Size(202, 26)
         Menu_About.Text = "关于(&A)"
         ' 
         ' ToolStripSeparator3
         ' 
         ToolStripSeparator3.Name = "ToolStripSeparator3"
-        ToolStripSeparator3.Size = New Size(221, 6)
+        ToolStripSeparator3.Size = New Size(199, 6)
         ' 
         ' Menu_Exit
         ' 
         Menu_Exit.Name = "Menu_Exit"
-        Menu_Exit.Size = New Size(224, 26)
+        Menu_Exit.Size = New Size(202, 26)
         Menu_Exit.Text = "退出(&X)"
         ' 
         ' btnGrid

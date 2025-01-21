@@ -34,8 +34,9 @@ Public Class KnxSystemObjectCollection
     ''' <returns></returns>
     Default Public ReadOnly Property Item(index As Integer) As KnxObjectGroup
         Get
-            If _Item.ContainsKey(index) Then
-                Return _Item(index)
+            Dim grp As KnxObjectGroup = Nothing
+            If _Item.TryGetValue(index, grp) Then
+                Return grp
             Else
                 Throw New ArgumentNullException($"Can't found Object with ID = {index}.")
                 Return Nothing

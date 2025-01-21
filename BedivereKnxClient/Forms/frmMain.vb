@@ -29,10 +29,11 @@ Public Class frmMain
 
     '打开
     Private Sub Menu_Open_Click(sender As Object, e As EventArgs) Handles Menu_Open.Click
-        Dim ofd As New OpenFileDialog
-        ofd.InitialDirectory = Application.StartupPath
-        ofd.Multiselect = False
-        ofd.Filter = "Excel文件(*.xlsx)|*.xlsx"
+        Dim ofd As New OpenFileDialog With {
+            .InitialDirectory = Application.StartupPath,
+            .Multiselect = False,
+            .Filter = "Excel文件(*.xlsx)|*.xlsx"
+        }
         If ofd.ShowDialog(Me) = DialogResult.OK Then
             OpenProject(ofd.FileName)
         End If
@@ -123,6 +124,18 @@ Public Class frmMain
 
     Private Sub Menu_Exit_Click(sender As Object, e As EventArgs) Handles Menu_Exit.Click
         Application.Exit()
+    End Sub
+
+    Private Sub btnGrid_Click(sender As Object, e As EventArgs) Handles btnGrid.Click
+
+    End Sub
+
+    Private Sub btnPanel_Click(sender As Object, e As EventArgs) Handles btnPanel.Click
+
+    End Sub
+
+    Private Sub btnGraphics_Click(sender As Object, e As EventArgs) Handles btnGraphics.Click
+        frmMainGraphics.Show()
     End Sub
 
     'Github链接

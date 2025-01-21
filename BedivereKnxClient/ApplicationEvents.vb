@@ -27,6 +27,7 @@ Imports System.Configuration
 Imports System.Configuration.ConfigurationManager
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports BedivereKnxLibrary
+Imports System.Text.RegularExpressions
 
 Namespace My
     ' Example:

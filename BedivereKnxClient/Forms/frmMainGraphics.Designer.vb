@@ -22,62 +22,82 @@ Partial Class frmMainGraphics
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        tvGraphics = New TreeView()
-        picGraphics = New PictureBox()
-        TableLayoutPanel1 = New TableLayoutPanel()
-        CType(picGraphics, ComponentModel.ISupportInitialize).BeginInit()
-        TableLayoutPanel1.SuspendLayout()
+        tvGpx = New TreeView()
+        pnlGpx = New Panel()
+        btnLeftHide = New Button()
+        SplitContainer1 = New SplitContainer()
+        pnlGpx.SuspendLayout()
+        CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
+        SplitContainer1.Panel1.SuspendLayout()
+        SplitContainer1.Panel2.SuspendLayout()
+        SplitContainer1.SuspendLayout()
         SuspendLayout()
         ' 
-        ' tvGraphics
+        ' tvGpx
         ' 
-        tvGraphics.Dock = DockStyle.Fill
-        tvGraphics.Location = New Point(3, 3)
-        tvGraphics.Name = "tvGraphics"
-        tvGraphics.Size = New Size(194, 559)
-        tvGraphics.TabIndex = 0
+        tvGpx.Dock = DockStyle.Fill
+        tvGpx.Location = New Point(0, 0)
+        tvGpx.Name = "tvGpx"
+        tvGpx.Size = New Size(118, 563)
+        tvGpx.TabIndex = 0
         ' 
-        ' picGraphics
+        ' pnlGpx
         ' 
-        picGraphics.Dock = DockStyle.Fill
-        picGraphics.Location = New Point(203, 3)
-        picGraphics.Name = "picGraphics"
-        picGraphics.Size = New Size(626, 559)
-        picGraphics.TabIndex = 1
-        picGraphics.TabStop = False
+        pnlGpx.BackColor = Color.Transparent
+        pnlGpx.Controls.Add(btnLeftHide)
+        pnlGpx.Dock = DockStyle.Fill
+        pnlGpx.Location = New Point(0, 0)
+        pnlGpx.Name = "pnlGpx"
+        pnlGpx.Size = New Size(1006, 563)
+        pnlGpx.TabIndex = 2
         ' 
-        ' TableLayoutPanel1
+        ' btnLeftHide
         ' 
-        TableLayoutPanel1.ColumnCount = 3
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 200F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 300F))
-        TableLayoutPanel1.Controls.Add(tvGraphics, 0, 0)
-        TableLayoutPanel1.Controls.Add(picGraphics, 1, 0)
-        TableLayoutPanel1.Dock = DockStyle.Fill
-        TableLayoutPanel1.Location = New Point(0, 0)
-        TableLayoutPanel1.Name = "TableLayoutPanel1"
-        TableLayoutPanel1.RowCount = 1
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 50F))
-        TableLayoutPanel1.Size = New Size(1132, 565)
-        TableLayoutPanel1.TabIndex = 2
+        btnLeftHide.Location = New Point(0, 0)
+        btnLeftHide.Name = "btnLeftHide"
+        btnLeftHide.Size = New Size(5, 20)
+        btnLeftHide.TabIndex = 0
+        btnLeftHide.UseVisualStyleBackColor = True
+        ' 
+        ' SplitContainer1
+        ' 
+        SplitContainer1.BorderStyle = BorderStyle.FixedSingle
+        SplitContainer1.Dock = DockStyle.Fill
+        SplitContainer1.Location = New Point(0, 0)
+        SplitContainer1.Name = "SplitContainer1"
+        ' 
+        ' SplitContainer1.Panel1
+        ' 
+        SplitContainer1.Panel1.Controls.Add(tvGpx)
+        SplitContainer1.Panel1MinSize = 0
+        ' 
+        ' SplitContainer1.Panel2
+        ' 
+        SplitContainer1.Panel2.BackColor = Color.White
+        SplitContainer1.Panel2.Controls.Add(pnlGpx)
+        SplitContainer1.Size = New Size(1132, 565)
+        SplitContainer1.SplitterDistance = 120
+        SplitContainer1.TabIndex = 3
         ' 
         ' frmMainGraphics
         ' 
         AutoScaleDimensions = New SizeF(9F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1132, 565)
-        Controls.Add(TableLayoutPanel1)
-        FormBorderStyle = FormBorderStyle.None
+        Controls.Add(SplitContainer1)
         Name = "frmMainGraphics"
         StartPosition = FormStartPosition.CenterParent
         Text = "frmMainGraphics"
-        CType(picGraphics, ComponentModel.ISupportInitialize).EndInit()
-        TableLayoutPanel1.ResumeLayout(False)
+        pnlGpx.ResumeLayout(False)
+        SplitContainer1.Panel1.ResumeLayout(False)
+        SplitContainer1.Panel2.ResumeLayout(False)
+        CType(SplitContainer1, ComponentModel.ISupportInitialize).EndInit()
+        SplitContainer1.ResumeLayout(False)
         ResumeLayout(False)
     End Sub
 
-    Friend WithEvents tvGraphics As TreeView
-    Friend WithEvents picGraphics As PictureBox
-    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents tvGpx As TreeView
+    Friend WithEvents pnlGpx As Panel
+    Friend WithEvents SplitContainer1 As SplitContainer
+    Friend WithEvents btnLeftHide As Button
 End Class

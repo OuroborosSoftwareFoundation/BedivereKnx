@@ -96,33 +96,40 @@ Public Class KnxSystem
         Try
             _NameSpace = System.Reflection.Assembly.GetExecutingAssembly.GetName.Name
             Dim dicDt As Dictionary(Of String, DataTable) = ReadExcelToDataTables(ExcelDataFile, True, True)
-            If dicDt.ContainsKey("Interfaces") Then
-                _Bus = New KnxSystemBusCollection(dicDt("Interfaces"))
+            Dim dtBus As DataTable = Nothing
+            If dicDt.TryGetValue("Interfaces", dtBus) Then
+                _Bus = New KnxSystemBusCollection(dtBus)
                 AddHandler _Bus.GroupMessageReceived, AddressOf _GroupMessageReceived
                 AddHandler _Bus.GroupPollRequest, AddressOf PollObjectsValue
             End If
-            If dicDt.ContainsKey("Areas") Then
-                _Areas = New KnxSystemArea(dicDt("Areas"))
+            Dim dtArea As DataTable = Nothing
+            If dicDt.TryGetValue("Areas", dtArea) Then
+                _Areas = New KnxSystemArea(dtArea)
             End If
-            If dicDt.ContainsKey("Objects") Then
-                _Objects = New KnxSystemObjectCollection(dicDt("Objects"))
+            Dim dtObj As DataTable = Nothing
+            If dicDt.TryGetValue("Objects", dtObj) Then
+                _Objects = New KnxSystemObjectCollection(dtObj)
                 AddHandler _Objects.GroupWriteRequest, AddressOf _GroupWriteRequest
                 AddHandler _Objects.GroupReadRequest, AddressOf _GroupReadRequest
             End If
-            If dicDt.ContainsKey("Scenes") Then
-                _Scenes = New KnxSystemSceneCollection(dicDt("Scenes"))
+            Dim dtScn As DataTable = Nothing
+            If dicDt.TryGetValue("Scenes", dtScn) Then
+                _Scenes = New KnxSystemSceneCollection(dtScn)
                 AddHandler _Scenes.SceneControlRequest, AddressOf _GroupWriteRequest
             End If
-            If dicDt.ContainsKey("Devices") Then
-                _Devices = New KnxSystemDeviceCollection(dicDt("Devices"))
+            Dim dtDev As DataTable = Nothing
+            If dicDt.TryGetValue("Devices", dtDev) Then
+                _Devices = New KnxSystemDeviceCollection(dtDev)
             End If
-            If dicDt.ContainsKey("Schedules") Then
-                _Schedules = New KnxSystemSchedule(dicDt("Schedules"))
+            Dim dtScd As DataTable = Nothing
+            If dicDt.TryGetValue("Schedules", dtScd) Then
+                _Schedules = New KnxSystemSchedule(dtScd)
                 ScheduleEventsInit() '初始化定时事件表
                 AddHandler _Schedules.ScheduleEventTriggered, AddressOf _ScheduleEventTriggered
             End If
-            If dicDt.ContainsKey("Links") Then
-                _Links = dicDt("Links")
+            Dim dtLink As DataTable = Nothing
+            If dicDt.TryGetValue("Links", dtLink) Then
+                _Links = dtLink
             End If
             MsgLogTableInit() '初始化报文日志表
         Catch ex As Exception

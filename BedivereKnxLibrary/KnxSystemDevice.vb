@@ -32,8 +32,9 @@ Public Class KnxSystemDeviceCollection
     ''' <returns></returns>
     Default Public ReadOnly Property Item(index As Integer) As KnxDeviceInfo
         Get
-            If _Item.ContainsKey(index) Then
-                Return _Item(index)
+            Dim dev As KnxDeviceInfo = Nothing
+            If _Item.TryGetValue(index, dev) Then
+                Return dev
             Else
                 Throw New ArgumentNullException($"Can't found Device with ID = {index}.")
                 Return Nothing
