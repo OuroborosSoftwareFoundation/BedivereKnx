@@ -2,7 +2,7 @@
 
 Public Class KnxGpxConvertion
 
-    Public Property Type As GpxConvertionType
+    Public Property Type As KnxGpxConvertionType
 
     Public Property OffColor As Color
 
@@ -10,16 +10,18 @@ Public Class KnxGpxConvertion
 
     Public Property GroupAddress As GroupAddress
 
-    Public Sub New(type As GpxConvertionType)
-        Me.Type = GpxConvertionType.None
+    Public Property GroupValue As GroupValue
+
+    Public Sub New()
+        Me.Type = KnxGpxConvertionType.None
     End Sub
     Public Sub New(offColor As Color, onColor As Color)
-        Me.Type = GpxConvertionType.None
+        Me.Type = KnxGpxConvertionType.None
         Me.OffColor = offColor
         Me.OnColor = onColor
     End Sub
 
-    Public Sub New(type As GpxConvertionType, offColor As Color, onColor As Color)
+    Public Sub New(type As KnxGpxConvertionType, offColor As Color, onColor As Color)
         Me.Type = type
         Me.OffColor = offColor
         Me.OnColor = onColor
@@ -27,7 +29,7 @@ Public Class KnxGpxConvertion
 
 End Class
 
-Public Enum GpxConvertionType
+Public Enum KnxGpxConvertionType
     None = -1
     Fill
     Stroke

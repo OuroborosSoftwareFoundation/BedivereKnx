@@ -10,7 +10,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <StartupObject>BedivereKnxClient.My.MyApplication</StartupObject>
+    <StartupObject>BedivereKnx.Client.My.MyApplication</StartupObject>
     <UseWindowsForms>True</UseWindowsForms>
     <MyType>WindowsForms</MyType>
     <Authors>BHC666</Authors>
@@ -23,6 +23,12 @@
     <ApplicationIcon>Resources\ico_Bedivere.ico</ApplicationIcon>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Classes\**" />
+    <EmbeddedResource Remove="Classes\**" />
+    <None Remove="Classes\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="clsKnx.vb" />
@@ -57,7 +63,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BedivereKnxLibrary\BedivereKnxLibrary.vbproj" />
+    <ProjectReference Include="..\BedivereKnx.Graphics\BedivereKnx.Graphics.vbproj" />
+    <ProjectReference Include="..\BedivereKnx\BedivereKnx.vbproj" />
   </ItemGroup>
 
   <ItemGroup>

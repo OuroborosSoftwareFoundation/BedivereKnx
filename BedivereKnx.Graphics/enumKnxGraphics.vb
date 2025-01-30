@@ -1,9 +1,10 @@
 ﻿Public Enum KnxComponentShape
     Ellipse
     Rectangle
-    EllipseFrame
-    RectangleFrame
+    'EllipseFrame
+    'RectangleFrame
     Line
+    Text
 End Enum
 
 Public Enum KnxGpxElementMode

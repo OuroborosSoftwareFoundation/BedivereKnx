@@ -1,8 +1,9 @@
 ﻿Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml
+Imports System.Drawing
 
-Module mdlDrawIo
+Public Module mdlDrawIo
 
     Public Function ReadDrawioToDic(FilePath As String) As Dictionary(Of String, KnxGpxElement())
         If String.IsNullOrEmpty(FilePath) Then
@@ -22,11 +23,7 @@ Module mdlDrawIo
             If xr.NodeType = XmlNodeType.Whitespace Then Continue While '跳过标记间的空白
             If xr.NodeType = XmlNodeType.Element Then
                 Select Case xr.Name.ToLower
-                    Case "diagram" '新的页面开始
-                        If Not String.IsNullOrWhiteSpace(PageName) Then '页面名称不为空的情况，写入上个页面的信息
-                            dicGpx(PageName) = lstElem.ToArray '写入上个页面的信息
-                            lstElem.Clear() '清空控件信息
-                        End If
+                    Case "diagram" '页面开始
                         PageName = xr.GetAttribute("name") '设定当前页面名称
                         dicGpx.Add(PageName, Nothing)'在输出字典中新建一个页的键值对
                     Case "mxcell" '页面中新单元开始
@@ -38,11 +35,16 @@ Module mdlDrawIo
                         Dim geom As GpxGeometry = GpxGeometry.FromInnerXml(inner) '控件坐标和尺寸
                         Dim match As Match = Regex.Match(styleStr, "shape=image;.*?image=data:image/.*?,(.*?);") '暂时忽略图片格式
                         If String.IsNullOrEmpty(match.Value) Then '控件的情况
-                            lstElem.Add(New KnxGpxComponent(geom, valueStr, styleStr)) '控件加入列表
+                            lstElem.Add(New KnxGpxComponent(geom, styleStr, valueStr)) '控件加入列表
                         Else '图片的情况
                             lstElem.Add(New KnxGpxPicture(geom, match.Groups(1).Value)) '图片加入列表
                         End If
                 End Select
+            ElseIf xr.NodeType = XmlNodeType.EndElement Then
+                If xr.Name.ToLower = "diagram" Then '页面结束
+                    dicGpx(PageName) = lstElem.ToArray '写入上个页面的信息
+                    lstElem.Clear() '清空控件信息
+                End If
             End If
         End While
         Return dicGpx
@@ -74,17 +76,17 @@ Module mdlDrawIo
         End Using
     End Function
 
-    ''' <summary>
-    ''' 从Base64字符串生成图片
-    ''' </summary>
-    ''' <param name="base64String"></param>
-    ''' <returns></returns>
-    Private Function CreateImageFromBase64String(base64String As String) As Image
-        Dim byteArray As Byte() = Convert.FromBase64String(base64String) 'base64数组
-        Using memoryStream As New MemoryStream(byteArray) 'byte数组转为Stream
-            Return Image.FromStream(memoryStream) '从Stream生成图片
-        End Using
-    End Function
+    '''' <summary>
+    '''' 从Base64字符串生成图片
+    '''' </summary>
+    '''' <param name="base64String"></param>
+    '''' <returns></returns>
+    'Private Function CreateImageFromBase64String(base64String As String) As Image
+    '    Dim byteArray As Byte() = Convert.FromBase64String(base64String) 'base64数组
+    '    Using memoryStream As New MemoryStream(byteArray) 'byte数组转为Stream
+    '        Return Image.FromStream(memoryStream) '从Stream生成图片
+    '    End Using
+    'End Function
 
 End Module
 

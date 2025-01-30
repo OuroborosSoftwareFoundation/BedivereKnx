@@ -1,6 +1,6 @@
-﻿
-Imports BedivereKnxLibrary
-Imports Knx.Falcon
+﻿Imports Knx.Falcon
+Imports BedivereKnx
+Imports BedivereKnx.Graphics
 
 Public Class frmMainGraphics
 
@@ -97,7 +97,7 @@ Public Class frmMainGraphics
         If isBusy Then Exit Sub
         If IsNothing(dicGpx(pageName)) Then Exit Sub
         For Each img As KnxGpxPicture In dicGpx(pageName).OfType(Of KnxGpxPicture)
-            Dim g As Graphics = pnlGpx.CreateGraphics()
+            Dim g As System.Drawing.Graphics = pnlGpx.CreateGraphics()
             g.DrawImage(img.Image, New Rectangle(img.Location, img.Size))
         Next
     End Sub

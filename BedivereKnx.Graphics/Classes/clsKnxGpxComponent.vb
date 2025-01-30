@@ -1,4 +1,6 @@
-﻿Imports System.Text.RegularExpressions
+﻿Imports System.Drawing
+Imports System.Text.RegularExpressions
+Imports Knx.Falcon
 
 Public Class KnxGpxComponent
 
@@ -40,25 +42,27 @@ Public Class KnxGpxComponent
         MyBase.New(KnxGpxElementMode.Component)
     End Sub
 
-    Public Sub New(location As Point, size As Size)
+    Public Sub New(location As Point, size As Size, styleString As String, valueString As String)
         MyBase.New(KnxGpxElementMode.Component, location, size)
-    End Sub
-
-    Public Sub New(geometry As GpxGeometry, valueString As String, styleString As String)
-        Me.New(geometry.Location, geometry.Size)
         ReadStyleString(styleString)
         ReadValueString(valueString)
+    End Sub
+
+    Public Sub New(geometry As GpxGeometry, styleString As String, valueString As String)
+        Me.New(geometry.Location, geometry.Size, styleString, valueString)
     End Sub
 
     Private Sub ReadStyleString(styleString As String)
         Dim styles As String() = styleString.Trim.Split(";")
         Dim shape As String = styles(0).Trim.ToLower
-        If shape = "ellipse" Then '椭圆
+        If shape = "ellipse" Then '椭圆或者椭圆圈
             Me.Shape = KnxComponentShape.Ellipse
-        ElseIf shape.Contains("rounded") Then '矩形，其他形状后方style也可能出现rounded
+        ElseIf shape.Contains("rounded") Then '矩形或者矩形框，其他形状后方style也可能出现rounded
             Me.Shape = KnxComponentShape.Rectangle
-        ElseIf shape.Contains("endarrow") Then '线
+        ElseIf shape.Contains("endarrow") Then '线条
             Me.Shape = KnxComponentShape.Line
+        ElseIf shape.Contains("text") Then '文本
+            Me.Shape = KnxComponentShape.Text
         End If
         Dim lstConv As New List(Of KnxGpxConvertion)
         For i = 1 To styles.Length - 1
@@ -69,19 +73,46 @@ Public Class KnxGpxComponent
                 Case "fillcolor" '填充颜色
                     Dim colorAry As Color() = ReadColorStyle(skv(1))
                     If IsNothing(colorAry) Then Continue For '无填充颜色的情况跳过
-                    lstConv.Add(New KnxGpxConvertion(GpxConvertionType.Fill, colorAry(0), colorAry(1)))
+                    lstConv.Add(New KnxGpxConvertion(KnxGpxConvertionType.Fill, colorAry(0), colorAry(1)))
                 Case "strokecolor" '线条颜色
                     Dim colorAry As Color() = ReadColorStyle(skv(1))
                     If IsNothing(colorAry) Then Continue For '无线条颜色的情况跳过
-                    lstConv.Add(New KnxGpxConvertion(GpxConvertionType.Stroke, colorAry(0), colorAry(1)))
+                    lstConv.Add(New KnxGpxConvertion(KnxGpxConvertionType.Stroke, colorAry(0), colorAry(1)))
             End Select
         Next
         Me.Convertion = lstConv.ToArray
     End Sub
 
+    '开关量反馈：0/0/0@0|1，0/0/0
+    '开关量控制：0/0/0=0|1，0/0/0=0
+    '数字量反馈：0/0/0@0~255
+    '数字量控制：0/0/0=0~255，0/0/0=000
     Private Sub ReadValueString(valueString As String)
+        If valueString.Contains("="c) Then
+            Me.Direction = KnxGpxComponentType.Control '带有等号的为控制
+            Dim val As String() = valueString.Split("="c)
+            For Each c In Me.Convertion
+                'c.GroupAddress = New GroupAddress(val(0))
+                'c.GroupValue = New GroupValue(val(1))
 
+            Next
+        Else
+            Me.Direction = KnxGpxComponentType.Feedback '其他情况认为是反馈
+        End If
+
+        'Select Case Me.Shape
+        '    Case KnxComponentShape.Ellipse, KnxComponentShape.Rectangle
+
+        '    Case KnxComponentShape.Line
+
+        '    Case KnxComponentShape.Text
+
+        'End Select
     End Sub
+
+    Private Shared Function IsGroupAddress(inputString As String) As Boolean
+        Return Regex.IsMatch(inputString, "^([0-9]|0*[0-2][0-9]|0*3[0-1])/(0*[0-7])/([0-9]|0*[0-9]{2}|0*1[0-9][0-9]|0*2[0-4][0-9]|0*25[0-5])$")
+    End Function
 
     Private Function ReadColorStyle(colorValue As String) As Color()
         colorValue = colorValue.Trim.ToLower

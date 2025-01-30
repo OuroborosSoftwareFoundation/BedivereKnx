@@ -1,5 +1,5 @@
 ﻿Imports System.Configuration
-Imports BedivereKnxLibrary
+Imports BedivereKnx
 
 Module mdlPublic
     Public _AuthInfo As AuthorizationInfo

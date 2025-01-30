@@ -1,4 +1,4 @@
-﻿'BedivereKnxLibrary
+﻿'BedivereKnx
 
 '   Copyright © 2024 Ouroboros Software Foundation. All rights reserved.
 '   版权所有 © 2024 Ouroboros Software Foundation。保留所有权利。

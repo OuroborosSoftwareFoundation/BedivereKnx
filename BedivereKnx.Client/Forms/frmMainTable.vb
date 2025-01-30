@@ -2,7 +2,7 @@
 Imports System.Text
 Imports System.Net.NetworkInformation
 Imports System.ComponentModel
-Imports BedivereKnxLibrary
+Imports BedivereKnx
 Imports Knx.Falcon
 Imports Knx.Falcon.Sdk
 

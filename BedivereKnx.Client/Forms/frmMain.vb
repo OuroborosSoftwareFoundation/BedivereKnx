@@ -1,6 +1,6 @@
 ﻿Imports System.Configuration.ConfigurationManager
 Imports System.Security.Cryptography
-Imports BedivereKnxLibrary
+Imports BedivereKnx
 Imports Knx.Falcon
 Imports Knx.Falcon.Sdk
 

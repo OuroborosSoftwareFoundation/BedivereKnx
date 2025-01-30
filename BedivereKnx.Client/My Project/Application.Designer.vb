@@ -33,12 +33,12 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.BedivereKnxClient.frmMain
+            Me.MainForm = Global.BedivereKnx.Client.frmMain
         End Sub
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateSplashScreen()
-            Me.SplashScreen = Global.BedivereKnxClient.frmStartUp
+            Me.SplashScreen = Global.BedivereKnx.Client.frmStartUp
         End Sub
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _

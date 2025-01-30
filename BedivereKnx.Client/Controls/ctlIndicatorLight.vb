@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports Knx.Falcon
+Imports BedivereKnx.Graphics
 
 Public Class KnxSwitchIndicator
 
@@ -158,7 +159,7 @@ Public Class KnxSwitchIndicator
     End Property
 
     Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
-        Dim g As Graphics = e.Graphics '创建一个Graphics对象
+        Dim g As System.Drawing.Graphics = e.Graphics '创建一个Graphics对象
         Dim brush As New SolidBrush(IIf(Me.FeedbackStatus, Me.FeedbackOnColor, Me.FeedbackOffColor)) '绘制形状实体作为反馈
         Dim pen As New Pen(color:=IIf(Me.ControlStatus, Me.ControlOnColor, Me.ControlOffColor), 3) '绘制形状边框作为控制
         Select Case Me.ShapeType

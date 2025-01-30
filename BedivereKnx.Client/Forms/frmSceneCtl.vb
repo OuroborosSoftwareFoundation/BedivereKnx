@@ -1,4 +1,4 @@
-﻿Imports BedivereKnxLibrary
+﻿Imports BedivereKnx
 
 Public Class frmSceneCtl
 
