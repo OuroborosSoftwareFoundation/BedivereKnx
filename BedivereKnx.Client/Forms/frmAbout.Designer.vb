@@ -55,12 +55,12 @@ Partial Class frmAbout
         ' lblProdName
         ' 
         lblProdName.Dock = DockStyle.Fill
-        lblProdName.Font = New Font("Microsoft YaHei UI", 18F, FontStyle.Bold, GraphicsUnit.Point)
+        lblProdName.Font = New Font("Microsoft YaHei UI", 16.0F, FontStyle.Bold)
         lblProdName.Location = New Point(3, 0)
         lblProdName.Name = "lblProdName"
         lblProdName.Size = New Size(304, 64)
         lblProdName.TabIndex = 0
-        lblProdName.Text = "BedivereKnxClient"
+        lblProdName.Text = "BedivereKnx.Client"
         lblProdName.TextAlign = ContentAlignment.BottomLeft
         ' 
         ' lblCopyright
@@ -112,8 +112,8 @@ Partial Class frmAbout
         ' tlpBtns
         ' 
         tlpBtns.ColumnCount = 2
-        tlpBtns.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50F))
-        tlpBtns.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50F))
+        tlpBtns.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50.0F))
+        tlpBtns.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50.0F))
         tlpBtns.Controls.Add(btnOK, 1, 0)
         tlpBtns.Controls.Add(btnLicense, 0, 0)
         tlpBtns.Dock = DockStyle.Fill
@@ -121,8 +121,8 @@ Partial Class frmAbout
         tlpBtns.Margin = New Padding(0)
         tlpBtns.Name = "tlpBtns"
         tlpBtns.RowCount = 1
-        tlpBtns.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        tlpBtns.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
+        tlpBtns.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F))
+        tlpBtns.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
         tlpBtns.Size = New Size(436, 40)
         tlpBtns.TabIndex = 2
         ' 
@@ -173,7 +173,7 @@ Partial Class frmAbout
         ' 
         lblPicInfo.BackColor = Color.Transparent
         lblPicInfo.Dock = DockStyle.Bottom
-        lblPicInfo.Font = New Font("Microsoft YaHei UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point)
+        lblPicInfo.Font = New Font("Microsoft YaHei UI", 7.8F)
         lblPicInfo.ForeColor = Color.Gray
         lblPicInfo.Location = New Point(0, 333)
         lblPicInfo.Name = "lblPicInfo"
@@ -184,24 +184,24 @@ Partial Class frmAbout
         ' tlpMain
         ' 
         tlpMain.ColumnCount = 2
-        tlpMain.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 250F))
-        tlpMain.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        tlpMain.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 250.0F))
+        tlpMain.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0F))
         tlpMain.Controls.Add(pnlTitle, 0, 0)
         tlpMain.Controls.Add(tlpRight, 1, 0)
         tlpMain.Dock = DockStyle.Fill
         tlpMain.Location = New Point(5, 5)
         tlpMain.Name = "tlpMain"
         tlpMain.RowCount = 1
-        tlpMain.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        tlpMain.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
-        tlpMain.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
+        tlpMain.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F))
+        tlpMain.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
+        tlpMain.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
         tlpMain.Size = New Size(692, 393)
         tlpMain.TabIndex = 1
         ' 
         ' tlpRight
         ' 
         tlpRight.ColumnCount = 1
-        tlpRight.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        tlpRight.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0F))
         tlpRight.Controls.Add(lblCopyright, 0, 1)
         tlpRight.Controls.Add(tlpBtns, 0, 4)
         tlpRight.Controls.Add(tbDesc, 0, 3)
@@ -211,20 +211,20 @@ Partial Class frmAbout
         tlpRight.Location = New Point(253, 3)
         tlpRight.Name = "tlpRight"
         tlpRight.RowCount = 5
-        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 100F))
-        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 40F))
-        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 30F))
-        tlpRight.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 40F))
-        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
+        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 100.0F))
+        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 40.0F))
+        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 30.0F))
+        tlpRight.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F))
+        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 40.0F))
+        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 20.0F))
         tlpRight.Size = New Size(436, 387)
         tlpRight.TabIndex = 5
         ' 
         ' TableLayoutPanel2
         ' 
         TableLayoutPanel2.ColumnCount = 2
-        TableLayoutPanel2.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        TableLayoutPanel2.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 120F))
+        TableLayoutPanel2.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0F))
+        TableLayoutPanel2.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 120.0F))
         TableLayoutPanel2.Controls.Add(lblProdName, 0, 0)
         TableLayoutPanel2.Controls.Add(lblVersion, 0, 1)
         TableLayoutPanel2.Controls.Add(PictureBox1, 1, 0)
@@ -232,8 +232,8 @@ Partial Class frmAbout
         TableLayoutPanel2.Location = New Point(3, 3)
         TableLayoutPanel2.Name = "TableLayoutPanel2"
         TableLayoutPanel2.RowCount = 2
-        TableLayoutPanel2.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        TableLayoutPanel2.RowStyles.Add(New RowStyle(SizeType.Absolute, 30F))
+        TableLayoutPanel2.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F))
+        TableLayoutPanel2.RowStyles.Add(New RowStyle(SizeType.Absolute, 30.0F))
         TableLayoutPanel2.Size = New Size(430, 94)
         TableLayoutPanel2.TabIndex = 0
         ' 
@@ -250,7 +250,7 @@ Partial Class frmAbout
         ' 
         ' frmAbout
         ' 
-        AutoScaleDimensions = New SizeF(9F, 20F)
+        AutoScaleDimensions = New SizeF(9.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
         CancelButton = btnOK
         ClientSize = New Size(702, 403)
@@ -264,7 +264,7 @@ Partial Class frmAbout
         Padding = New Padding(5)
         ShowInTaskbar = False
         StartPosition = FormStartPosition.CenterParent
-        Text = "About BedivereKnxClient"
+        Text = "About BedivereKnx.Client"
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         tlpBtns.ResumeLayout(False)
         pnlTitle.ResumeLayout(False)

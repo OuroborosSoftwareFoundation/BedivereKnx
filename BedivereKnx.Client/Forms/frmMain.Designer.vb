@@ -252,19 +252,19 @@ Partial Class frmMain
         ' slblSpring
         ' 
         slblSpring.Name = "slblSpring"
-        slblSpring.Size = New Size(404, 20)
+        slblSpring.Size = New Size(446, 20)
         slblSpring.Spring = True
         ' 
         ' slblGithub
         ' 
         slblGithub.IsLink = True
         slblGithub.Name = "slblGithub"
-        slblGithub.Size = New Size(520, 20)
-        slblGithub.Text = "https://github.com/OuroborosSoftwareFoundation/BedivereKnxClient"
+        slblGithub.Size = New Size(478, 20)
+        slblGithub.Text = "https://github.com/OuroborosSoftwareFoundation/BedivereKnx"
         ' 
         ' frmMain
         ' 
-        AutoScaleDimensions = New SizeF(9F, 20F)
+        AutoScaleDimensions = New SizeF(9.0F, 20.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1282, 653)
         Controls.Add(pnlMain)
@@ -274,7 +274,7 @@ Partial Class frmMain
         IsMdiContainer = True
         Name = "frmMain"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "BedivereKnxClient"
+        Text = "BedivereKnx.Client"
         Menu.ResumeLayout(False)
         Menu.PerformLayout()
         stsBottom.ResumeLayout(False)

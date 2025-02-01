@@ -42,7 +42,7 @@ Partial Class frmStartUp
         ' 
         lblVersion.BackColor = Color.Transparent
         lblVersion.Dock = DockStyle.Fill
-        lblVersion.Font = New Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        lblVersion.Font = New Font("Microsoft Sans Serif", 9.0F)
         lblVersion.ForeColor = Color.White
         lblVersion.Location = New Point(3, 132)
         lblVersion.Name = "lblVersion"
@@ -55,7 +55,7 @@ Partial Class frmStartUp
         ' 
         lblCopyright.BackColor = Color.Transparent
         lblCopyright.Dock = DockStyle.Fill
-        lblCopyright.Font = New Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        lblCopyright.Font = New Font("Microsoft Sans Serif", 9.0F)
         lblCopyright.ForeColor = Color.White
         lblCopyright.Location = New Point(3, 242)
         lblCopyright.Name = "lblCopyright"
@@ -68,13 +68,13 @@ Partial Class frmStartUp
         ' 
         lblProdName.BackColor = Color.Transparent
         lblProdName.Dock = DockStyle.Fill
-        lblProdName.Font = New Font("微软雅黑", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point)
+        lblProdName.Font = New Font("微软雅黑", 19.8000011F, FontStyle.Bold)
         lblProdName.ForeColor = Color.Azure
         lblProdName.Location = New Point(3, 0)
         lblProdName.Name = "lblProdName"
         lblProdName.Size = New Size(386, 132)
         lblProdName.TabIndex = 0
-        lblProdName.Text = "BedivereKnxClient"
+        lblProdName.Text = "BedivereKnx.Client"
         lblProdName.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' tlpInfo

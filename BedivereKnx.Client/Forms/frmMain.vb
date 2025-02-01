@@ -10,9 +10,9 @@ Public Class frmMain
     Dim rand As New Random
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
-        If _AuthInfo.Status <> AuthState.Valid Then Application.Exit()
+        If Not _AuthInfo.Valid Then Application.Exit()
         Me.Text = $"{My.Application.Info.ProductName} (Ver.{My.Application.Info.Version})"
-        lblAuth.Text = _AuthInfo.UserName
+        lblAuth.Text = _AuthInfo.Text
         tmDoe.Interval = 1000
         tmDoe.Start()
     End Sub
@@ -101,11 +101,11 @@ Public Class frmMain
 
     Private Sub tmDoe_Tick(sender As Timer, e As EventArgs) Handles tmDoe.Tick
         Try
-            If _AuthInfo.DOE.Date = Date.MaxValue.Date Then
+            If _AuthInfo.Current.DOE.Date = Date.MaxValue.Date Then
                 sender.Stop()
                 Exit Sub
             Else
-                Dim span = _AuthInfo.DOE.Subtract(Now)
+                Dim span = _AuthInfo.Current.DOE.Subtract(Now)
                 'Dim cdv As String = $"{span.Days.ToString("X2")}{span.Hours.ToString("X2")}{span.Minutes.ToString("X2")}{span.Seconds.ToString("X2")}"
                 Dim cdv = Convert.ToInt64(span.TotalSeconds).ToString("X")
                 lblCtDn.Text = cdv
@@ -115,7 +115,7 @@ Public Class frmMain
         Finally
             sender.Interval = rand.Next(1000, 10000)
         End Try
-        If Now > _AuthInfo.DOE Then Application.Exit()
+        If Now.Date > _AuthInfo.Current.DOE.Date Then Application.Exit()
     End Sub
 
     Private Sub tmSec_Tick(sender As Object, e As EventArgs) Handles tmSec.Tick
@@ -140,7 +140,7 @@ Public Class frmMain
 
     'Github链接
     Private Sub slblGithub_Click(sender As Object, e As EventArgs) Handles slblGithub.Click
-        OpenUrl("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnxClient")
+        OpenUrl("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnx")
     End Sub
 
     ''' <summary>

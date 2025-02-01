@@ -11,7 +11,7 @@ Module mdlAuthorization
         Disparity = -32
     End Enum
 
-    Public Class AuthorizationInfo
+    Public Class AuthorizationInfo000
 
         Public ReadOnly Property Product As String = vbNullString
 

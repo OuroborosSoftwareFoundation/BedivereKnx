@@ -609,7 +609,7 @@ Partial Class frmMainTable
         slblGithub.IsLink = True
         slblGithub.Name = "slblGithub"
         slblGithub.Size = New Size(520, 20)
-        slblGithub.Text = "https://github.com/OuroborosSoftwareFoundation/BedivereKnxClient"
+        slblGithub.Text = "https://github.com/OuroborosSoftwareFoundation/BedivereKnx"
         ' 
         ' frmMainTable
         ' 

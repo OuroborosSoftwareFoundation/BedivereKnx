@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="BedivereKnxClient.vbproj.vspscc" />
+    <None Remove="BedivereKnx.Client.vbproj.vspscc" />
     <None Remove="data - 副本.xlsx" />
     <None Remove="data.csv" />
     <None Remove="data_empty.xlsx" />
@@ -58,11 +58,12 @@
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
     <PackageReference Include="Knx.Falcon.Sdk" Version="6.3.7959" />
-    <PackageReference Include="System.Management" Version="9.0.0" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0" />
+    <PackageReference Include="System.Management" Version="9.0.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Ouroboros.Authorization\Ouroboros.Authorization\Ouroboros.Authorization.vbproj" />
     <ProjectReference Include="..\BedivereKnx.Graphics\BedivereKnx.Graphics.vbproj" />
     <ProjectReference Include="..\BedivereKnx\BedivereKnx.vbproj" />
   </ItemGroup>
@@ -94,6 +95,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Authorization.iris">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="data.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

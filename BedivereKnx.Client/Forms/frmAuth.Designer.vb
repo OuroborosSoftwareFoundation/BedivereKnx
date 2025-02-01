@@ -31,9 +31,9 @@ Partial Class frmAuth
         ' btnOK
         ' 
         btnOK.Dock = DockStyle.Bottom
-        btnOK.Location = New Point(10, 163)
+        btnOK.Location = New Point(10, 213)
         btnOK.Name = "btnOK"
-        btnOK.Size = New Size(362, 30)
+        btnOK.Size = New Size(462, 30)
         btnOK.TabIndex = 0
         btnOK.Text = "OK"
         ' 
@@ -47,7 +47,7 @@ Partial Class frmAuth
         lvAuth.Location = New Point(10, 10)
         lvAuth.MultiSelect = False
         lvAuth.Name = "lvAuth"
-        lvAuth.Size = New Size(362, 153)
+        lvAuth.Size = New Size(462, 203)
         lvAuth.TabIndex = 5
         lvAuth.UseCompatibleStateImageBehavior = False
         lvAuth.View = View.Details
@@ -67,7 +67,7 @@ Partial Class frmAuth
         AcceptButton = btnOK
         AutoScaleDimensions = New SizeF(9F, 20F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(382, 203)
+        ClientSize = New Size(482, 253)
         Controls.Add(lvAuth)
         Controls.Add(btnOK)
         FormBorderStyle = FormBorderStyle.FixedDialog
@@ -78,7 +78,7 @@ Partial Class frmAuth
         Padding = New Padding(10)
         ShowInTaskbar = False
         StartPosition = FormStartPosition.CenterScreen
-        Text = "Authorization"
+        Text = "Authorization Information"
         ResumeLayout(False)
 
     End Sub

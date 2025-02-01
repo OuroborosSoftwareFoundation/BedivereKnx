@@ -33,7 +33,7 @@
     End Sub
 
     Private Sub lblGithub_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblGithub.LinkClicked
-        OpenUrl("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnxClient")
+        OpenUrl("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnx")
     End Sub
 
     Private Sub btnLicense_Click(sender As Object, e As EventArgs) Handles btnLicense.Click

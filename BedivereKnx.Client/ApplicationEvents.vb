@@ -1,4 +1,4 @@
-﻿'BedivereKnxClient
+﻿'BedivereKnx.Client
 
 '   Copyright © 2024 Ouroboros Software Foundation. All rights reserved.
 '   版权所有 © 2024 Ouroboros Software Foundation。保留所有权利。
@@ -24,10 +24,7 @@
 '   如果没有，请查阅 <http://www.gnu.org/licenses/> 
 
 Imports System.Configuration
-Imports System.Configuration.ConfigurationManager
 Imports Microsoft.VisualBasic.ApplicationServices
-Imports BedivereKnx
-Imports System.Text.RegularExpressions
 
 Namespace My
     ' Example:
@@ -56,21 +53,7 @@ Namespace My
             '==============================测试内容================================
 
 #End If
-
-            _AuthInfo = New AuthorizationInfo(AppSettings.Item("Authn"))
-            Select Case _AuthInfo.Status
-                Case AuthState.Valid
-                    Control.CheckForIllegalCrossThreadCalls = False '不进行跨线程检查
-                    Text.Encoding.RegisterProvider(Text.CodePagesEncodingProvider.Instance)
-                    InitDics() '初始化字典
-                    AppSettingInit()
-                Case Else
-                    frmStartUp.Hide()
-                    MsgShow.Warn($"Invalid Authorization. Please contact the software supplier.") '无效的授权信息，请联系软件供应方。
-                    If frmAuth.ShowDialog() >= 0 Then
-                        Environment.Exit(0)
-                    End If
-            End Select
+            _AuthInfo = New Ouroboros.Authorization.AuthorizationInfoCollection
         End Sub
 
         Public Sub InitDics()
@@ -81,18 +64,18 @@ Namespace My
 
         Private Sub AppSettingInit()
             '默认数据文件
-            If Not String.IsNullOrEmpty(AppSettings.Item("DataFile")) Then
-                Dim fp As String = AppSettings.Item("DataFile")
+            If Not String.IsNullOrEmpty(ConfigurationManager.AppSettings.Item("DataFile")) Then
+                Dim fp As String = ConfigurationManager.AppSettings.Item("DataFile")
                 If IO.File.Exists(fp) Then
-                    _DataFile = AppSettings.Item("DataFile") '设置默认数据文件
+                    _DataFile = ConfigurationManager.AppSettings.Item("DataFile") '设置默认数据文件
                 Else
                     _DataFile = vbNullString
                 End If
             End If
             '初始化读取
-            If Not String.IsNullOrEmpty(AppSettings.Item("InitRead")) Then
+            If Not String.IsNullOrEmpty(ConfigurationManager.AppSettings.Item("InitRead")) Then
                 Try
-                    _InitRead = Convert.ToBoolean(AppSettings.Item("InitRead"))
+                    _InitRead = Convert.ToBoolean(ConfigurationManager.AppSettings.Item("InitRead"))
                 Catch ex As Exception
                     _InitRead = False
                 End Try
