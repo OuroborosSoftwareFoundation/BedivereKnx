@@ -40,6 +40,10 @@
         frmAboutLicense.Show()
     End Sub
 
+    Private Sub btnLibrary_Click(sender As Object, e As EventArgs) Handles btnLibrary.Click
+        frmReference.ShowDialog()
+    End Sub
+
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         Me.DialogResult = DialogResult.OK
         Me.Close()

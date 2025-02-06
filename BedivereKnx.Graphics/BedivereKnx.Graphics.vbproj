@@ -4,11 +4,25 @@
     <RootNamespace>BedivereKnx.Graphics</RootNamespace>
     <TargetFramework>net8.0</TargetFramework>
     <Version>0.1.0</Version>
+    <Authors>BHC666</Authors>
+    <Company>Ouroboros Software Foundation</Company>
+    <Copyright>Copyright © 2025 Ouroboros Software Foundation</Copyright>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <ImportedNamespaces>Ouroboros.Hmi=False,Microsoft.VisualBasic=True,System=True,System.Collections=True,System.Collections.Generic=True,System.Diagnostics=True,System.Linq=True,System.Xml.Linq=True,System.Threading.Tasks=True,BedivereKnx.Graphics=True</ImportedNamespaces>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Knx.Falcon.Sdk" Version="6.3.7959" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ouroboros.Hmi\Ouroboros.Hmi\Ouroboros.Hmi.vbproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Import Include="Ouroboros.Hmi" />
   </ItemGroup>
 
 </Project>

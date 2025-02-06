@@ -1,12 +1,14 @@
 ﻿Imports Knx.Falcon
 Imports BedivereKnx
 Imports BedivereKnx.Graphics
+Imports Ouroboros.Hmi
+Imports DocumentFormat.OpenXml.Spreadsheet
 
 Public Class frmMainGraphics
 
     Dim isBusy As Boolean = True
-    Dim dicKSI As New Dictionary(Of GroupAddress, List(Of KnxSwitchIndicator))
-    Dim dicGpx As Dictionary(Of String, KnxGpxElement())
+    Dim dicWidget As New Dictionary(Of GroupAddress, List(Of HmiComponentWidget))
+    Dim dicPages As Dictionary(Of String, HmiPage)
 
     Private Sub frmMainGraphics_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim ofd As New OpenFileDialog With {
@@ -15,8 +17,8 @@ Public Class frmMainGraphics
             .Filter = "draw.io Diagrams(*.drawio)|*.drawio"
         }
         If ofd.ShowDialog(Me) = DialogResult.OK Then
-            dicGpx = ReadDrawioToDic(ofd.FileName) '从文件读取到的KNX界面信息
-            For Each k As String In dicGpx.Keys
+            dicPages = ReadDrawioToDic(ofd.FileName) '从文件读取到的KNX界面信息
+            For Each k As String In dicPages.Keys
                 tvGpx.Nodes.Add(k, k)
             Next
 
@@ -35,7 +37,7 @@ Public Class frmMainGraphics
     End Sub
 
     Private Sub frmMainGraphics_Shown(sender As Object, e As EventArgs) Handles Me.Shown
-        'For Each img As KnxGpxPicture In dicGpx("F01").OfType(Of KnxGpxPicture)
+        'For Each img As HmiImageElement In dicPages("F01").OfType(Of HmiImageElement)
         '    'Dim picbox As New PictureBox With {
         '    '    .Location = img.Location,
         '    '    .Size = img.Size,
@@ -59,29 +61,36 @@ Public Class frmMainGraphics
     Private Sub ShowKnxGpxPage(pageName As String)
         pnlGpx.Controls.Clear() '清理Panel的控件
         pnlGpx.Refresh() '刷新Panel
-        If IsNothing(dicGpx(pageName)) Then Exit Sub
-        For Each comp As KnxGpxComponent In dicGpx(pageName).OfType(Of KnxGpxComponent)
-            If comp.Convertion.Length = 0 Then Continue For '只添加有变化效果的控件
-            Select Case comp.Direction
-                Case KnxGpxComponentType.Control '控制控件
-                    Dim gaC As GroupAddress = comp.Convertion(0).GroupAddress
-                    Dim btn As New Button With {
-                            .Location = comp.Location,
-                            .Size = comp.Size,
-                            .Tag = gaC.ToString}
-                    pnlGpx.Controls.Add(btn)'把按钮加入窗体中
-                Case KnxGpxComponentType.Feedback '反馈控件
-                    '=============================
-                    Dim gaF As GroupAddress
-                    '=============================
-                    If Not dicKSI.ContainsKey(gaF) Then '不可使用TryGetValue优化
-                        dicKSI.Add(gaF, New List(Of KnxSwitchIndicator)) '不存在组地址所属控件时添加组地址
-                    End If
-                    Dim ksi As New KnxSwitchIndicator(comp) '新建控件
-                    pnlGpx.Controls.Add(ksi) '把控件加到窗体
-                    dicKSI(gaF).Add(ksi) '把控件加入字典中
-                    'ksi.BringToFront()
-            End Select
+        If IsNothing(dicPages(pageName)) Then Exit Sub
+        For Each comp As KnxHmiComponent In dicPages(pageName).Elements.OfType(Of KnxHmiComponent)
+            If IsNothing(comp.Convertion) Then Continue For '只添加有变化效果的控件
+            Dim widget As New HmiComponentWidget(comp) '新建控件
+            pnlGpx.Controls.Add(widget) '把控件加到窗体
+            'widget.BringToFront()
+
+            'Select Case comp.Direction
+            '    Case HmiComponentDirection.Control '控制控件
+            '        Dim gaC As GroupAddress = comp.Convertion(0).GroupAddress
+            '        Dim btn As New Button With {
+            '                .Location = comp.Location,
+            '                .Size = comp.Size,
+            '                .Tag = gaC.ToString}
+            '        pnlGpx.Controls.Add(btn)'把按钮加入窗体中
+            '    Case HmiComponentDirection.Feedback '反馈控件
+            '        '=============================
+            '        Dim gaF As GroupAddress
+            '        '=============================
+            '        If Not dicWidget.ContainsKey(gaF) Then '不可使用TryGetValue优化
+            '            dicWidget.Add(gaF, New List(Of HmiComponentWidget)) '不存在组地址所属控件时添加组地址
+            '        End If
+            '        Dim ksi As New HmiComponentWidget(comp) '新建控件
+            '        pnlGpx.Controls.Add(ksi) '把控件加到窗体
+            '        dicWidget(gaF).Add(ksi) '把控件加入字典中
+            '        'ksi.BringToFront()
+            'End Select
+        Next
+        For Each text As HmiTextElement In dicPages(pageName).Elements.OfType(Of HmiTextElement)
+
         Next
         DrawPic(pageName)
         pnlGpx.Controls.Add(btnLeftHide)
@@ -95,8 +104,8 @@ Public Class frmMainGraphics
 
     Private Sub DrawPic(pageName As String)
         If isBusy Then Exit Sub
-        If IsNothing(dicGpx(pageName)) Then Exit Sub
-        For Each img As KnxGpxPicture In dicGpx(pageName).OfType(Of KnxGpxPicture)
+        If IsNothing(dicPages(pageName)) Then Exit Sub
+        For Each img As HmiImageElement In dicPages(pageName).Elements.OfType(Of HmiImageElement)
             Dim g As System.Drawing.Graphics = pnlGpx.CreateGraphics()
             g.DrawImage(img.Image, New Rectangle(img.Location, img.Size))
         Next
@@ -106,23 +115,23 @@ Public Class frmMainGraphics
     ''' KNX报文事件
     ''' </summary>
     Private Sub KnxMessageTransmission(e As KnxMsgEventArgs, log As String)
-        If IsNothing(e.Value) Then Exit Sub '忽略没有值的报文
-        If e.MessageType <> KnxMessageType.FromBus Then Exit Sub '只接收报文
-        Dim ga As GroupAddress = e.DestinationAddress
+        'If IsNothing(e.Value) Then Exit Sub '忽略没有值的报文
+        'If e.MessageType <> KnxMessageType.FromBus Then Exit Sub '只接收报文
+        'Dim ga As GroupAddress = e.DestinationAddress
 
-        'For Each c As Control In Me.Controls
-        '    If c.GetType = GetType(KnxSwitchIndicator) Then
-        '        Dim ksi As KnxSwitchIndicator = c
-        '        ksi.FeedbackValue = e.Value
-        '    End If
-        'Next
+        ''For Each c As Control In Me.Controls
+        ''    If c.GetType = GetType(KnxSwitchIndicator) Then
+        ''        Dim ksi As KnxSwitchIndicator = c
+        ''        ksi.FeedbackValue = e.Value
+        ''    End If
+        ''Next
 
-        Dim lstKsi As List(Of KnxSwitchIndicator) = Nothing
-        If dicKSI.TryGetValue(ga, lstKsi) Then '查找包含报文中组地址的控件
-            For Each Ksi As KnxSwitchIndicator In lstKsi
-                Ksi.FeedbackValue = e.Value '写入反馈值
-            Next
-        End If
+        'Dim lstKsi As List(Of KnxSwitchIndicator) = Nothing
+        'If dicWidget.TryGetValue(ga, lstKsi) Then '查找包含报文中组地址的控件
+        '    For Each Ksi As KnxSwitchIndicator In lstKsi
+        '        Ksi.FeedbackValue = e.Value '写入反馈值
+        '    Next
+        'End If
     End Sub
 
     Private Sub btnLeftHide_Click(sender As Object, e As EventArgs) Handles btnLeftHide.Click

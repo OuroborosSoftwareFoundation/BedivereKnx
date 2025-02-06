@@ -24,6 +24,9 @@
 '   如果没有，请查阅 <http://www.gnu.org/licenses/> 
 
 Imports System.Configuration
+Imports System.Text.RegularExpressions
+Imports BedivereKnx.Graphics
+Imports DocumentFormat.OpenXml.Drawing
 Imports Microsoft.VisualBasic.ApplicationServices
 
 Namespace My
@@ -48,6 +51,22 @@ Namespace My
 
             '==============================测试内容================================
 
+            Dim str As String = "0/0/0=0|1&lt;div&gt;测试&lt;/div&gt;&lt;div&gt;wwwwwq&lt;23/2/1/div&gt;"
+            'Dim ms As MatchCollection = Regex.Matches(str, "&lt;div&gt;(.*?)&lt;/div&gt;")
+            'For Each m As Match In ms
+            '    MsgBox(m.Groups(1).Value)
+
+            'Next
+
+            'Dim c As New HmiConvertionColor
+            'c.Add(0, Color.Red)
+            'c.Add(1, Color.Green)
+            'c.Add(2, Color.Blue)
+            'c.Add(3, Color.Yellow)
+            'c.Add(4, Color.FromArgb(1, 4, 24, 5))
+            'For Each i As Color In c.Values
+            '    MsgBox(i.Name)
+            'Next
 
 
             '==============================测试内容================================

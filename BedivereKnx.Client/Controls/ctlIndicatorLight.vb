@@ -1,12 +1,13 @@
 ﻿Imports System.ComponentModel
 Imports Knx.Falcon
 Imports BedivereKnx.Graphics
+Imports Ouroboros.Hmi
 
-Public Class KnxSwitchIndicator
+Public Class KnxSwitchIndicator0
 
     Inherits Control
 
-    Private _ShapeType As KnxComponentShape
+    Private _ShapeType As HmiShapeType
     Private _ControlStatus As Boolean
     Private _FeedbackStatus As Boolean
     Private _ControlOffColor As Color = Color.Gray
@@ -24,8 +25,8 @@ Public Class KnxSwitchIndicator
     ''' 形状
     ''' </summary>
     ''' <returns></returns>
-    <Category("Appearance"), DefaultValue(KnxComponentShape.Ellipse)>
-    Public Property ShapeType As KnxComponentShape
+    <Category("Appearance"), DefaultValue(HmiShapeType.Ellipse)>
+    Public Property ShapeType As HmiShapeType
         Get
             Return _ShapeType
         End Get
@@ -163,13 +164,13 @@ Public Class KnxSwitchIndicator
         Dim brush As New SolidBrush(IIf(Me.FeedbackStatus, Me.FeedbackOnColor, Me.FeedbackOffColor)) '绘制形状实体作为反馈
         Dim pen As New Pen(color:=IIf(Me.ControlStatus, Me.ControlOnColor, Me.ControlOffColor), 3) '绘制形状边框作为控制
         Select Case Me.ShapeType
-            Case KnxComponentShape.Ellipse
+            Case HmiShapeType.Ellipse
                 Dim el As New Rectangle(0, 0, Me.Width, Me.Height)
                 g.FillEllipse(brush, el) '绘制圆形
                 If Me.ControlAddress <> New GroupAddress(0US) Then
                     g.DrawEllipse(pen, el) '绘制边框
                 End If
-            Case KnxComponentShape.Rectangle
+            Case HmiShapeType.Rectangle
                 Dim rect As New Rectangle(1, 1, Me.Width - 2, Me.Height - 2)
                 g.FillRectangle(brush, rect)
                 If Me.ControlAddress <> New GroupAddress(0US) Then
@@ -195,7 +196,7 @@ Public Class KnxSwitchIndicator
         InitializeComponent()
     End Sub
 
-    Public Sub New(comp As KnxGpxComponent)
+    Public Sub New(comp As KnxHmiComponent)
         InitializeComponent()
         Me.Location = comp.Location
         Me.Size = comp.Size
