@@ -1,5 +1,7 @@
 ﻿Imports System.Drawing
+Imports System.Runtime.Intrinsics.Arm
 Imports System.Text.RegularExpressions
+Imports DocumentFormat.OpenXml.Bibliography
 Imports Knx.Falcon
 Imports Knx.Falcon.ApplicationData.DatapointTypes
 Imports Knx.Falcon.ApplicationData.MasterData
@@ -48,24 +50,22 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
     Public Sub New(geo As HmiGeometry, styleString As String, valueString As String)
         MyBase.New(geo)
         If ContainsGroupAddress(valueString) Then Me.isDynamics = True 'value属性含组地址的为动态对象
-        ReadStrings(styleString, valueString)
+        'Dim vals As New List(Of GroupValue)
+        'ReadValueString(valueString, vals)
+        'ReadStyleString(styleString, vals)
+
+        Dim colors As Color()
+        ReadStyleString(styleString, colors)
+        ReadValueString(valueString, colors)
     End Sub
 
     ''' <summary>
-    ''' 读取style和value属性
-    ''' 控制格式：[组地址]=[数值]，[组地址]=[数值]#[DPT].[DPST]
-    '''     开关量控制：0/0/0=0|1，0/0/0=0
-    '''     数字量控制：0/0/0=0~255，0/0/0=000
-    ''' 反馈格式：[组地址]@[数值]，[组地址]@[数值]#[DPT].[DPST]
-    '''     开关量反馈：0/0/0@0|1，0/0/0
-    '''     数字量反馈：0/0/0@0~255
+    ''' 读取style属性
     ''' </summary>
-    ''' <param name="valueString"></param>
-    Private Sub ReadStrings(styleString As String, valueString As String)
-        Dim dicStyle As Dictionary(Of String, String) = StyleStringToDic(styleString) 'style字典
-
-        '控件形状部分：
-        Select Case dicStyle.First.Key'style第一项为形状
+    ''' <param name="styleString"></param>
+    Private Sub ReadStyleString(styleString As String, ByRef vals As List(Of GroupValue))
+        Dim dicStyle As Dictionary(Of String, String) = StyleStringToDic(styleString)
+        Select Case dicStyle.First.Key.ToLower'style第一项为形状
             Case "ellipse" '椭圆
                 Me.Shape = HmiShapeType.Ellipse
             Case "rounded" '矩形（矩形会带圆角属性）
@@ -78,16 +78,43 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
                 Me.Shape = HmiShapeType.None
         End Select
 
-        Dim fillcolors As Color() = ReadColorStyle("fillColor", dicStyle) '填充颜色
-        Dim strokecolors As Color() = ReadColorStyle("strokeColor", dicStyle) '线条颜色
-        Me.StrokeWidth = ReadNumStyle("strokeWidth", dicStyle) '设置线条宽度
+        Dim fill As String = vbNullString
+        dicStyle.TryGetValue("fillcolor", fill)
+        Dim colorAry As Color() = ReadColorStyle(fill)
+        If Me.isDynamics Then '动态控件
+            Me.FillConvertion.ConvertionPart = HmiConvertionPart.Fill '设置变换部件
+            Me.FillColor = colorAry.First '动态控件显示关闭颜色
+            For i = 0 To vals.Count - 1
+                Select Case i
+                    Case 0
+                        Me.FillConvertion.Values.Add(vals(i), colorAry(0))
+                    Case vals.Count - 1
+                        Me.FillConvertion.Values.Add(vals(i), colorAry(1))
+                    Case Else
+                        Me.FillConvertion.Values.Add(vals(i), Color.Empty)
+                End Select
+            Next
+        Else '静态控件
+            Me.FillColor = colorAry.Last '静态控件显示开启颜色
+        End If
 
+
+
+
+    End Sub
+
+    ''' <summary>
+    ''' 读取value属性
+    ''' 控制格式：[组地址]=[数值]，[组地址]=[数值]#[DPT].[DPST]
+    '''     开关量控制：0/0/0=0|1，0/0/0=0
+    '''     数字量控制：0/0/0=0~255，0/0/0=000
+    ''' 反馈格式：[组地址]@[数值]，[组地址]@[数值]#[DPT].[DPST]
+    '''     开关量反馈：0/0/0@0|1，0/0/0
+    '''     数字量反馈：0/0/0@0~255
+    ''' </summary>
+    ''' <param name="valueString"></param>
+    Private Sub ReadValueString(valueString As String, ByRef vals As List(Of GroupValue))
         If Me.isDynamics Then
-
-            '动态控件颜色设置（设为关闭颜色）
-            Me.FillColor = fillcolors.First
-            Me.StrokeColor = strokecolors.First
-
             Dim gaStr As String = vbNullString '组地址相关文本
             Dim text As String = vbNullString '描述文字
             If valueString.Contains("<div>") Then '含有描述文字的情况
@@ -117,75 +144,38 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
                     valsString = gvAry.First
                     Dim dpt As String() = gvAry.Last.Split("."c) '分割DPT和DPST
                     Me.Group = New KnxGroup(ga, Convert.ToInt32(dpt(0)), Convert.ToInt32(dpt(1))) '新建KNX组对象
+                    'Me.Group.DPST = DptFactory.Default.GetDatapointSubtype(dpt(0), dpt(1))
                 Else
                     valsString = gaAry(1) '此时DPST为默认值1.000
                     Dim t As DatapointSubtype = DptFactory.Default.GetDatapointSubtype(1, 1)
                     Me.Group = New KnxGroup(ga)
+                    'Me.Group.DPST = DptFactory.Default.GetDatapointSubtype(1, 1)
                 End If
 
                 '变换值部分
-                Dim vals As New List(Of GroupValue)
+                vals = New List(Of GroupValue)
                 If valsString.Contains("|"c) Then '值-切换模式
                     Me.GroupControlType = HmiValueConvertionType.Toggle
                     Dim valsArry As String() = valsString.Split("|"c)
                     For Each v As String In valsArry
-                        vals.Add(Me.Group.DPT.ToGroupValue(Convert.ToDecimal(v)))
+                        vals.Add(Me.Group.DPT.ToGroupValue(v))
+                        'vals.Add(DptCompoundGeneric.ToGroupValue(v, Me.Group.DPST))
                     Next
                 ElseIf valsString.Contains("~"c) Then '值-范围模式
                     Dim valsArry As String() = valsString.Split("~"c)
                     For Each v As String In valsArry
-                        vals.Add(Me.Group.DPT.ToGroupValue(Convert.ToDecimal(v)))
+                        vals.Add(Me.Group.DPT.ToGroupValue(v))
+                        'vals.Add(DptCompoundGeneric.ToGroupValue(v, Me.Group.DPST))
                     Next
                 Else '值-固定值模式
                     Me.GroupControlType = HmiValueConvertionType.Fixed
-                    vals.Add(Me.Group.DPT.ToGroupValue(Convert.ToDecimal(valsString)))
+                    vals.Add(Me.Group.DPT.ToGroupValue(valsString))
+                    'vals.Add(DptCompoundGeneric.ToGroupValue(valsString, Me.Group.DPST))
                 End If
-
-                '填充色变化
-                If fillcolors.Length > 1 Then
-                    Me.FillConvertion = New KnxHmiColorConvertion(HmiConvertionPart.Fill)
-                    If vals.Count = 1 Then
-                        Me.FillConvertion.Values.Add(vals.Last, fillcolors.Last)
-                    ElseIf vals.Count = 2 Then
-                        Me.FillConvertion.Values.Add(vals.First, fillcolors.First)
-                        Me.FillConvertion.Values.Add(vals.Last, fillcolors.Last)
-                    Else
-                        Me.FillConvertion.Values.Add(vals.First, fillcolors.First)
-                        Me.FillConvertion.Values.Add(vals.Last, fillcolors.Last)
-                        For f = 1 To vals.Count - 2
-                            Me.FillConvertion.Values.Add(vals(f), Color.Empty)
-                        Next
-                    End If
-                End If
-
-                '线条色变化
-                If strokecolors.Length > 1 Then
-                    Me.StrokeConvertion = New KnxHmiColorConvertion(HmiConvertionPart.Stroke)
-                    If vals.Count = 1 Then
-                        Me.StrokeConvertion.Values.Add(vals.Last, strokecolors.Last)
-                    ElseIf vals.Count = 2 Then
-                        Me.StrokeConvertion.Values.Add(vals.First, strokecolors.First)
-                        Me.StrokeConvertion.Values.Add(vals.Last, strokecolors.Last)
-                    Else
-                        Me.StrokeConvertion.Values.Add(vals.First, strokecolors.First)
-                        Me.StrokeConvertion.Values.Add(vals.Last, strokecolors.Last)
-                        For s = 1 To vals.Count - 2
-                            Me.StrokeConvertion.Values.Add(vals(s), Color.Empty)
-                        Next
-                    End If
-                End If
-
             Else '组地址无效直接报错
-                Me.isDynamics = False '设置为静态控件
                 Throw New ArgumentException($"Wrong group address format: '{gaAry(0)}'.")
             End If
-        Else '静态控件
-
-            '静态控件颜色设置（设为开启颜色）
-            Me.FillColor = fillcolors.Last '静态控件显示开启颜色
-            Me.StrokeColor = strokecolors.Last '静态控件显示开启颜色
-
-            '静态控件的文字（value认为全部为文字）
+        Else '静态控件的value认为全部为文字
             If valueString.Contains("<div>") Then 'value属性含有多行的情况
                 Dim arry As String() = valueString.Replace("</div>", vbNullString).Split("<div>")
                 Me.Text = String.Join(vbCrLf, arry)
@@ -195,13 +185,7 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
         End If
     End Sub
 
-    ''' <summary>
-    ''' 样式字符串转字典
-    ''' </summary>
-    ''' <param name="styleString"></param>
-    ''' <param name="KeyToLower">是否把键转为小写</param>
-    ''' <returns></returns>
-    Private Shared Function StyleStringToDic(styleString As String, Optional KeyToLower As Boolean = False) As Dictionary(Of String, String)
+    Private Function StyleStringToDic(styleString As String, Optional KeyToLower As Boolean = True) As Dictionary(Of String, String)
         If String.IsNullOrWhiteSpace(styleString) Then Return Nothing
         Dim styles As String() = styleString.Trim.Split(";"c)
         Dim dic As New Dictionary(Of String, String)
@@ -210,29 +194,13 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
             Dim kv As String() = style.Split("="c)
             Dim k As String = kv(0).Trim
             If KeyToLower Then k = k.ToLower
-            If kv.Length = 2 Then
-                dic.TryAdd(k, kv(1).Trim)
-            Else
-                dic.TryAdd(k, vbNullString)
-            End If
+            dic.TryAdd(k, kv(1).Trim)
         Next
         Return dic
     End Function
 
     ''' <summary>
-    ''' 读取数字样式
-    ''' </summary>
-    ''' <param name="key"></param>
-    ''' <param name="dic"></param>
-    ''' <returns></returns>
-    Private Shared Function ReadNumStyle(key As String, ByRef dic As Dictionary(Of String, String)) As Integer
-        Dim value As String = vbNullString
-        dic.TryGetValue(key, value)
-        Return Convert.ToInt32(value)
-    End Function
-
-    ''' <summary>
-    ''' 读取颜色样式
+    ''' 读取颜色信息
     ''' none: 无颜色
     ''' default: 默认颜色
     ''' #000000: RGB颜色
@@ -240,9 +208,7 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
     ''' </summary>
     ''' <param name="colorString"></param>
     ''' <returns></returns>
-    Private Shared Function ReadColorStyle(key As String, ByRef dic As Dictionary(Of String, String)) As Color()
-        Dim colorString As String = vbNullString
-        dic.TryGetValue(key, colorString)
+    Private Function ReadColorStyle(colorString As String) As Color()
         If String.IsNullOrWhiteSpace(colorString) Then Return {Color.Empty}
         colorString = colorString.Trim.ToLower
         If colorString = "none" Then '无颜色
@@ -263,37 +229,6 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
             Return {Color.Empty}
         End If
     End Function
-
-    ''' <summary>
-    ''' 读取颜色信息
-    ''' none: 无颜色
-    ''' default: 默认颜色
-    ''' #000000: RGB颜色
-    ''' light-dark(#000000,#000000): 浅色-深色模式，浅色为开启时颜色
-    ''' </summary>
-    ''' <param name="colorString"></param>
-    ''' <returns></returns>
-    'Private Function ReadColorStyle(colorString As String) As Color()
-    '    If String.IsNullOrWhiteSpace(colorString) Then Return {Color.Empty}
-    '    colorString = colorString.Trim.ToLower
-    '    If colorString = "none" Then '无颜色
-    '        Return {Color.Empty}
-    '    ElseIf colorString = "default" Then '默认颜色
-    '        Return {DEFAULTCOLOR_OFF, DEFAULTCOLOR_ON}
-    '    ElseIf colorString.Contains("#"c) Then '其他颜色
-    '        Dim matchC As MatchCollection = Regex.Matches(colorString, "(#[0-9a-fA-F]{6})") '匹配RGB值
-    '        Select Case matchC.Count
-    '            Case 0 '没有颜色的情况，使用默认值（一般不会出现这种情况）
-    '                Return {DEFAULTCOLOR_OFF, DEFAULTCOLOR_ON}
-    '            Case 1 '一种颜色的情况
-    '                Return {DEFAULTCOLOR_OFF, ColorTranslator.FromHtml(matchC(0).Value)}
-    '            Case Else '浅色-深色模式，浅色为开启时颜色
-    '                Return {ColorTranslator.FromHtml(matchC(1).Value), ColorTranslator.FromHtml(matchC(0).Value)}
-    '        End Select
-    '    Else
-    '        Return {Color.Empty}
-    '    End If
-    'End Function
 
     'Private Function ReadColorStyle0(colorValue As String) As Color()
     '    colorValue = colorValue.Trim.ToLower

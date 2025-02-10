@@ -1,8 +1,6 @@
-﻿Imports Knx.Falcon
-Imports BedivereKnx
-Imports BedivereKnx.Graphics
+﻿Imports BedivereKnx.Graphics
+Imports Knx.Falcon
 Imports Ouroboros.Hmi
-Imports DocumentFormat.OpenXml.Spreadsheet
 
 Public Class frmMainGraphics
 
@@ -63,31 +61,29 @@ Public Class frmMainGraphics
         pnlGpx.Refresh() '刷新Panel
         If IsNothing(dicPages(pageName)) Then Exit Sub
         For Each comp As KnxHmiComponent In dicPages(pageName).Elements.OfType(Of KnxHmiComponent)
-            If IsNothing(comp.Convertion) Then Continue For '只添加有变化效果的控件
-            Dim widget As New HmiComponentWidget(comp) '新建控件
-            pnlGpx.Controls.Add(widget) '把控件加到窗体
-            'widget.BringToFront()
+            'If IsNothing(comp.ColorConvertion) Then Continue For '只添加有变化效果的控件
 
-            'Select Case comp.Direction
-            '    Case HmiComponentDirection.Control '控制控件
-            '        Dim gaC As GroupAddress = comp.Convertion(0).GroupAddress
-            '        Dim btn As New Button With {
-            '                .Location = comp.Location,
-            '                .Size = comp.Size,
-            '                .Tag = gaC.ToString}
-            '        pnlGpx.Controls.Add(btn)'把按钮加入窗体中
-            '    Case HmiComponentDirection.Feedback '反馈控件
-            '        '=============================
-            '        Dim gaF As GroupAddress
-            '        '=============================
-            '        If Not dicWidget.ContainsKey(gaF) Then '不可使用TryGetValue优化
-            '            dicWidget.Add(gaF, New List(Of HmiComponentWidget)) '不存在组地址所属控件时添加组地址
-            '        End If
-            '        Dim ksi As New HmiComponentWidget(comp) '新建控件
-            '        pnlGpx.Controls.Add(ksi) '把控件加到窗体
-            '        dicWidget(gaF).Add(ksi) '把控件加入字典中
-            '        'ksi.BringToFront()
-            'End Select
+            Select Case comp.Direction
+                Case HmiComponentDirection.Control '控制控件
+                    Dim gaC As GroupAddress = "0/0/0" 'comp.ColorConvertion(0).GroupAddress
+                    Dim btn As New Button With {
+                            .Location = comp.Location,
+                            .Size = comp.Size,
+                            .Text = comp.Text,
+                            .Tag = gaC.ToString}
+                    pnlGpx.Controls.Add(btn)'把按钮加入窗体中
+                Case HmiComponentDirection.Feedback '反馈控件
+                    '=============================
+                    Dim gaF As GroupAddress
+                    '=============================
+                    If Not dicWidget.ContainsKey(gaF) Then '不可使用TryGetValue优化
+                        dicWidget.Add(gaF, New List(Of HmiComponentWidget)) '不存在组地址所属控件时添加组地址
+                    End If
+                    Dim widget As New HmiComponentWidget(comp) '新建控件
+                    pnlGpx.Controls.Add(widget) '把控件加到窗体
+                    dicWidget(gaF).Add(widget) '把控件加入字典中
+                    'widget.BringToFront()
+            End Select
         Next
         For Each text As HmiTextElement In dicPages(pageName).Elements.OfType(Of HmiTextElement)
 

@@ -55,7 +55,7 @@ Partial Class frmMainGraphics
         ' 
         btnLeftHide.Location = New Point(0, 0)
         btnLeftHide.Name = "btnLeftHide"
-        btnLeftHide.Size = New Size(5, 20)
+        btnLeftHide.Size = New Size(10, 20)
         btnLeftHide.TabIndex = 0
         btnLeftHide.UseVisualStyleBackColor = True
         ' 

@@ -5,6 +5,11 @@ Imports System.Drawing
 
 Public Module mdlDrawIo
 
+    Public ReadOnly DEFAULTCOLOR_OFF As Color = Color.Gray
+    Public ReadOnly DEFAULTCOLOR_ON As Color = Color.Green
+    Public ReadOnly DEFAULTTEXT_OFF As String = "OFF"
+    Public ReadOnly DEFAULTTEXT_ON As String = "ON"
+
     Public Function ReadDrawioToDic(FilePath As String) As Dictionary(Of String, HmiPage)
         If String.IsNullOrEmpty(FilePath) Then
             Throw New ArgumentNullException("Draw.io File path cannot be null.")

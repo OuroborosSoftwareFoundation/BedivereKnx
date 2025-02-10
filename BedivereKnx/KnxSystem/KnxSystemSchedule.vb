@@ -217,7 +217,7 @@ Public Class KnxScheduleSequence
             .Columns("GroupValueType").Caption = "组地址类型"
             .Columns.Add("Value", GetType(GroupValue)) '附加：控制值
             .Columns("Value").Caption = "控制值"
-            .Columns.Add("Triggered"， GetType(Boolean)) '附加：已触发
+            .Columns.Add("Triggered", GetType(Boolean)) '附加：已触发
             .Columns("Triggered").Caption = "已触发"
         End With
     End Sub

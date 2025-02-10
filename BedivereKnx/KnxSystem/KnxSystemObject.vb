@@ -134,9 +134,9 @@ Public Class KnxSystemObjectCollection
                 End If
                 Dim obj As New KnxObjectGroup(GrpType, dr("Id"), dr("ObjectCode").ToString, dr("ObjectName").ToString, dr("InterfaceCode").ToString)
                 Dim SwDpt As Integer() = StringToDptNum(dr("Sw_GrpDpt").ToString) '开关DPT数字
-                obj.SwitchPart = New KnxGroupPart(SwDpt(0), SwDpt(1), dr("Sw_Ctl_GrpAddr").ToString, dr("Sw_Fdb_GrpAddr").ToString)
+                obj.SwitchPart = New KnxGroupPair(SwDpt(0), SwDpt(1), dr("Sw_Ctl_GrpAddr").ToString, dr("Sw_Fdb_GrpAddr").ToString)
                 Dim ValDpt As Integer() = StringToDptNum(dr("Val_GrpDpt").ToString) '数值DPT数字
-                obj.ValuePart = New KnxGroupPart(ValDpt(0), ValDpt(1), dr("Val_Ctl_GrpAddr").ToString, dr("Val_Fdb_GrpAddr").ToString)
+                obj.ValuePart = New KnxGroupPair(ValDpt(0), ValDpt(1), dr("Val_Ctl_GrpAddr").ToString, dr("Val_Fdb_GrpAddr").ToString)
                 _Item.Add(obj.Id, obj)
                 AddHandler obj.GroupWriteRequest, AddressOf _GroupWriteRequest
                 AddHandler obj.GroupReadRequest, AddressOf _GroupReadRequest

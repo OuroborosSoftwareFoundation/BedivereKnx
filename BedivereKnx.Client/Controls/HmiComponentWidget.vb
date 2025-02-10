@@ -64,24 +64,29 @@ Public Class HmiComponentWidget : Inherits Control
     End Property
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
-        Dim g As System.Drawing.Graphics = e.Graphics '创建一个Graphics对象
-        g.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
-        Dim fillBrush As New SolidBrush(_Comp.FillColor) '绘制形状实体作为反馈
-        Dim strokePen As New Pen(_Comp.StrokeColor, _Comp.StrokeWidth) '绘制形状边框作为控制
-        Select Case Me.ShapeType
-            Case HmiShapeType.Ellipse, HmiShapeType.Text
-                Dim frame As New Rectangle(1, 1, _Comp.Size.Width, _Comp.Size.Height)
-                g.FillEllipse(fillBrush, frame) '绘制圆形
-                If _Comp.StrokeWidth > 0 Then g.DrawEllipse(strokePen, frame) '绘制边框
-            Case HmiShapeType.Rectangle
-                Dim frame As New Rectangle(1, 1, _Comp.Size.Width, _Comp.Size.Height)
-                g.FillRectangle(fillBrush, frame) '绘制圆形
-                If _Comp.StrokeWidth > 0 Then g.DrawRectangle(strokePen, frame) '绘制边框
-            Case Else
-                Throw New Exception($"HmiShapeType '{Me.ShapeType.ToString}' is not supported in current version.")
+        Select Case Me.Direction
+            Case HmiComponentDirection.Feedback
+                Dim g As System.Drawing.Graphics = e.Graphics '创建一个Graphics对象
+                g.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
+                Dim fillBrush As New SolidBrush(_Comp.FillColor) '绘制形状实体作为反馈
+                Dim strokePen As New Pen(_Comp.StrokeColor, _Comp.StrokeWidth) '绘制形状边框作为控制
+                Select Case Me.ShapeType
+                    Case HmiShapeType.Ellipse, HmiShapeType.Text
+                        Dim frame As New Rectangle(1, 1, _Comp.Size.Width, _Comp.Size.Height)
+                        g.FillEllipse(fillBrush, frame) '绘制圆形
+                        If _Comp.StrokeWidth > 0 Then g.DrawEllipse(strokePen, frame) '绘制边框
+                    Case HmiShapeType.Rectangle
+                        Dim frame As New Rectangle(1, 1, _Comp.Size.Width, _Comp.Size.Height)
+                        g.FillRectangle(fillBrush, frame) '绘制圆形
+                        If _Comp.StrokeWidth > 0 Then g.DrawRectangle(strokePen, frame) '绘制边框
+                    Case Else
+                        Throw New Exception($"HmiShapeType '{Me.ShapeType.ToString}' is not supported in current version.")
+                End Select
+                fillBrush.Dispose() '释放画笔对象
+                strokePen.Dispose() '释放画笔对象
+            Case HmiComponentDirection.Control
+
         End Select
-        fillBrush.Dispose() '释放画笔对象
-        strokePen.Dispose() '释放画笔对象
         MyBase.OnPaint(e)
     End Sub
 

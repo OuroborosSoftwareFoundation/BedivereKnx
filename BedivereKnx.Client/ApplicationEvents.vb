@@ -24,9 +24,6 @@
 '   如果没有，请查阅 <http://www.gnu.org/licenses/> 
 
 Imports System.Configuration
-Imports System.Text.RegularExpressions
-Imports BedivereKnx.Graphics
-Imports DocumentFormat.OpenXml.Drawing
 Imports Microsoft.VisualBasic.ApplicationServices
 
 Namespace My

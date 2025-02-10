@@ -1,8 +1,9 @@
-﻿Imports Knx.Falcon
+﻿Imports System.Text.RegularExpressions
+Imports Knx.Falcon
 Imports Knx.Falcon.ApplicationData.DatapointTypes
 Imports Knx.Falcon.ApplicationData.MasterData
 
-Module mdlGroupValue
+Module mdlPublic
 
     Public Function GroupCtlType_GroupValue(Str As String, CtlType As GroupValueType) As GroupValue
         If String.IsNullOrEmpty(Str) Then
@@ -25,6 +26,14 @@ Module mdlGroupValue
                 Return Nothing
         End Select
         Return val
+    End Function
+
+    Public Function IsGroupAddress(inputString As String) As Boolean
+        Return Regex.IsMatch(inputString, "^([0-9]|0*[0-2][0-9]|0*3[0-1])/(0*[0-7])/([0-9]|0*[0-9]{2}|0*1[0-9][0-9]|0*2[0-4][0-9]|0*25[0-5])$")
+    End Function
+
+    Public Function ContainsGroupAddress(inputString As String) As Boolean
+        Return Regex.IsMatch(inputString, "^.*([0-9]|0*[0-2][0-9]|0*3[0-1])/(0*[0-7])/([0-9]|0*[0-9]{2}|0*1[0-9][0-9]|0*2[0-4][0-9]|0*25[0-5]).*$")
     End Function
 
     Private Sub test()

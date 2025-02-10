@@ -51,98 +51,18 @@ Public MustInherit Class KnxObjectBase
 End Class
 
 ''' <summary>
-''' KNX组成员
-''' </summary>
-Public Class KnxGroupPart
-
-    ''' <summary>
-    ''' KNX数据类型（主类型）
-    ''' </summary>
-    ''' <returns></returns>
-    Public ReadOnly Property DPT As DatapointType
-
-    ''' <summary>
-    ''' KNX数据类型（子类型）
-    ''' </summary>
-    ''' <returns></returns>
-    Public ReadOnly Property DPST As DatapointSubtype
-
-    ''' <summary>
-    ''' 控制组地址
-    ''' </summary>
-    ''' <returns></returns>
-    Public ReadOnly Property CtlAddr As New GroupAddress
-
-    ''' <summary>
-    ''' 控制值
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property CtlValue As GroupValue
-
-    ''' <summary>
-    ''' 反馈组地址
-    ''' </summary>
-    ''' <returns></returns>
-    Public ReadOnly Property FdbAddr As New GroupAddress
-
-    ''' <summary>
-    ''' 反馈值
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property FdbValue As GroupValue
-
-    Public Sub SetPointValue(PointEnum As KnxObjectPartPoint, PointValue As GroupValue)
-        Select Case PointEnum
-            Case KnxObjectPartPoint.Control
-                _CtlValue = PointValue
-            Case KnxObjectPartPoint.Feedback
-                _FdbValue = PointValue
-            Case Else
-                Throw New InvalidEnumArgumentException($"Wrong KnxObjectPartPoint: {PointEnum}.")
-        End Select
-    End Sub
-
-    Public Sub SetPointValue(PointString As String, PointValue As GroupValue)
-        Dim pnt As KnxObjectPartPoint
-        Select Case PointString.ToLower.Trim
-            Case "control", "ctl"
-                pnt = KnxObjectPartPoint.Control
-            Case "feedback", "fdb"
-                pnt = KnxObjectPartPoint.Feedback
-            Case Else
-                Throw New ArgumentNullException($"Wrong KnxObjectPartPoint: {PointString}.")
-        End Select
-        SetPointValue(pnt, PointValue)
-    End Sub
-
-    Public Sub New()
-
-    End Sub
-
-    Public Sub New(DPTmain As Integer, DPTsub As Integer, AddrCtl As String, AddrFdb As String)
-        _DPT = DptFactory.Default.GetDatapointType(DPTmain)
-        _DPST = DptFactory.Default.GetDatapointSubtype(DPTmain, DPTsub)
-        If Not String.IsNullOrEmpty(AddrCtl) Then _CtlAddr = New GroupAddress(AddrCtl)
-        If Not String.IsNullOrEmpty(AddrFdb) Then _FdbAddr = New GroupAddress(AddrFdb)
-    End Sub
-
-End Class
-
-''' <summary>
 ''' KNX对象组
 ''' </summary>
-Public Class KnxObjectGroup
-
-    Inherits KnxObjectBase
+Public Class KnxObjectGroup : Inherits KnxObjectBase
 
     Protected Friend Event GroupReadRequest As GroupReadHandler
     Protected Friend Event GroupWriteRequest As GroupWriteHandler
 
-    Public Property SwitchPart As KnxGroupPart
+    Public Property SwitchPart As KnxGroupPair
 
-    Public Property ValuePart As KnxGroupPart
+    Public Property ValuePart As KnxGroupPair
 
-    Public Function GetPart(PartString As String) As KnxGroupPart
+    Public Function GetPart(PartString As String) As KnxGroupPair
         Select Case PartString.ToLower.Trim
             Case "switch", "sw"
                 Return _SwitchPart
@@ -153,7 +73,7 @@ Public Class KnxObjectGroup
         End Select
     End Function
 
-    Public Function GetPart(PartEnum As KnxObjectPart) As KnxGroupPart
+    Public Function GetPart(PartEnum As KnxObjectPart) As KnxGroupPair
         Return GetPart(PartEnum.ToString)
     End Function
 
@@ -164,8 +84,8 @@ Public Class KnxObjectGroup
     ''' <param name="IfCode">接口编号</param>
     Public Sub New(ObjType As KnxGroupType, ObjId As Integer, ObjCode As String, ObjName As String, IfCode As String)
         MyBase.New(ObjType, ObjId, ObjCode, ObjName, IfCode)
-        _SwitchPart = New KnxGroupPart(0, 0, vbNullString, vbNullString)
-        _ValuePart = New KnxGroupPart(0, 0, vbNullString, vbNullString)
+        _SwitchPart = New KnxGroupPair(0, 0, vbNullString, vbNullString)
+        _ValuePart = New KnxGroupPair(0, 0, vbNullString, vbNullString)
     End Sub
 
     ''' <summary>
@@ -229,9 +149,7 @@ End Class
 ''' <summary>
 ''' KNX场景组对象
 ''' </summary>
-Public Class KnxSceneGroup
-
-    Inherits KnxObjectBase 'Type属性固定为KnxGroupType.Scene
+Public Class KnxSceneGroup : Inherits KnxObjectBase 'Type属性固定为KnxGroupType.Scene
 
     Public Event SceneControlRequest As GroupWriteHandler
 
