@@ -1,11 +1,11 @@
-﻿
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Imports Ouroboros.Hmi
 
-Public Class HmiComponentWidget : Inherits Control
+Public Class HmiFeedbackWidget : Inherits Control
 
-    Private _Comp As New HmiComponentElement
+    Private Component As New HmiComponentElement
     Private _ShapeType As HmiShapeType
+    Protected Friend Tip As New ToolTip
 
     ''' <summary>
     ''' 形状
@@ -26,27 +26,31 @@ Public Class HmiComponentWidget : Inherits Control
     ''' 不透明度
     ''' </summary>
     ''' <returns></returns>
+    <Category("Appearance"), DefaultValue(100)>
     Public Property Opacity As Integer
 
     ''' <summary>
     ''' 填充颜色
     ''' </summary>
     ''' <returns></returns>
+    <Category("Appearance"), DefaultValue("DarkGray")>
     Public Property FillColor As Color
 
     ''' <summary>
     ''' 线条颜色
     ''' </summary>
     ''' <returns></returns>
+    <Category("Appearance"), DefaultValue("Black")>
     Public Property StrokeColor As Color
 
     ''' <summary>
     ''' 线条宽度
     ''' </summary>
     ''' <returns></returns>
+    <Category("Appearance"), DefaultValue(0)>
     Public Property StrokeWidth As Integer
 
-    <Category("Appearance"), DefaultValue(HmiComponentDirection.Unknown)>
+    <Category("Hmi"), DefaultValue(HmiComponentDirection.Feedback)>
     Public Property Direction As HmiComponentDirection
 
     ''' <summary>
@@ -68,17 +72,17 @@ Public Class HmiComponentWidget : Inherits Control
             Case HmiComponentDirection.Feedback
                 Dim g As System.Drawing.Graphics = e.Graphics '创建一个Graphics对象
                 g.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
-                Dim fillBrush As New SolidBrush(_Comp.FillColor) '绘制形状实体作为反馈
-                Dim strokePen As New Pen(_Comp.StrokeColor, _Comp.StrokeWidth) '绘制形状边框作为控制
+                Dim fillBrush As New SolidBrush(Component.FillColor) '绘制形状实体作为反馈
+                Dim strokePen As New Pen(Component.StrokeColor, Component.StrokeWidth) '绘制形状边框作为控制
                 Select Case Me.ShapeType
                     Case HmiShapeType.Ellipse, HmiShapeType.Text
-                        Dim frame As New Rectangle(1, 1, _Comp.Size.Width, _Comp.Size.Height)
+                        Dim frame As New Rectangle(1, 1, Component.Size.Width, Component.Size.Height)
                         g.FillEllipse(fillBrush, frame) '绘制圆形
-                        If _Comp.StrokeWidth > 0 Then g.DrawEllipse(strokePen, frame) '绘制边框
+                        If Component.StrokeWidth > 0 Then g.DrawEllipse(strokePen, frame) '绘制边框
                     Case HmiShapeType.Rectangle
-                        Dim frame As New Rectangle(1, 1, _Comp.Size.Width, _Comp.Size.Height)
+                        Dim frame As New Rectangle(1, 1, Component.Size.Width, Component.Size.Height)
                         g.FillRectangle(fillBrush, frame) '绘制圆形
-                        If _Comp.StrokeWidth > 0 Then g.DrawRectangle(strokePen, frame) '绘制边框
+                        If Component.StrokeWidth > 0 Then g.DrawRectangle(strokePen, frame) '绘制边框
                     Case Else
                         Throw New Exception($"HmiShapeType '{Me.ShapeType.ToString}' is not supported in current version.")
                 End Select
@@ -105,8 +109,8 @@ Public Class HmiComponentWidget : Inherits Control
 
     Public Sub New(comp As HmiComponentElement)
         InitializeComponent()
-        _Comp = comp
-        With _Comp
+        Component = comp
+        With Component
             Dim pad As Integer = Math.Ceiling(.StrokeWidth \ 2) + 1 '内边距，防止绘制不完整
             Me.Left = .Location.X - pad
             Me.Top = .Location.Y - pad
@@ -116,6 +120,14 @@ Public Class HmiComponentWidget : Inherits Control
             Me.ShapeType = .Shape
             Me.Direction = .Direction
         End With
+    End Sub
+
+    Private Sub KnxSwitchIndicator_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter
+        Me.Tip.Show(Me.Text, sender)
+    End Sub
+
+    Private Sub KnxSwitchIndicator_MouseLeave(sender As Object, e As EventArgs) Handles Me.MouseLeave
+        Me.Tip.Hide(sender)
     End Sub
 
 End Class

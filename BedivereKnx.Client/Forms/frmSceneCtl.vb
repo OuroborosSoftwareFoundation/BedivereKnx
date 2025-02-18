@@ -2,17 +2,18 @@
 
 Public Class frmSceneCtl
 
-    Friend Scn As KnxSceneGroup
+    Friend Scn As KnxScene
     Friend CtlVal As Byte '传出去的场景控制值
 
     Private Sub frmSceneCtl_Load(sender As Object, e As EventArgs) Handles Me.Load
         lblScnName.Text = $"{Scn.Name}" '场景名称
-        lblScnAddr.Text = $"({Scn.GroupAddress})" '场景地址 
+        Dim grp As KnxGroup = Scn(KnxObjectPart.SceneControl)
+        lblScnAddr.Text = $"({grp.Address})" '场景地址 
         lvScn.Clear() '清空场景列表
         lvScn.Columns.Add("ScnAddr", "场景地址")
         lvScn.Columns.Add("ScnName", "场景名称")
-        For i = 0 To Scn.AddrNames.Length - 1
-            Dim str As String = Scn.AddrNames(i)
+        For i = 0 To Scn.Names.Length - 1
+            Dim str As String = Scn.Names(i)
             If String.IsNullOrEmpty(str) Then Continue For '跳过空项
             Dim lvi As New ListViewItem(i)
             lvi.Tag = i

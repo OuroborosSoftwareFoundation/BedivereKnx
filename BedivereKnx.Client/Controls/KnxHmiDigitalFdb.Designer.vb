@@ -1,6 +1,6 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class HmiComponentWidget
-    Inherits System.Windows.Forms.Control
+Partial Class KnxHmiDigitalFdb
+    Inherits KnxHmiShape
 
     'Control 重写 Dispose，以清理组件列表。
     <System.Diagnostics.DebuggerNonUserCode()> _

@@ -3,7 +3,7 @@ Imports Knx.Falcon
 Imports BedivereKnx.Graphics
 Imports Ouroboros.Hmi
 
-Public Class KnxSwitchIndicator0
+Public Class KnxHmiIndicator
 
     Inherits Control
 
@@ -187,7 +187,7 @@ Public Class KnxSwitchIndicator0
         MyBase.OnPaint(e)
     End Sub
 
-    Protected Overrides Sub OnResize(ByVal e As EventArgs)
+    Protected Overrides Sub OnResize(e As EventArgs)
         MyBase.OnResize(e)
         Invalidate() '重新绘制控件以应用新的大小
     End Sub

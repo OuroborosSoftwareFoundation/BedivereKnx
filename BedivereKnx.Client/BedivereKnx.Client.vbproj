@@ -33,6 +33,12 @@
 
   <ItemGroup>
     <Compile Remove="clsKnx.vb" />
+    <Compile Remove="Controls\ctlIndicatorLight.Designer.vb" />
+    <Compile Remove="Controls\ctlIndicatorLight.vb" />
+    <Compile Remove="Controls\HmiFeedbackWidget.Designer.vb" />
+    <Compile Remove="Controls\HmiFeedbackWidget.vb" />
+    <Compile Remove="Controls\KnxHmiFeedbacker.Designer.vb" />
+    <Compile Remove="Controls\KnxHmiFeedbacker.vb" />
     <Compile Remove="Modules\mdlDataFile_Excel.vb" />
   </ItemGroup>
 

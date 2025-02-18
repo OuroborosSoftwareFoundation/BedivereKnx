@@ -5,7 +5,7 @@ Imports Knx.Falcon
 ''' <summary>
 ''' KNX时间表
 ''' </summary>
-Public Class KnxSystemSchedule
+Public Class KnxScheduleCollection
 
     Private _Table As DataTable
     Private _Sequence As KnxScheduleSequence
@@ -138,6 +138,9 @@ Public Class KnxSystemSchedule
 
 End Class
 
+''' <summary>
+''' 定时队列
+''' </summary>
 Public Class KnxScheduleSequence
 
     Private _Table As DataTable
@@ -205,7 +208,7 @@ Public Class KnxScheduleSequence
             .Columns("ScheduleName").Caption = "定时名称"
             .Columns.Add("Time", GetType(TimeHM)) '附加：触发时间
             .Columns("Time").Caption = "触发时间"
-            .Columns.Add("TargetType", GetType(KnxGroupType)) '附加：组地址类型
+            .Columns.Add("TargetType", GetType(KnxObjectPart)) '附加：组地址类型
             .Columns("TargetType").Caption = "目标对象类型"
             .Columns.Add("TargetValue", GetType(String)) '附加：目标数值
             .Columns("TargetValue").Caption = "目标值"
@@ -213,10 +216,10 @@ Public Class KnxScheduleSequence
             .Columns("InterfaceCode").Caption = "接口编号"
             .Columns.Add("GroupAddress", GetType(GroupAddress)) '附加：组地址
             .Columns("GroupAddress").Caption = "目标组地址"
-            .Columns.Add("GroupValueType", GetType(GroupValueType)) '附加：组地址值类型
-            .Columns("GroupValueType").Caption = "组地址类型"
-            .Columns.Add("Value", GetType(GroupValue)) '附加：控制值
-            .Columns("Value").Caption = "控制值"
+            .Columns.Add("GroupDpt", GetType(String)) '附加：DPT
+            .Columns("GroupDpt").Caption = "KNX数据类型"
+            .Columns.Add("Value", GetType(GroupValue)) '附加：KNX值
+            .Columns("Value").Caption = "KNX值"
             .Columns.Add("Triggered", GetType(Boolean)) '附加：已触发
             .Columns("Triggered").Caption = "已触发"
         End With
@@ -242,32 +245,32 @@ Public Class TimeHM
         Me.New(0, 0)
     End Sub
 
-    Public Sub New(datetime As DateTime)
-        Me.New(datetime.Hour, datetime.Minute)
+    Public Sub New(dateTime As DateTime)
+        Me.New(dateTime.Hour, dateTime.Minute)
     End Sub
 
-    Public Sub New(timeonly As TimeOnly)
-        Me.New(timeonly.Hour, timeonly.Minute)
+    Public Sub New(timeOnly As TimeOnly)
+        Me.New(timeOnly.Hour, timeOnly.Minute)
     End Sub
 
-    Public Sub New(timespan As TimeSpan)
-        Me.New(timespan.Hours, timespan.Minutes)
+    Public Sub New(timeSpan As TimeSpan)
+        Me.New(timeSpan.Hours, timeSpan.Minutes)
     End Sub
 
-    Public Sub New(timestring As String)
+    Public Sub New(timeString As String)
         Try
-            If String.IsNullOrEmpty(timestring) Then timestring = "00:00"
-            Dim t() As String = timestring.Split(":"c)
+            If String.IsNullOrEmpty(timeString) Then timeString = "00:00"
+            Dim t() As String = timeString.Split(":"c)
             If t.Length = 2 Or t.Length = 3 Then
                 Dim h As Integer = Convert.ToInt32(t(0))
                 _Hour = Math.Max(0, Math.Min(h Mod 24, 23))
                 Dim m As Integer = Convert.ToInt32(t(1))
                 _Minute = Math.Max(0, Math.Min(m Mod 60, 59))
             Else
-                Throw New ArgumentException($"Wrong time format: '{timestring}'.")
+                Throw New ArgumentException($"Wrong time format: '{timeString}'.")
             End If
         Catch ex As Exception
-            Throw New ArgumentException($"Wrong time format: '{timestring}'.", ex)
+            Throw New ArgumentException($"Wrong time format: '{timeString}'.", ex)
         End Try
     End Sub
 

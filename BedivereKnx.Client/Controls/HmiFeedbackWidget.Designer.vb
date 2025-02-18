@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class KnxHmiIndicator
+Partial Class HmiFeedbackWidget
     Inherits System.Windows.Forms.Control
 
     'Control 重写 Dispose，以清理组件列表。

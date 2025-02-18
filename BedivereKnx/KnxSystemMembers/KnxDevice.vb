@@ -8,11 +8,10 @@ Public Enum IndAddressState As Integer
     Online = 1
 End Enum
 
-Public Class KnxSystemDeviceCollection
+Public Class KnxDeviceCollection
 
     Implements IEnumerable
 
-    Private _Table As DataTable
     Private _Item As New Dictionary(Of Integer, KnxDeviceInfo)
 
     ''' <summary>
@@ -20,10 +19,6 @@ Public Class KnxSystemDeviceCollection
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property Table As DataTable
-        Get
-            Return _Table
-        End Get
-    End Property
 
     ''' <summary>
     ''' 获取设备（根据ID）
@@ -36,7 +31,7 @@ Public Class KnxSystemDeviceCollection
             If _Item.TryGetValue(index, dev) Then
                 Return dev
             Else
-                Throw New ArgumentNullException($"Can't found Device with ID = {index}.")
+                Throw New KeyNotFoundException($"Can't found Device with ID = {index}.")
                 Return Nothing
             End If
         End Get
@@ -87,7 +82,6 @@ Public Class KnxSystemDeviceCollection
 
     Public Function GetEnumerator() As IEnumerator Implements IEnumerable.GetEnumerator
         Return _Item.Values.GetEnumerator()
-        'Throw New NotImplementedException()
     End Function
 End Class
 
@@ -137,12 +131,12 @@ Public Class KnxDeviceInfo
         End Set
     End Property
 
-    Public Sub New(Id As Integer, Code As String, Name As String, IndAddress As IndividualAddress, InterfaceCode As String)
-        _Id = Id
-        _Code = Code
-        _Name = Name
-        _IndAddress = IndAddress
-        _InterfaceCode = InterfaceCode
+    Public Sub New(id As Integer, code As String, name As String, address As IndividualAddress, ifCode As String)
+        _Id = id
+        _Code = code
+        _Name = name
+        _IndAddress = address
+        _InterfaceCode = ifCode
         State = IndAddressState.Unknown
     End Sub
 

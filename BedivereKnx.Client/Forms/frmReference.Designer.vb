@@ -46,7 +46,7 @@ Partial Class frmReference
         ' 
         ' Assy
         ' 
-        Assy.Text = "Assembly"
+        Assy.Text = "Assembly Name"
         Assy.Width = 150
         ' 
         ' Ver

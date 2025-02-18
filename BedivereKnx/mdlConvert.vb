@@ -1,6 +1,6 @@
 ﻿Module mdlConvert
 
-    Friend Function String__StrArray(Str As String, Optional separator As Char = ","c) As String()
+    Friend Function GetStringArray(Str As String, Optional separator As Char = ","c) As String()
         If String.IsNullOrEmpty(Str) Then
             Return {vbNullString}
         Else
@@ -14,7 +14,7 @@
         End If
     End Function
 
-    Friend Function String__IntArray(Str As String, Optional separator As Char = ","c) As Integer()
+    Friend Function GetIntArray(Str As String, Optional separator As Char = ","c) As Integer()
         If String.IsNullOrEmpty(Str) Then
             Return {vbNullString}
         Else

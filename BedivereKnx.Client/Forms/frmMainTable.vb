@@ -54,7 +54,7 @@ Public Class frmMainTable
         With tvArea
             .Nodes.Clear()
             .Nodes.Add(vbNullString, "全部") '添加根节点
-            For Each r As DataRow In KS.Areas.Table.Rows
+            For Each r As DataRow In KS.Areas.Rows
                 .SelectedNode = .Nodes(0) '选择根节点
                 Dim ac As String() = r("AreaCode").ToString.Split("."c) '节点编号的数组
                 If String.IsNullOrEmpty(r("MainCode").ToString.Trim) Then Continue For '无视没有主区域的行
@@ -324,10 +324,10 @@ Public Class frmMainTable
         If isBusy Then Exit Sub
         If IsNothing(dgvScene.CurrentRow) OrElse (dgvScene.SelectedRows.Count = 0) Then Exit Sub
         Dim ScnId As Integer = dgvScene.SelectedRows(0).Cells(0).Value '场景ID
-        Dim Scn As KnxSceneGroup = KS.Scenes(ScnId)
+        Dim Scn As KnxScene = KS.Scenes(ScnId)
         frmSceneCtl.Scn = Scn
         If frmSceneCtl.ShowDialog = DialogResult.OK Then
-            Scn.ControlScene(frmSceneCtl.CtlVal)
+            Scn.WriteScene(frmSceneCtl.CtlVal)
         End If
     End Sub
 

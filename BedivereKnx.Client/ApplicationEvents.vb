@@ -101,7 +101,7 @@ Namespace My
         'Public Sub AppSettingsRepair()
         '    Dim cfg As String(,) = {{"DataFile", "data.xlsx"}, {"RouteMcAddr", "224.0.23.12"}}
         '    For i = 0 To cfg.GetUpperBound(0)
-        '        If String.IsNullOrEmpty(AppSettings.Item(cfg(i, 0)).Trim) Then
+        '        If String.IsNullOrEmpty(AppSettings.Items(cfg(i, 0)).Trim) Then
         '            AppSettings.Add(cfg(i, 0), cfg(i, 1))
         '        End If
         '    Next

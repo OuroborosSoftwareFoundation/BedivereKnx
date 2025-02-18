@@ -29,14 +29,7 @@ Imports Knx.Falcon.Sdk
 
 Public Class KnxSystem
 
-    Private ReadOnly _Bus As New KnxSystemBusCollection
-    Private ReadOnly _Areas As New KnxSystemArea
-    Private ReadOnly _Objects As New KnxSystemObjectCollection
-    Private ReadOnly _Scenes As New KnxSystemSceneCollection
-    Private ReadOnly _Devices As New KnxSystemDeviceCollection
-    Private ReadOnly _Schedules As New KnxSystemSchedule
-    Private _NameSpace As String
-    Private _MessageLog As New DataTable
+    Private ReadOnly _NameSpace As String
     Private IsPolling As Boolean = False '正在轮询
 
     ''' <summary>
@@ -44,41 +37,17 @@ Public Class KnxSystem
     ''' </summary>
     Public Event MessageTransmission As KnxMessageHandler
 
-    Public ReadOnly Property Bus As KnxSystemBusCollection
-        Get
-            Return _Bus
-        End Get
-    End Property
+    Public ReadOnly Property Bus As KnxBusCollection
 
-    Public ReadOnly Property Areas As KnxSystemArea
-        Get
-            Return _Areas
-        End Get
-    End Property
+    Public ReadOnly Property Areas As DataTable 'KnxAreaCollection
 
-    Public ReadOnly Property Objects As KnxSystemObjectCollection
-        Get
-            Return _Objects
-        End Get
-    End Property
+    Public ReadOnly Property Objects As KnxObjectCollection
 
-    Public ReadOnly Property Scenes As KnxSystemSceneCollection
-        Get
-            Return _Scenes
-        End Get
-    End Property
+    Public ReadOnly Property Scenes As KnxSceneCollection
 
-    Public ReadOnly Property Devices As KnxSystemDeviceCollection
-        Get
-            Return _Devices
-        End Get
-    End Property
+    Public ReadOnly Property Devices As KnxDeviceCollection
 
-    Public ReadOnly Property Schedules As KnxSystemSchedule
-        Get
-            Return _Schedules
-        End Get
-    End Property
+    Public ReadOnly Property Schedules As KnxScheduleCollection
 
     Public ReadOnly Property Links As DataTable
 
@@ -86,44 +55,40 @@ Public Class KnxSystem
     ''' 报文日志DataTable
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property MessageLog As DataTable
-        Get
-            Return _MessageLog
-        End Get
-    End Property
+    Public ReadOnly Property MessageLog As New DataTable
 
-    Public Sub New(ExcelDataFile As String)
+    Public Sub New(pathExcel As String)
         Try
             _NameSpace = System.Reflection.Assembly.GetExecutingAssembly.GetName.Name
-            Dim dicDt As Dictionary(Of String, DataTable) = ReadExcelToDataTables(ExcelDataFile, True, True)
+            Dim dicDt As Dictionary(Of String, DataTable) = ReadExcelToDataTables(pathExcel, True, True)
             Dim dtBus As DataTable = Nothing
             If dicDt.TryGetValue("Interfaces", dtBus) Then
-                _Bus = New KnxSystemBusCollection(dtBus)
+                _Bus = New KnxBusCollection(dtBus)
                 AddHandler _Bus.GroupMessageReceived, AddressOf _GroupMessageReceived
                 AddHandler _Bus.GroupPollRequest, AddressOf PollObjectsValue
             End If
             Dim dtArea As DataTable = Nothing
             If dicDt.TryGetValue("Areas", dtArea) Then
-                _Areas = New KnxSystemArea(dtArea)
+                _Areas = dtArea ' New KnxAreaCollection(dtArea)
             End If
             Dim dtObj As DataTable = Nothing
             If dicDt.TryGetValue("Objects", dtObj) Then
-                _Objects = New KnxSystemObjectCollection(dtObj)
+                _Objects = New KnxObjectCollection(dtObj)
                 AddHandler _Objects.GroupWriteRequest, AddressOf _GroupWriteRequest
                 AddHandler _Objects.GroupReadRequest, AddressOf _GroupReadRequest
             End If
             Dim dtScn As DataTable = Nothing
             If dicDt.TryGetValue("Scenes", dtScn) Then
-                _Scenes = New KnxSystemSceneCollection(dtScn)
+                _Scenes = New KnxSceneCollection(dtScn)
                 AddHandler _Scenes.SceneControlRequest, AddressOf _GroupWriteRequest
             End If
             Dim dtDev As DataTable = Nothing
             If dicDt.TryGetValue("Devices", dtDev) Then
-                _Devices = New KnxSystemDeviceCollection(dtDev)
+                _Devices = New KnxDeviceCollection(dtDev)
             End If
             Dim dtScd As DataTable = Nothing
             If dicDt.TryGetValue("Schedules", dtScd) Then
-                _Schedules = New KnxSystemSchedule(dtScd)
+                _Schedules = New KnxScheduleCollection(dtScd)
                 ScheduleEventsInit() '初始化定时事件表
                 AddHandler _Schedules.ScheduleEventTriggered, AddressOf _ScheduleEventTriggered
             End If
@@ -141,6 +106,7 @@ Public Class KnxSystem
     ''' 初始化报文日志表
     ''' </summary>
     Private Sub MsgLogTableInit()
+
         With _MessageLog
             .Clear()
             .Columns.Add("DateTime", GetType(DateTime))
@@ -173,57 +139,42 @@ Public Class KnxSystem
         If _Schedules.Table.Rows.Count = 0 Then Exit Sub
         For Each dr As DataRow In _Schedules.Table.Rows '逐行读取
             If dr("Enable") = 0 Then Continue For '无视禁用的定时
-            Dim GrpType As KnxGroupType '组地址类型
-            If Not [Enum].TryParse(dr("TargetType"), GrpType) Then '字符串转枚举
-                Throw New ArgumentException($"Wrong TargetType in ScheduleTable: {dr("TargetType")}.")
-            End If
-            Dim Codes As String() = String__StrArray(dr("TargetCode").ToString) '对象编号数组
-            Dim lstTargrt As New List(Of KnxObjectGeneric) '控制目标列表
-            Select Case GrpType '根据组地址类型寻找对象，确定组地址控制类型
-                Case KnxGroupType.Switch, KnxGroupType.EnableCtl '开关控制
-                    For Each code As String In Codes
-                        For Each obj As KnxObjectGroup In _Objects(code)
-                            lstTargrt.Add(New KnxObjectGeneric(obj.InterfaceCode, obj.SwitchPart.CtlAddr, GroupValueType.Bool))
+            Dim tgtType As KnxObjectPart = KnxObjectBase.GetKnxObjectPart($"{dr("TargetType")}_Ctl") '定时计划中的对象类型，后面加control确保是控制组地址
+            Dim tgtCodes As String() = GetStringArray(dr("TargetCode").ToString) '对象编号数组
+            Dim grpList As New List(Of KnxGroup) '一条定时计划里的KNX组列表
+
+            For Each code As String In tgtCodes '遍历一条定时计划中的全部对象
+                Select Case tgtType
+                    Case KnxObjectPart.SceneControl '场景的情况，在Scenes对象里查找对象
+                        For Each obj As KnxScene In _Scenes(code)
+                            grpList.Add(obj(tgtType))
                         Next
-                    Next
-                Case KnxGroupType.Dimming '亮度控制
-                    For Each code As String In Codes
-                        For Each obj As KnxObjectGroup In _Objects(code)
-                            lstTargrt.Add(New KnxObjectGeneric(obj.InterfaceCode, obj.ValuePart.CtlAddr, GroupValueType.BytePercent))
+                    Case Else '其他的情况在Objects对象里查找
+                        For Each obj As KnxObject In _Objects(code)
+                            grpList.Add(obj(tgtType))
                         Next
-                    Next
-                Case KnxGroupType.Value '数值控制
-                    For Each code As String In Codes
-                        For Each obj As KnxObjectGroup In _Objects(code)
-                            lstTargrt.Add(New KnxObjectGeneric(obj.InterfaceCode, obj.ValuePart.CtlAddr, GroupValueType.Byte))
-                        Next
-                    Next
-                Case KnxGroupType.Scene '场景控制
-                    For Each code As String In Codes '遍历目标编号
-                        For Each scn As KnxSceneGroup In _Scenes(code)
-                            lstTargrt.Add(New KnxObjectGeneric(scn.InterfaceCode, scn.GroupAddress, GroupValueType.Byte))
-                        Next
-                    Next
-                Case Else
-                    Throw New ArgumentException($"Wrong or unsupported TargetType '{dr("TargetType")}' of ScheduleEvent {dr("ScheduleName")}.")
-                    Continue For
-            End Select
-            For Each EvtString As String In dr("ScheduleEvents").ToString.Split(","c) '定时事件
-                Dim Time_Value As String() = EvtString.Split("="c) '{时间, 值}
-                For Each tgt As KnxObjectGeneric In lstTargrt
+                End Select
+            Next
+
+            For Each evtString As String In GetStringArray(dr("ScheduleEvents").ToString) '定时事件
+                Dim tvPair As String() = evtString.Split("="c) '{时间, 值}
+                For Each grp As KnxGroup In grpList
                     Dim drNew As DataRow = _Schedules.Sequence.Table.NewRow()
                     drNew("Enable") = Not (dr("Enable").ToString.Trim = "0") '定时启用
                     drNew("ScheduleCode") = dr("ScheduleCode") '定时编号
                     drNew("ScheduleName") = dr("ScheduleName") '定时名称
-                    drNew("Time") = New TimeHM(Convert.ToDateTime(Time_Value(0))) '触发时间
-                    drNew("TargetType") = GrpType '组地址类型
-                    drNew("GroupValueType") = tgt.GroupValueType '组地址类型
-                    Dim ValStr As String = Time_Value(1).Trim '目标值的字符串
+                    drNew("Time") = New TimeHM(Convert.ToDateTime(tvPair(0))) '触发时间
+                    drNew("TargetType") = tgtType '组地址类型
+                    drNew("GroupAddress") = grp.Address
+                    drNew("GroupDpt") = grp.DPT
+                    'drNew("GroupValueType") = grp.GroupValueType '组地址类型
+                    Dim ValStr As String = tvPair(1).Trim '目标值的字符串
                     drNew("TargetValue") = ValStr
-                    drNew("Value") = GroupCtlType_GroupValue(ValStr, tgt.GroupValueType)
-                    Dim dra = drNew.ItemArray
-                    drNew("InterfaceCode") = tgt.InterfaceCode
-                    drNew("GroupAddress") = tgt.GroupAddress
+                    drNew("Value") = grp.ToGroupValue(ValStr)
+                    'drNew("Value") = GroupCtlType_GroupValue(ValStr, grp.GroupValueType)
+                    'Dim dra = drNew.ItemArray
+                    'drNew("InterfaceCode") = grp.InterfaceCode
+
                     _Schedules.Sequence.Table.Rows.Add(drNew)
                 Next
             Next
@@ -247,36 +198,6 @@ Public Class KnxSystem
         If e.EventType = GroupEventType.ValueWrite OrElse e.EventType = GroupEventType.ValueResponse Then
             _Objects.ReceiveGroupMessage(e.DestinationAddress, e.Value)
         End If
-        'If e.EventType = GroupEventType.ValueWrite OrElse e.EventType = GroupEventType.ValueResponse Then
-        '    Dim GA As String = e.DestinationAddress.ToString '目标组地址
-        '    Dim GrpVal As GroupValue = e.Value '组地址值
-        '    Dim OptCol As String = vbNullString '组类型
-        '    Dim TypVal As Object = Nothing '类型化后的组地址值
-        '    Dim ObjPart As KnxObjectPart '组成员
-        '    Dim ObjPoint As KnxObjectPartPoint = KnxObjectPartPoint.Feedback '组成员点位
-        '    Select Case GrpVal.SizeInBit '1:Boolean, 2~8:Byte, >8:Array of Byte
-        '        Case < 8 'Boolean
-        '            OptCol = "Sw_Fdb"
-        '            TypVal = GrpVal.TypedValue
-        '            ObjPart = KnxObjectPart.Switch
-        '        Case 8
-        '            OptCol = "Val_Fdb"
-        '            TypVal = GrpVal.TypedValue
-        '            ObjPart = KnxObjectPart.Value
-        '        Case > 8
-        '            OptCol = "Val_Fdb"
-        '            Dim bs As Byte() = GrpVal.TypedValue
-        '            For i = 0 To bs.Length - 1
-        '                TypVal = vbNullString & bs(i)
-        '            Next
-        '            ObjPart = KnxObjectPart.Value
-        '    End Select
-        '    For Each dr As DataRow In _Objects.Table.Select($"{OptCol}_GrpAddr = '{GA}'") '找出组地址所属对象，可能有多个
-        '        If Not IsNothing(TypVal) Then dr($"{OptCol}_Value") = TypVal '表格更新
-        '        Dim id As Integer = dr("Id")
-        '        _Objects(id).GetPart(ObjPart).SetPointValue(ObjPoint, GrpVal) '对象值更新
-        '    Next
-        'End If
         RaiseEvent MessageTransmission(e, vbNullString) '触发事件
     End Sub
 
@@ -304,7 +225,6 @@ Public Class KnxSystem
     ''' </summary>
     ''' <param name="e"></param>
     Private Sub _ScheduleEventTriggered(code As String, e As KnxWriteEventArgs)
-
         _GroupWriteRequest(e)
     End Sub
 
@@ -318,17 +238,17 @@ Public Class KnxSystem
     ''' <summary>
     ''' 写入组地址（通过接口编号）
     ''' </summary>
-    ''' <param name="IfCode">接口编号，留空为IpRouting</param>
-    ''' <param name="GA">组地址</param>
-    ''' <param name="Value">值</param>
-    ''' <param name="Priority">优先级，默认为Low</param>
-    Public Async Sub WriteGroupAddress(IfCode As String, GA As GroupAddress, Value As GroupValue, Optional Priority As MessagePriority = MessagePriority.Low)
-        Dim BusArray As KnxBus() = IfCode__KnxBus(IfCode) '从接口编号得到的KnxBus数组
-        For Each Bus As KnxBus In BusArray
-            If Bus.ConnectionState = BusConnectionState.Connected Then
-                Dim MsgArgs As New KnxMsgEventArgs(KnxMessageType.ToBus, GroupEventType.ValueWrite, Priority, 6, GA, Bus.InterfaceConfiguration.IndividualAddress, False, Value)
+    ''' <param name="ifCode">接口编号，留空为IpRouting</param>
+    ''' <param name="address">组地址</param>
+    ''' <param name="value">值</param>
+    ''' <param name="priority">优先级，默认为Low</param>
+    Public Async Sub WriteGroupAddress(ifCode As String, address As GroupAddress, value As GroupValue, Optional priority As MessagePriority = MessagePriority.Low)
+        Dim BusArray As KnxBus() = IfCode__KnxBus(ifCode) '从接口编号得到的KnxBus数组
+        For Each bus As KnxBus In BusArray
+            If bus.ConnectionState = BusConnectionState.Connected Then
+                Dim MsgArgs As New KnxMsgEventArgs(KnxMessageType.ToBus, GroupEventType.ValueWrite, priority, 6, address, bus.InterfaceConfiguration.IndividualAddress, False, value)
                 RaiseEvent MessageTransmission(MsgArgs, $"By {_NameSpace}") '触发事件
-                Await Bus.WriteGroupValueAsync(GA, Value, Priority)
+                Await bus.WriteGroupValueAsync(address, value, priority)
                 Threading.Thread.Sleep(100) '短暂停顿防止丢包
             End If
         Next
@@ -344,14 +264,14 @@ Public Class KnxSystem
     ''' <summary>
     ''' 读取组地址（按总线对象）
     ''' </summary>
-    ''' <param name="Bus">KNX总线对象</param>
-    ''' <param name="GA">组地址</param>
-    ''' <param name="Priority">优先级</param>
-    Public Async Sub ReadGroupAddress(Bus As KnxBus, GA As GroupAddress, Optional Priority As MessagePriority = MessagePriority.Low)
-        If Bus.ConnectionState = BusConnectionState.Connected Then
-            Dim MsgArgs As New KnxMsgEventArgs(KnxMessageType.ToBus, GroupEventType.ValueRead, Priority, 6, GA, Bus.InterfaceConfiguration.IndividualAddress, False)
+    ''' <param name="bus">KNX总线对象</param>
+    ''' <param name="address">组地址</param>
+    ''' <param name="priority">优先级</param>
+    Public Async Sub ReadGroupAddress(bus As KnxBus, address As GroupAddress, Optional priority As MessagePriority = MessagePriority.Low)
+        If bus.ConnectionState = BusConnectionState.Connected Then
+            Dim MsgArgs As New KnxMsgEventArgs(KnxMessageType.ToBus, GroupEventType.ValueRead, priority, 6, address, bus.InterfaceConfiguration.IndividualAddress, False)
             RaiseEvent MessageTransmission(MsgArgs, $"By {_NameSpace}") '触发事件
-            Await Bus.ReadGroupValueAsync(GA, Priority)
+            Await bus.ReadGroupValueAsync(address, priority)
             Threading.Thread.Sleep(100) '短暂停顿防止丢包
         End If
     End Sub
@@ -359,13 +279,13 @@ Public Class KnxSystem
     ''' <summary>
     ''' 读取组地址（按总线对象数组）
     ''' </summary>
-    ''' <param name="BusArray">KNX总线对象数组</param>
-    ''' <param name="GA">组地址</param>
-    ''' <param name="Priority">优先级</param>
-    Public Sub ReadGroupAddress(BusArray As KnxBus(), GA As GroupAddress, Optional Priority As MessagePriority = MessagePriority.Low)
-        For Each Bus As KnxBus In BusArray
+    ''' <param name="busArray">KNX总线对象数组</param>
+    ''' <param name="address">组地址</param>
+    ''' <param name="priority">优先级</param>
+    Public Sub ReadGroupAddress(busArray As KnxBus(), address As GroupAddress, Optional priority As MessagePriority = MessagePriority.Low)
+        For Each Bus As KnxBus In busArray
             If Bus.ConnectionState = BusConnectionState.Connected Then
-                ReadGroupAddress(Bus, GA, Priority)
+                ReadGroupAddress(Bus, address, priority)
             End If
         Next
     End Sub
@@ -373,38 +293,45 @@ Public Class KnxSystem
     ''' <summary>
     ''' 读取组地址（按接口编号）
     ''' </summary>
-    ''' <param name="IfCode"></param>
-    ''' <param name="GA"></param>
-    ''' <param name="Priority">优先级</param>
-    Public Sub ReadGroupAddress(IfCode As String, GA As GroupAddress, Optional Priority As MessagePriority = MessagePriority.Low)
-        Dim BusArray As KnxBus() = IfCode__KnxBus(IfCode) '从接口编号得到的KnxBus数组
-        For Each Bus As KnxBus In BusArray
-            ReadGroupAddress(Bus, GA, Priority)
+    ''' <param name="ifCode"></param>
+    ''' <param name="address"></param>
+    ''' <param name="priority">优先级</param>
+    Public Sub ReadGroupAddress(ifCode As String, address As GroupAddress, Optional priority As MessagePriority = MessagePriority.Low)
+        Dim BusArray As KnxBus() = IfCode__KnxBus(ifCode) '从接口编号得到的KnxBus数组
+        For Each bus As KnxBus In BusArray
+            ReadGroupAddress(bus, address, priority)
         Next
     End Sub
 
     ''' <summary>
     ''' 读取组地址（按对象）
     ''' </summary>
-    ''' <param name="Obj"></param>
-    ''' <param name="Priority"></param>
-    Public Sub ReadObjectFeedback(Obj As KnxObjectGroup, Optional Priority As MessagePriority = MessagePriority.Low)
+    ''' <param name="obj"></param>
+    ''' <param name="priority"></param>
+    Public Sub ReadObjectFeedback(obj As KnxObject, Optional priority As MessagePriority = MessagePriority.Low)
         'If String.IsNullOrEmpty(obj.InterfaceCode) Then Exit Sub
-        If Obj.SwitchPart.FdbAddr.Address <> 0 Then '判断组地址是否为空
-            ReadGroupAddress(Obj.InterfaceCode, Obj.SwitchPart.FdbAddr, Priority)
+        If obj.ContainsGroup(KnxObjectPart.SwitchFeedback) Then
+            ReadGroupAddress(obj.InterfaceCode, obj.Groups(KnxObjectPart.SwitchFeedback).Address, priority)
         End If
-        If Obj.ValuePart.FdbAddr.Address <> 0 Then '判断组地址是否为空
-            ReadGroupAddress(Obj.InterfaceCode, Obj.ValuePart.FdbAddr, Priority)
+        If obj.ContainsGroup(KnxObjectPart.ValueFeedback) Then
+            ReadGroupAddress(obj.InterfaceCode, obj.Groups(KnxObjectPart.ValueFeedback).Address, priority)
         End If
+
+        'If obj.Groups(KnxObjectPart.SwitchFeedback).Address.Address <> 0 Then
+        '    ReadGroupAddress(obj.InterfaceCode, obj.Groups(KnxObjectPart.SwitchFeedback).Address, priority)
+        'End If
+        'If obj.Groups(KnxObjectPart.ValueFeedback).Address.Address <> 0 Then
+        '    ReadGroupAddress(obj.InterfaceCode, obj.Groups(KnxObjectPart.ValueFeedback).Address, priority)
+        'End If
     End Sub
 
     ''' <summary>
     ''' 读取组地址（按对象ID）
     ''' </summary>
-    ''' <param name="ObjId">Objects表中的ID</param>
+    ''' <param name="objId">Objects表中的ID</param>
     ''' <param name="Priority">优先级</param>
-    Public Sub ReadObjectFeedback(ObjId As Integer, Optional Priority As MessagePriority = MessagePriority.Low)
-        Dim obj As KnxObjectGroup = _Objects.Item(ObjId) '根据ID获取Object对象
+    Public Sub ReadObjectFeedback(objId As Integer, Optional Priority As MessagePriority = MessagePriority.Low)
+        Dim obj As KnxObject = _Objects.Items(objId) '根据ID获取Object对象
         ReadObjectFeedback(obj, Priority)
     End Sub
 
@@ -427,7 +354,7 @@ Public Class KnxSystem
                 lstIC.Add(r("InterfaceCode"))
             End If
         Next
-        For Each obj As KnxObjectGroup In _Objects
+        For Each obj As KnxObject In _Objects
             If lstIC.Contains(obj.InterfaceCode) Then
                 ReadObjectFeedback(obj) '读取组地址
             End If
@@ -438,18 +365,18 @@ Public Class KnxSystem
     ''' <summary>
     ''' 从接口编号到总线对象数组
     ''' </summary>
-    ''' <param name="IfCode">接口编号字符串</param>
+    ''' <param name="ifCode">接口编号字符串</param>
     ''' <returns>KnxBus对象数组</returns>
-    Private Function IfCode__KnxBus(IfCode As String) As KnxBus()
+    Private Function IfCode__KnxBus(ifCode As String) As KnxBus()
         Dim k As New List(Of KnxBus)
-        If String.IsNullOrEmpty(IfCode) Then '接口编号为空的情况使用默认接口
+        If String.IsNullOrEmpty(ifCode) Then '接口编号为空的情况使用默认接口
             If IsNothing(_Bus.Default) Then '不可能出现没有默认接口的情况
-                Throw New NullReferenceException("No available KNX Interface.")
+                Throw New ArgumentNullException("No available KNX Interface.")
             Else
                 k.Add(_Bus.Default) '默认接口
             End If
         Else
-            For Each str As String In String__StrArray(IfCode) '接口编号的数组
+            For Each str As String In GetStringArray(ifCode) '接口编号的数组
                 k.Add(_Bus(str))
             Next
         End If
@@ -477,19 +404,19 @@ Public Class KnxSystem
     ''' <summary>
     ''' 检查设备通讯
     ''' </summary>
-    ''' <param name="IfCode"></param>
-    Public Sub DevicePoll(IfCode As String)
+    ''' <param name="ifCode"></param>
+    Public Sub DevicePoll(ifCode As String)
         If IsPolling Then Exit Sub
-        Dim bus As KnxBus = _Bus(IfCode)
+        Dim bus As KnxBus = _Bus(ifCode)
         If bus.ConnectionState = BusConnectionState.Connected Then
-            Dim th As New Threading.Thread(Sub() _DevicePoll(IfCode)) '新建线程打开KNX接口
+            Dim th As New Threading.Thread(Sub() _DevicePoll(ifCode)) '新建线程打开KNX接口
             th.Start() '启动新线程
         End If
     End Sub
 
-    Private Async Sub _DevicePoll(IfCode As String)
-        Dim kdis As KnxDeviceInfo() = _Devices(IfCode)
-        Using kn As KnxNetwork = _Bus(IfCode).GetNetwork
+    Private Async Sub _DevicePoll(ifCode As String)
+        Dim kdis As KnxDeviceInfo() = _Devices(ifCode)
+        Using kn As KnxNetwork = _Bus(ifCode).GetNetwork
             For Each kdi As KnxDeviceInfo In kdis
                 Dim result As Boolean = Await kn.PingIndividualAddressAsync(kdi.IndAddress)
                 kdi.State = If(result, IndAddressState.Online, IndAddressState.Offline)
