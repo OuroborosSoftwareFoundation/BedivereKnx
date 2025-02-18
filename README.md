@@ -9,11 +9,6 @@ KNX intelligent lighting control software, based on Knx.Falcon.Sdk library.
 > 
 > This software may have bugs and is not recommended for commercial use, otherwise the consequences will be borne by oneself.
 
-> [!WARNING]
-> 对盗版、传播、使用[**ASTON Technologie**](https://www.aston-technologie.de/)公司**WinSwitch**软件的组织和个人予以强烈谴责。
-> 
-> We issue a stern condemnation against all organizations and individuals who piracy, distribution, or unauthorized use of **WinSwitch** software from [ASTON Technologie GmbH](https://www.aston-technologie.de/).
-
 ## 许可证 License
 
 本程序为自由软件， 在自由软件联盟发布的GNU通用公共许可协议的约束下，你可以对其进行再发布及修改。协议版本为第三版或（随你）更新的版本。
