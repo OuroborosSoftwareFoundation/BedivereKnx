@@ -37,6 +37,7 @@ Public Class KnxHmiMapping : Inherits HmiMappingBase
             Me.ChangeType = HmiValueChangeType.Fixed
             vals.Add(dpt.ToGroupValue(Convert.ToDecimal(valsString)))
         End If
+        Values = vals.ToArray
     End Sub
 
     Friend Function GetFillColor(gv As GroupValue) As Color

@@ -243,7 +243,7 @@ Public Class KnxSystem
     ''' <param name="value">值</param>
     ''' <param name="priority">优先级，默认为Low</param>
     Public Async Sub WriteGroupAddress(ifCode As String, address As GroupAddress, value As GroupValue, Optional priority As MessagePriority = MessagePriority.Low)
-        Dim BusArray As KnxBus() = IfCode__KnxBus(ifCode) '从接口编号得到的KnxBus数组
+        Dim BusArray As KnxBus() = GetKnxBus(ifCode) '从接口编号得到的KnxBus数组
         For Each bus As KnxBus In BusArray
             If bus.ConnectionState = BusConnectionState.Connected Then
                 Dim MsgArgs As New KnxMsgEventArgs(KnxMessageType.ToBus, GroupEventType.ValueWrite, priority, 6, address, bus.InterfaceConfiguration.IndividualAddress, False, value)
@@ -297,7 +297,7 @@ Public Class KnxSystem
     ''' <param name="address"></param>
     ''' <param name="priority">优先级</param>
     Public Sub ReadGroupAddress(ifCode As String, address As GroupAddress, Optional priority As MessagePriority = MessagePriority.Low)
-        Dim BusArray As KnxBus() = IfCode__KnxBus(ifCode) '从接口编号得到的KnxBus数组
+        Dim BusArray As KnxBus() = GetKnxBus(ifCode) '从接口编号得到的KnxBus数组
         For Each bus As KnxBus In BusArray
             ReadGroupAddress(bus, address, priority)
         Next
@@ -367,13 +367,13 @@ Public Class KnxSystem
     ''' </summary>
     ''' <param name="ifCode">接口编号字符串</param>
     ''' <returns>KnxBus对象数组</returns>
-    Private Function IfCode__KnxBus(ifCode As String) As KnxBus()
+    Private Function GetKnxBus(ifCode As String) As KnxBus()
         Dim k As New List(Of KnxBus)
         If String.IsNullOrEmpty(ifCode) Then '接口编号为空的情况使用默认接口
-            If IsNothing(_Bus.Default) Then '不可能出现没有默认接口的情况
-                Throw New ArgumentNullException("No available KNX Interface.")
+            If IsNothing(_Bus.DefaultBus) Then '不可能出现没有默认接口的情况
+                Throw New ArgumentNullException(NameOf(ifCode), "No available KNX Interface.")
             Else
-                k.Add(_Bus.Default) '默认接口
+                k.Add(_Bus.DefaultBus) '默认接口
             End If
         Else
             For Each str As String In GetStringArray(ifCode) '接口编号的数组

@@ -10,7 +10,7 @@ Module mdlDataFile_Excel
 
     Public Function ReadExcelToDataTables(FilePath As String, Optional HasSubTitle As Boolean = False, Optional AddIdCol As Boolean = False) As Dictionary(Of String, DataTable)
         If String.IsNullOrEmpty(FilePath) Then
-            Throw New ArgumentNullException("Data File path cannot be null.")
+            Throw New ArgumentNullException(NameOf(FilePath), "Data File path cannot be null.")
             Return Nothing
         ElseIf Not File.Exists(FilePath) Then
             Throw New FileNotFoundException($"Could not find file '{FilePath}'")

@@ -1,7 +1,6 @@
 ﻿Imports System.Data
 Imports System.Drawing
 Imports System.Text.RegularExpressions
-Imports DocumentFormat.OpenXml.Bibliography
 Imports Knx.Falcon
 Imports Knx.Falcon.ApplicationData.DatapointTypes
 Imports Knx.Falcon.ApplicationData.MasterData
@@ -116,13 +115,6 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
                 Dim gaStr As String = vbNullString '组地址相关文本
                 Dim text As String = vbNullString '描述文字
 
-                '==========暂时不实现文本变换=======================
-                Dim HasTextChange As Boolean = Regex.IsMatch(valueString, "[=|~]")
-                If HasTextChange Then '包含文本变换
-
-                End If
-                '==========暂时不实现文本变换=======================
-
                 If valueString.Contains("<div>") Then '含有描述文字的情况
                     Dim arry As String() = valueString.Replace("</div>", vbNullString).Split("<div>")
                     gaStr = arry(0) '取第一个行内容为组地址部分
@@ -131,6 +123,13 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
                     gaStr = valueString 'value属性只有一行的情况认为全是组地址部分
                 End If
                 Me.Text = text
+
+                '==========暂时不实现文本变换=======================
+                Dim HasTextChange As Boolean = Regex.IsMatch(valueString, "[=|~]")
+                If HasTextChange Then '包含文本变换
+
+                End If
+                '==========暂时不实现文本变换=======================
 
                 '组地址部分
                 If gaStr.Contains("="c) Then
@@ -155,6 +154,8 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
                         'Dim t As DatapointSubtype = DptFactory.Default.GetDatapointSubtype(1, 1)
                         Me.Group = New KnxGroup(ga, 1, 1)
                     End If
+
+                    If String.IsNullOrWhiteSpace(Me.Text) Then Me.Text = ga.ToString
 
                     '变换值部分
                     'Dim vals As New List(Of GroupValue)
@@ -219,11 +220,11 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
             Me.FillColor = fillcolors.Last
             Me.StrokeColor = strokecolors.Last
         Else '动态控件颜色设置（设为关闭颜色）
-            Me.FillColor = fillcolors.First
-            Me.StrokeColor = strokecolors.First
             Me.Mapping.FillColors = fillcolors '填充颜色
             Me.Mapping.StrokeColors = strokecolors '线条颜色
             Me.Mapping.FontColors = fontcolors '字体颜色
+            Me.FillColor = fillcolors.First
+            Me.StrokeColor = strokecolors.First
         End If
     End Sub
 

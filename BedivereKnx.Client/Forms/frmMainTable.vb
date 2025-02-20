@@ -404,9 +404,9 @@ Public Class frmMainTable
     '''' KNX接口状态变化事件
     '''' </summary>
     'Public Sub KnxConnectionChanged(sender As KnxBus, e As EventArgs)
-    'slblIfDefault.Visible = (KS.Bus.Default.ConnectionState = BusConnectionState.Connected)
+    'slblIfDefault.Visible = (KS.Bus.DefaultBus.ConnectionState = BusConnectionState.Connected)
     'If KS.Bus.Count = 0 Then
-    '    slblIfDefault.Text = KS.Bus.Default.ConnectionState.ToString
+    '    slblIfDefault.Text = KS.Bus.DefaultBus.ConnectionState.ToString
     '    slblIfCount.Visible = False
     'Else
     '    slblIfDefault.Text = "(+1)"

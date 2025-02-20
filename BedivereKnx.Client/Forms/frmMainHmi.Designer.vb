@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmMainGraphics
+Partial Class frmMainHmi
     Inherits System.Windows.Forms.Form
 
     'Form 重写 Dispose，以清理组件列表。
@@ -22,34 +22,34 @@ Partial Class frmMainGraphics
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        tvGpx = New TreeView()
-        pnlGpx = New Panel()
+        tvHmi = New TreeView()
+        pnlHmi = New Panel()
         btnLeftHide = New Button()
         SplitContainer1 = New SplitContainer()
-        pnlGpx.SuspendLayout()
+        pnlHmi.SuspendLayout()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
         SplitContainer1.Panel1.SuspendLayout()
         SplitContainer1.Panel2.SuspendLayout()
         SplitContainer1.SuspendLayout()
         SuspendLayout()
         ' 
-        ' tvGpx
+        ' tvHmi
         ' 
-        tvGpx.Dock = DockStyle.Fill
-        tvGpx.Location = New Point(0, 0)
-        tvGpx.Name = "tvGpx"
-        tvGpx.Size = New Size(118, 563)
-        tvGpx.TabIndex = 0
+        tvHmi.Dock = DockStyle.Fill
+        tvHmi.Location = New Point(0, 0)
+        tvHmi.Name = "tvHmi"
+        tvHmi.Size = New Size(118, 563)
+        tvHmi.TabIndex = 0
         ' 
-        ' pnlGpx
+        ' pnlHmi
         ' 
-        pnlGpx.BackColor = Color.Transparent
-        pnlGpx.Controls.Add(btnLeftHide)
-        pnlGpx.Dock = DockStyle.Fill
-        pnlGpx.Location = New Point(0, 0)
-        pnlGpx.Name = "pnlGpx"
-        pnlGpx.Size = New Size(1006, 563)
-        pnlGpx.TabIndex = 2
+        pnlHmi.BackColor = Color.Transparent
+        pnlHmi.Controls.Add(btnLeftHide)
+        pnlHmi.Dock = DockStyle.Fill
+        pnlHmi.Location = New Point(0, 0)
+        pnlHmi.Name = "pnlHmi"
+        pnlHmi.Size = New Size(1006, 563)
+        pnlHmi.TabIndex = 2
         ' 
         ' btnLeftHide
         ' 
@@ -68,27 +68,26 @@ Partial Class frmMainGraphics
         ' 
         ' SplitContainer1.Panel1
         ' 
-        SplitContainer1.Panel1.Controls.Add(tvGpx)
+        SplitContainer1.Panel1.Controls.Add(tvHmi)
         SplitContainer1.Panel1MinSize = 0
         ' 
         ' SplitContainer1.Panel2
         ' 
         SplitContainer1.Panel2.BackColor = Color.White
-        SplitContainer1.Panel2.Controls.Add(pnlGpx)
+        SplitContainer1.Panel2.Controls.Add(pnlHmi)
         SplitContainer1.Size = New Size(1132, 565)
         SplitContainer1.SplitterDistance = 120
         SplitContainer1.TabIndex = 3
         ' 
-        ' frmMainGraphics
+        ' frmMainHmi
         ' 
         AutoScaleDimensions = New SizeF(9F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1132, 565)
         Controls.Add(SplitContainer1)
-        Name = "frmMainGraphics"
+        Name = "frmMainHmi"
         StartPosition = FormStartPosition.CenterParent
-        Text = "frmMainGraphics"
-        pnlGpx.ResumeLayout(False)
+        pnlHmi.ResumeLayout(False)
         SplitContainer1.Panel1.ResumeLayout(False)
         SplitContainer1.Panel2.ResumeLayout(False)
         CType(SplitContainer1, ComponentModel.ISupportInitialize).EndInit()
@@ -96,8 +95,8 @@ Partial Class frmMainGraphics
         ResumeLayout(False)
     End Sub
 
-    Friend WithEvents tvGpx As TreeView
-    Friend WithEvents pnlGpx As Panel
+    Friend WithEvents tvHmi As TreeView
+    Friend WithEvents pnlHmi As Panel
     Friend WithEvents SplitContainer1 As SplitContainer
     Friend WithEvents btnLeftHide As Button
 End Class

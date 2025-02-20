@@ -6,7 +6,7 @@ Module mdlDataFile_Csv
 
     Public Function ReadCsvToDataTable(FilePath As String) As DataTable
         If String.IsNullOrEmpty(FilePath) Then
-            Throw New ArgumentNullException("Data File path cannot be null.")
+            Throw New ArgumentNullException(NameOf(FilePath), "Data File path cannot be null.")
             Return Nothing
         ElseIf Not File.Exists(FilePath) Then
             Throw New FileNotFoundException($"Could not find file '{FilePath}'")
@@ -23,7 +23,7 @@ Module mdlDataFile_Csv
 
     Public Function ReadCsvToDic(FilePath As String) As Dictionary(Of String, String)
         If String.IsNullOrEmpty(FilePath) Then
-            Throw New ArgumentNullException("Data File path cannot be null.")
+            Throw New ArgumentNullException(NameOf(FilePath), "Data File path cannot be null.")
             Return Nothing
         ElseIf Not File.Exists(FilePath) Then
             Throw New FileNotFoundException($"Could not find file '{FilePath}'")

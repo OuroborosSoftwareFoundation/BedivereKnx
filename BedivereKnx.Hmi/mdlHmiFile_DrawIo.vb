@@ -12,7 +12,7 @@ Public Module mdlDrawIo
 
     Public Function ReadDrawioToDic(FilePath As String) As Dictionary(Of String, HmiPage)
         If String.IsNullOrEmpty(FilePath) Then
-            Throw New ArgumentNullException("Draw.io File path cannot be null.")
+            Throw New ArgumentNullException(NameOf(FilePath), "Draw.io File path cannot be null.")
             Return Nothing
         ElseIf Not File.Exists(FilePath) Then
             Throw New FileNotFoundException($"Could not find file '{FilePath}'")

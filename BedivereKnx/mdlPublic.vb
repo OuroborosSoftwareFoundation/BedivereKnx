@@ -7,7 +7,7 @@ Module mdlPublic
 
     'Public Function GroupCtlType_GroupValue(Str As String, CtlType As GroupValueType) As GroupValue
     '    If String.IsNullOrEmpty(Str) Then
-    '        Throw New ArgumentNullException("Group value string is null.")
+    '        Throw New ArgumentNullException(NameOf(Str),"Group value string is null.")
     '        Return Nothing
     '    End If
     '    Dim val As GroupValue

@@ -1,44 +1,31 @@
 ﻿Imports System.ComponentModel
-Imports BedivereKnx.Graphics
+Imports BedivereKnx.Hmi
 Imports Knx.Falcon
 Imports Knx.Falcon.ApplicationData.DatapointTypes
-Imports Ouroboros.Hmi
 
 Public Class KnxHmiButton : Inherits Button
 
-    Private Component As New KnxHmiComponent
+    Public Event WriteValue As GroupWriteHandler
+
     Protected Friend Tip As New ToolTip
 
-    <Category("Hmi"), DefaultValue(HmiComponentDirection.Feedback)>
-    Public ReadOnly Property Direction As HmiComponentDirection
-        Get
-            Return Component.Direction
-        End Get
-    End Property
-
-    <Category("KNX")>
+    <Category("Mapping")>
     Public ReadOnly Property GroupAddress As GroupAddress
-        Get
-            Return Component.Group.Address
-        End Get
-    End Property
 
-    <Category("KNX")>
+    <Category("Mapping")>
     Public ReadOnly Property DPT As DptBase
-        Get
-            Return Component.Group.DPT
-        End Get
-    End Property
 
     <Category("KNX")>
-    Public ReadOnly Property Values As GroupValue()
-        Get
-            Return Component.Mapping.Values
-        End Get
-    End Property
+    Public Property Mapping As KnxHmiMapping
 
+    ''' <summary>
+    ''' 当前值
+    ''' </summary>
+    ''' <returns></returns>
     <Category("KNX")>
-    Private Property CurrentValueId As Integer
+    Private Property CurrentValueId As Integer = -1
+
+    Private Property InterfaceCode As String
 
     Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
         MyBase.OnPaint(e)
@@ -55,11 +42,33 @@ Public Class KnxHmiButton : Inherits Button
             Me.Height = .RawSize.Height
             Me.Text = .Text
             Me.Visible = True
+            _GroupAddress = .Group.Address
+            _DPT = .Group.DPT
+            _Mapping = .Mapping
         End With
     End Sub
 
-    Private Sub KnxHmiButton_MouseClick(sender As Object, e As MouseEventArgs) Handles Me.MouseClick
+    Private Sub KnxHmiButton_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter
+        Me.Tip.Show(Me.Text, sender)
+    End Sub
 
+    Private Sub KnxHmiButton_MouseLeave(sender As Object, e As EventArgs) Handles Me.MouseLeave
+        Me.Tip.Hide(sender)
+    End Sub
+
+    Private Sub KnxHmiButton_MouseClick(sender As Object, e As MouseEventArgs) Handles Me.MouseClick
+        Dim gv As GroupValue
+        Select Case Mapping.ChangeType
+            Case Ouroboros.Hmi.HmiValueChangeType.Fixed
+                gv = Mapping.Values(0)
+            Case Ouroboros.Hmi.HmiValueChangeType.Toggle
+                CurrentValueId += 1
+                gv = Mapping.Values(CurrentValueId)
+            Case Else
+                gv = Mapping.Values(0)
+        End Select
+        Dim KWE As New KnxWriteEventArgs(vbNullString, GroupAddress, gv, MessagePriority.Low)
+        RaiseEvent WriteValue(KWE)
     End Sub
 
 End Class

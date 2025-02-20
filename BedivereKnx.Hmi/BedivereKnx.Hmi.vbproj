@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>BedivereKnx.Graphics</RootNamespace>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Authors>BHC666</Authors>
     <Company>Ouroboros Software Foundation</Company>
     <Copyright>Copyright © 2025 Ouroboros Software Foundation</Copyright>
@@ -12,6 +11,10 @@
     <ImportedNamespaces>BedivereKnx=False,Ouroboros.Hmi=False,Microsoft.VisualBasic=True,System=True,System.Collections=True,System.Collections.Generic=True,System.Diagnostics=True,System.Linq=True,System.Xml.Linq=True,System.Threading.Tasks=True,BedivereKnx.Graphics=True</ImportedNamespaces>
     <PackageProjectUrl>https://www.github.com/OuroborosSoftwareFoundation/BedivereKnx</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="KnxHmiConvertion.vb" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Knx.Falcon.Sdk" Version="6.3.7959" />

@@ -21,7 +21,7 @@ Module mdlDataFile_Csv_ETS
 
     Public Function ReadEtsCsvToDataTable(FilePath As String) As DataTable
         If String.IsNullOrEmpty(FilePath) Then
-            Throw New ArgumentNullException("Data File path cannot be null.")
+            Throw New ArgumentNullException(NameOf(FilePath), "Data File path cannot be null.")
             Return Nothing
         End If
         If Not File.Exists(FilePath) Then

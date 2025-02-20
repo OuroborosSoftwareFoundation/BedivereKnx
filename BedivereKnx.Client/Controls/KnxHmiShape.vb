@@ -1,5 +1,5 @@
 ﻿Imports System.ComponentModel
-Imports BedivereKnx.Graphics
+Imports BedivereKnx.Hmi
 Imports Ouroboros.Hmi
 
 Public Class KnxHmiShape
@@ -78,22 +78,25 @@ Public Class KnxHmiShape
         End Set
     End Property
 
+    <Category("Mapping")>
+    Public Property Mapping As KnxHmiMapping
+
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
-        Dim g As System.Drawing.Graphics = e.Graphics '创建一个Graphics对象
+        Dim g As Graphics = e.Graphics '创建一个Graphics对象
         g.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
-        Dim fillBrush As New SolidBrush(Me.FillColor) '绘制形状实体作为反馈
-        Dim strokePen As New Pen(Me.StrokeColor, Me.StrokeWidth) '绘制形状边框作为控制
-        Select Case Me.Shape
+        Dim fillBrush As New SolidBrush(FillColor) '绘制形状实体作为反馈
+        Dim strokePen As New Pen(StrokeColor, StrokeWidth) '绘制形状边框作为控制
+        Select Case Shape
             Case HmiShapeType.Ellipse, HmiShapeType.Text
-                Dim frame As New Rectangle(Me.Padding.All, Me.Padding.All, Me.RawSize.Width, Me.RawSize.Height)
-                g.FillEllipse(fillBrush, frame) '绘制圆形
-                If Me.StrokeWidth > 0 Then g.DrawEllipse(strokePen, frame) '绘制边框
+                Dim frame As New Rectangle(Padding.All, Padding.All, RawSize.Width, RawSize.Height)
+                If FillColor.A > 0 Then g.FillEllipse(fillBrush, frame) '绘制圆形
+                If StrokeWidth > 0 Then g.DrawEllipse(strokePen, frame) '绘制边框
             Case HmiShapeType.Rectangle
-                Dim frame As New Rectangle(Me.Padding.All, Me.Padding.All, Me.RawSize.Width, Me.RawSize.Height)
-                g.FillRectangle(fillBrush, frame) '绘制矩形
-                If Me.StrokeWidth > 0 Then g.DrawRectangle(strokePen, frame) '绘制边框
+                Dim frame As New Rectangle(Padding.All, Padding.All, RawSize.Width, RawSize.Height)
+                If FillColor.A > 0 Then g.FillRectangle(fillBrush, frame) '绘制矩形
+                If StrokeWidth > 0 Then g.DrawRectangle(strokePen, frame) '绘制边框
             Case Else
-                Throw New Exception($"HmiShapeType '{Me.Shape.ToString}' is not supported in current version.")
+                Throw New Exception($"HmiShapeType '{Shape.ToString}' is not supported in current version.")
         End Select
         fillBrush.Dispose() '释放画笔对象
         strokePen.Dispose() '释放画笔对象
@@ -111,34 +114,37 @@ Public Class KnxHmiShape
 
     Public Sub New()
         InitializeComponent()
-        'Me.Padding = New Padding(Math.Ceiling(Me.StrokeWidth \ 2) + 1) '内边距，防止绘制不完整
-        Me.RawSize = Me.Size
+        RawSize = Size
+        SetStyle(ControlStyles.SupportsTransparentBackColor, True)
     End Sub
 
     Public Sub New(comp As KnxHmiComponent)
         InitializeComponent()
+        SetStyle(ControlStyles.SupportsTransparentBackColor, True)
+        BackColor = Color.Transparent
         With comp
-            '_Pad = Math.Ceiling(.StrokeWidth \ 2) + 1 '内边距，防止绘制不完整
-            Me.Padding = New Padding(Math.Ceiling(.StrokeWidth \ 2) + 1) '内边距，防止绘制不完整
-            Me.Left = .RawLocation.X - -Padding.All
-            Me.Top = .RawLocation.Y - -Padding.All
-            Me.Width = .RawSize.Width + Padding.All * 2
-            Me.Height = .RawSize.Height + Padding.All * 2
-            Me.RawSize = .RawSize
-            Me.Visible = True
-            Me.Shape = .Shape
-            Me.FillColor = .FillColor
-            Me.StrokeColor = .StrokeColor
-            Me.StrokeWidth = .StrokeWidth
+            Padding = New Padding(Math.Ceiling(.StrokeWidth \ 2) + 1) '内边距，防止绘制不完整
+            Left = .RawLocation.X - -Padding.All
+            Top = .RawLocation.Y - -Padding.All
+            Width = .RawSize.Width + Padding.All * 2
+            Height = .RawSize.Height + Padding.All * 2
+            RawSize = .RawSize
+            Shape = .Shape
+            FillColor = .FillColor
+            StrokeColor = .StrokeColor
+            StrokeWidth = .StrokeWidth
+            Mapping = .Mapping
+            Text = .Text
+            Visible = True
         End With
     End Sub
 
     Private Sub KnxHmiShape_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter
-        Me.Tip.Show(Me.Text, sender)
+        Tip.Show(Text, sender)
     End Sub
 
     Private Sub KnxHmiShape_MouseLeave(sender As Object, e As EventArgs) Handles Me.MouseLeave
-        Me.Tip.Hide(sender)
+        Tip.Hide(sender)
     End Sub
 
 End Class

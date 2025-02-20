@@ -1,8 +1,9 @@
-﻿Imports System.Data
+﻿Imports System.ComponentModel
+Imports System.Data
 Imports System.Net.NetworkInformation
 Imports Knx.Falcon
-Imports Knx.Falcon.Sdk
 Imports Knx.Falcon.Configuration
+Imports Knx.Falcon.Sdk
 
 ''' <summary>
 ''' KNX总线
@@ -11,7 +12,19 @@ Public Class KnxBusCollection
 
     Implements IEnumerable
 
-    Private _Items As New Dictionary(Of String, KnxBus)
+    Private ReadOnly dicItems As New Dictionary(Of String, KnxBus)
+
+    ''' <summary>
+    ''' 仅隧道模式，无默认接口
+    ''' </summary>
+    ''' <returns></returns>
+    Protected Friend Property AllTunnelMode As Boolean = False
+
+    ''' <summary>
+    ''' 总线就绪状态
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Ready As Boolean = False
 
     ''' <summary>
     ''' 接口连接状态变化事件
@@ -29,7 +42,7 @@ Public Class KnxBusCollection
     ''' 默认接口（第一个IpRouting类型）
     ''' </summary>
     ''' <returns></returns>
-    Public ReadOnly Property [Default] As KnxBus
+    Public ReadOnly Property DefaultBus As KnxBus
 
     ''' <summary>
     ''' 对象DataTable
@@ -37,59 +50,75 @@ Public Class KnxBusCollection
     ''' <returns></returns>
     Public ReadOnly Property Table As DataTable
 
+    ''' <summary>
+    ''' 获取总线对象（按ID）
+    ''' </summary>
+    ''' <param name="index"></param>
+    ''' <returns></returns>
     Default Public ReadOnly Property Items(index As Integer) As KnxBus
         Get
-            Return Items(_Table.Rows(index)("InterfaceCode").ToString)
+            Return Items(Table.Rows(index)("InterfaceCode").ToString)
         End Get
     End Property
 
+    ''' <summary>
+    ''' 获取总线对象（按接口编号）
+    ''' </summary>
+    ''' <param name="code"></param>
+    ''' <returns></returns>
     Default Public ReadOnly Property Items(code As String) As KnxBus
         Get
             Dim bus As KnxBus = Nothing
-            If _Items.TryGetValue(code, bus) Then
+            If dicItems.TryGetValue(code, bus) Then
                 Return bus
             Else
-                Return [Default] '找不到接口编号的情况下直接引用默认接口
+                Return DefaultBus '找不到接口编号的情况下直接引用默认接口
             End If
         End Get
     End Property
 
+    ''' <summary>
+    ''' 添加接口
+    ''' </summary>
+    ''' <param name="code"></param>
+    ''' <param name="bus"></param>
     Public Sub Add(code As String, bus As KnxBus)
-        _Items.Add(code, bus)
+        dicItems.Add(code, bus)
     End Sub
 
+    ''' <summary>
+    ''' 接口总数
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Count As Integer
         Get
-            Return _Items.Count
+            Return dicItems.Count
         End Get
     End Property
 
     Public Sub New()
-        _Default = New KnxBus("Type=IpRouting") '默认接口
-        AddHandler _Default.ConnectionStateChanged, AddressOf _ConnectionChanged
-        AddHandler _Default.GroupMessageReceived, AddressOf _GroupMessageReceived
-        _Table = New DataTable
-        With _Table
+        Table = New DataTable
+        With Table
             .Columns.Add("NetState", GetType(IPStatus)) '网络状态
             .Columns("NetState").Caption = "网络状态"
             .Columns.Add("CnState", GetType(BusConnectionState)) '接口连接状态
             .Columns("CnState").Caption = "连接状态"
-            _Items.Clear()
+            dicItems.Clear()
         End With
+        DefaultBus = New KnxBus("Type=IpRouting") '默认接口
+        AddHandler DefaultBus.ConnectionStateChanged, AddressOf _ConnectionChanged
+        AddHandler DefaultBus.GroupMessageReceived, AddressOf _GroupMessageReceived
     End Sub
 
     Public Sub New(dt As DataTable)
-        _Default = New KnxBus("Type=IpRouting") '默认接口
-        AddHandler _Default.ConnectionStateChanged, AddressOf _ConnectionChanged
-        AddHandler _Default.GroupMessageReceived, AddressOf _GroupMessageReceived
-        _Table = dt
-        With _Table
+        Table = dt
+        With Table
             '.PrimaryKey = { .Columns("InterfaceCode")}
             .Columns.Add("NetState", GetType(IPStatus)) '网络状态
             .Columns("NetState").Caption = "网络状态"
             .Columns.Add("CnState", GetType(BusConnectionState)) '接口连接状态
             .Columns("CnState").Caption = "连接状态"
-            _Items.Clear()
+            dicItems.Clear()
             For Each dr As DataRow In _Table.Rows
                 Dim cp As ConnectorParameters
                 Select Case dr("InterfaceType").ToString.ToLower
@@ -104,7 +133,7 @@ Public Class KnxBusCollection
                             cp = New IpRoutingConnectorParameters(Net.IPAddress.Parse(dr("InterfaceAddress")))
                         End If
                     Case Else '其他情况报错
-                        Throw New ArgumentNullException($"Invalid interface type: '{dr("InterfaceType")}'.")
+                        Throw New InvalidEnumArgumentException($"Invalid interface type: '{dr("InterfaceType")}'.")
                 End Select
                 cp.Name = dr("InterfaceCode")
                 cp.AutoReconnect = True '启用自动重连
@@ -113,12 +142,13 @@ Public Class KnxBusCollection
                 AddHandler k.GroupMessageReceived, AddressOf _GroupMessageReceived
                 dr("NetState") = IPStatus.Unknown
                 dr("CnState") = k.ConnectionState '初始化连接状态
-                _Items.Add(dr("InterfaceCode").ToString, k)
+                dicItems.Add(dr("InterfaceCode").ToString, k)
             Next
         End With
+        DefaultBus = New KnxBus("Type=IpRouting") '默认接口
+        AddHandler DefaultBus.ConnectionStateChanged, AddressOf _ConnectionChanged
+        AddHandler DefaultBus.GroupMessageReceived, AddressOf _GroupMessageReceived
     End Sub
-
-    Public Ready As Boolean = False '总线就绪
 
     ''' <summary>
     ''' 打开全部接口
@@ -131,8 +161,8 @@ Public Class KnxBusCollection
 
     Private Async Sub _AllConnect(Optional GroupPoll As Boolean = False)
         Ready = False
-        If Me.Default.ConnectionState = BusConnectionState.Closed Then
-            Await Me.Default.ConnectAsync() '打开默认接口
+        If DefaultBus.ConnectionState = BusConnectionState.Closed Then
+            Await DefaultBus.ConnectAsync() '打开默认接口
         End If
         For Each dr As DataRow In _Table.Rows
             Try
@@ -145,10 +175,10 @@ Public Class KnxBusCollection
                         dr("NetState") = pr.Status
                         RaiseEvent ConnectionChanged(Nothing, Nothing) '触发事件
                         If pr.Status = IPStatus.Success Then
-                            Await _Items(IfCode).ConnectAsync() '异步方式打开接口提高显示速度
+                            Await dicItems(IfCode).ConnectAsync() '异步方式打开接口提高显示速度
                         End If
                     Else
-                        Await _Items(IfCode).ConnectAsync() '异步方式打开接口提高显示速度
+                        Await dicItems(IfCode).ConnectAsync() '异步方式打开接口提高显示速度
                     End If
                 End If '跳过已经连接的接口
             Catch ex As Exception
@@ -161,7 +191,7 @@ Public Class KnxBusCollection
 
     Private Sub _ConnectionChanged(sender As KnxBus, e As EventArgs)
         For Each dr In _Table.Rows
-            dr("CnState") = _Items(dr("InterfaceCode")).ConnectionState
+            dr("CnState") = dicItems(dr("InterfaceCode")).ConnectionState
         Next
         RaiseEvent ConnectionChanged(sender, e) '触发事件
     End Sub
@@ -171,7 +201,7 @@ Public Class KnxBusCollection
     End Sub
 
     Public Function GetEnumerator() As IEnumerator Implements IEnumerable.GetEnumerator
-        Return _Items.Values.GetEnumerator()
+        Return dicItems.Values.GetEnumerator()
     End Function
 
 End Class

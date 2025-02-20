@@ -29,15 +29,17 @@ Partial Class frmMain
         Menu_Open = New ToolStripMenuItem()
         Menu_Import = New ToolStripMenuItem()
         ToolStripSeparator1 = New ToolStripSeparator()
-        Menu_Config = New ToolStripMenuItem()
+        Menu_Close = New ToolStripMenuItem()
         ToolStripSeparator2 = New ToolStripSeparator()
+        Menu_Config = New ToolStripMenuItem()
+        ToolStripSeparator3 = New ToolStripSeparator()
         Menu_Auth = New ToolStripMenuItem()
         Menu_About = New ToolStripMenuItem()
-        ToolStripSeparator3 = New ToolStripSeparator()
+        ToolStripSeparator4 = New ToolStripSeparator()
         Menu_Exit = New ToolStripMenuItem()
         btnGrid = New ToolStripButton()
         btnPanel = New ToolStripButton()
-        btnGraphics = New ToolStripButton()
+        btnHmi = New ToolStripButton()
         lblDateTime = New ToolStripLabel()
         lblCtDn = New ToolStripLabel()
         lblAuth = New ToolStripLabel()
@@ -60,7 +62,7 @@ Partial Class frmMain
         ' 
         Menu.GripStyle = ToolStripGripStyle.Hidden
         Menu.ImageScalingSize = New Size(20, 20)
-        Menu.Items.AddRange(New ToolStripItem() {ToolStripDropDownButton1, btnGrid, btnPanel, btnGraphics, lblDateTime, lblCtDn, lblAuth})
+        Menu.Items.AddRange(New ToolStripItem() {ToolStripDropDownButton1, btnGrid, btnPanel, btnHmi, lblDateTime, lblCtDn, lblAuth})
         Menu.Location = New Point(0, 0)
         Menu.Name = "Menu"
         Menu.Padding = New Padding(5, 2, 1, 0)
@@ -72,7 +74,7 @@ Partial Class frmMain
         ' ToolStripDropDownButton1
         ' 
         ToolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Image
-        ToolStripDropDownButton1.DropDownItems.AddRange(New ToolStripItem() {Menu_Open, Menu_Import, ToolStripSeparator1, Menu_Config, ToolStripSeparator2, Menu_Auth, Menu_About, ToolStripSeparator3, Menu_Exit})
+        ToolStripDropDownButton1.DropDownItems.AddRange(New ToolStripItem() {Menu_Open, Menu_Import, ToolStripSeparator1, Menu_Close, ToolStripSeparator2, Menu_Config, ToolStripSeparator3, Menu_Auth, Menu_About, ToolStripSeparator4, Menu_Exit})
         ToolStripDropDownButton1.Image = My.Resources.Resources.logo_32x18
         ToolStripDropDownButton1.ImageScaling = ToolStripItemImageScaling.None
         ToolStripDropDownButton1.ImageTransparentColor = Color.Magenta
@@ -86,57 +88,69 @@ Partial Class frmMain
         ' 
         Menu_Open.Name = "Menu_Open"
         Menu_Open.ShortcutKeys = Keys.Control Or Keys.O
-        Menu_Open.Size = New Size(202, 26)
-        Menu_Open.Text = "打开(&O)"
+        Menu_Open.Size = New Size(232, 26)
+        Menu_Open.Text = "打开项目(&O)"
         ' 
         ' Menu_Import
         ' 
         Menu_Import.Enabled = False
         Menu_Import.Name = "Menu_Import"
-        Menu_Import.Size = New Size(202, 26)
-        Menu_Import.Text = "导入(&I)"
+        Menu_Import.Size = New Size(232, 26)
+        Menu_Import.Text = "从数据库导入(&I)"
         ' 
         ' ToolStripSeparator1
         ' 
         ToolStripSeparator1.Name = "ToolStripSeparator1"
-        ToolStripSeparator1.Size = New Size(199, 6)
+        ToolStripSeparator1.Size = New Size(229, 6)
         ' 
-        ' Menu_Config
+        ' Menu_Close
         ' 
-        Menu_Config.Name = "Menu_Config"
-        Menu_Config.Size = New Size(202, 26)
-        Menu_Config.Text = "设置(&C)"
+        Menu_Close.Name = "Menu_Close"
+        Menu_Close.Size = New Size(232, 26)
+        Menu_Close.Text = "关闭项目(&C)"
         ' 
         ' ToolStripSeparator2
         ' 
         ToolStripSeparator2.Name = "ToolStripSeparator2"
-        ToolStripSeparator2.Size = New Size(199, 6)
+        ToolStripSeparator2.Size = New Size(229, 6)
+        ' 
+        ' Menu_Config
+        ' 
+        Menu_Config.Name = "Menu_Config"
+        Menu_Config.Size = New Size(232, 26)
+        Menu_Config.Text = "设置"
+        ' 
+        ' ToolStripSeparator3
+        ' 
+        ToolStripSeparator3.Name = "ToolStripSeparator3"
+        ToolStripSeparator3.Size = New Size(229, 6)
         ' 
         ' Menu_Auth
         ' 
         Menu_Auth.Name = "Menu_Auth"
-        Menu_Auth.Size = New Size(202, 26)
+        Menu_Auth.Size = New Size(232, 26)
         Menu_Auth.Text = "授权信息"
         ' 
         ' Menu_About
         ' 
         Menu_About.Name = "Menu_About"
-        Menu_About.Size = New Size(202, 26)
+        Menu_About.Size = New Size(232, 26)
         Menu_About.Text = "关于(&A)"
         ' 
-        ' ToolStripSeparator3
+        ' ToolStripSeparator4
         ' 
-        ToolStripSeparator3.Name = "ToolStripSeparator3"
-        ToolStripSeparator3.Size = New Size(199, 6)
+        ToolStripSeparator4.Name = "ToolStripSeparator4"
+        ToolStripSeparator4.Size = New Size(229, 6)
         ' 
         ' Menu_Exit
         ' 
         Menu_Exit.Name = "Menu_Exit"
-        Menu_Exit.Size = New Size(202, 26)
+        Menu_Exit.Size = New Size(232, 26)
         Menu_Exit.Text = "退出(&X)"
         ' 
         ' btnGrid
         ' 
+        btnGrid.Enabled = False
         btnGrid.Image = My.Resources.Resources.view_grid
         btnGrid.ImageTransparentColor = Color.Magenta
         btnGrid.Name = "btnGrid"
@@ -145,19 +159,21 @@ Partial Class frmMain
         ' 
         ' btnPanel
         ' 
+        btnPanel.Enabled = False
         btnPanel.Image = My.Resources.Resources.view_panel
         btnPanel.ImageTransparentColor = Color.Magenta
         btnPanel.Name = "btnPanel"
         btnPanel.Size = New Size(93, 24)
         btnPanel.Text = "控件视图"
         ' 
-        ' btnGraphics
+        ' btnHmi
         ' 
-        btnGraphics.Image = My.Resources.Resources.view_graphics
-        btnGraphics.ImageTransparentColor = Color.Magenta
-        btnGraphics.Name = "btnGraphics"
-        btnGraphics.Size = New Size(93, 24)
-        btnGraphics.Text = "图形界面"
+        btnHmi.Enabled = False
+        btnHmi.Image = My.Resources.Resources.view_graphics
+        btnHmi.ImageTransparentColor = Color.Magenta
+        btnHmi.Name = "btnHmi"
+        btnHmi.Size = New Size(93, 24)
+        btnHmi.Text = "图形界面"
         ' 
         ' lblDateTime
         ' 
@@ -186,7 +202,6 @@ Partial Class frmMain
         ' pnlMain
         ' 
         pnlMain.BackColor = Color.White
-        pnlMain.BackgroundImage = My.Resources.Resources.bg
         pnlMain.BackgroundImageLayout = ImageLayout.Zoom
         pnlMain.Dock = DockStyle.Fill
         pnlMain.Location = New Point(0, 29)
@@ -264,7 +279,7 @@ Partial Class frmMain
         ' 
         ' frmMain
         ' 
-        AutoScaleDimensions = New SizeF(9.0F, 20.0F)
+        AutoScaleDimensions = New SizeF(9F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1282, 653)
         Controls.Add(pnlMain)
@@ -309,5 +324,7 @@ Partial Class frmMain
     Friend WithEvents slblGithub As ToolStripStatusLabel
     Friend WithEvents btnGrid As ToolStripButton
     Friend WithEvents btnPanel As ToolStripButton
-    Friend WithEvents btnGraphics As ToolStripButton
+    Friend WithEvents btnHmi As ToolStripButton
+    Friend WithEvents Menu_Close As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
 End Class

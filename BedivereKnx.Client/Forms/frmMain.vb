@@ -1,11 +1,9 @@
-﻿Imports System.Configuration.ConfigurationManager
-Imports System.Security.Cryptography
-Imports BedivereKnx
-Imports Knx.Falcon
+﻿Imports Knx.Falcon
 Imports Knx.Falcon.Sdk
 
 Public Class frmMain
 
+    Dim ProjectOpened As Boolean = False '是否打开项目
     Dim WithEvents tmDoe As New Timer
     Dim rand As New Random
 
@@ -27,7 +25,18 @@ Public Class frmMain
         End If
     End Sub
 
-    '打开
+    Private Sub SetProjectState(state As Boolean)
+        ProjectOpened = state
+        btnGrid.Enabled = state
+        btnPanel.Enabled = state
+        btnHmi.Enabled = state
+        If state Then
+        Else
+            KS = Nothing
+        End If
+    End Sub
+
+    '打开项目
     Private Sub Menu_Open_Click(sender As Object, e As EventArgs) Handles Menu_Open.Click
         Dim ofd As New OpenFileDialog With {
             .InitialDirectory = Application.StartupPath,
@@ -35,13 +44,42 @@ Public Class frmMain
             .Filter = "Excel文件(*.xlsx)|*.xlsx"
         }
         If ofd.ShowDialog(Me) = DialogResult.OK Then
+            SetProjectState(True)
             OpenProject(ofd.FileName)
         End If
+    End Sub
+
+    '关闭项目
+    Private Sub Menu_Close_Click(sender As Object, e As EventArgs) Handles Menu_Close.Click
+        frmMainTable.Dispose()
+        frmMainHmi.Dispose()
+        SetProjectState(False)
     End Sub
 
     '导入
     Private Sub Menu_Import_Click(sender As Object, e As EventArgs) Handles Menu_Import.Click
 
+    End Sub
+
+    Private Sub btnGrid_Click(sender As Object, e As EventArgs) Handles btnGrid.Click
+
+    End Sub
+
+    Private Sub btnPanel_Click(sender As Object, e As EventArgs) Handles btnPanel.Click
+
+    End Sub
+
+    Private Sub btnHmi_Click(sender As Object, e As EventArgs) Handles btnHmi.Click
+        Dim ofd As New OpenFileDialog With {
+            .InitialDirectory = Application.StartupPath,
+            .Multiselect = False,
+            .Filter = "draw.io Diagrams(*.drawio)|*.drawio"
+        }
+        If ofd.ShowDialog(Me) = DialogResult.OK Then
+            frmMainHmi.HmiPath = ofd.FileName
+            'ShowSubForm(frmMainHmi)
+            frmMainHmi.Show()
+        End If
     End Sub
 
     ''' <summary>
@@ -77,14 +115,15 @@ Public Class frmMain
     ''' 关闭全部子窗体
     ''' </summary>
     Private Sub CloseChildenForm()
-        If IsNothing(Application.OpenForms) Then Exit Sub
-        For Each f As Form In Application.OpenForms
-            If IsNothing(f.Tag) Then
-                Continue For
-            Else
-                If f.Tag.ToString = "Children" Then f.Close()
-            End If
-        Next
+        'If IsNothing(Application.OpenForms) Then Exit Sub
+        'Dim fs As FormCollection = Application.OpenForms
+        'For Each f As Form In fs
+        '    If IsNothing(f.Tag) Then
+        '        Continue For
+        '    Else
+        '        If f.Tag.ToString = "Children" Then f.Close()
+        '    End If
+        'Next
     End Sub
 
     Private Sub Menu_Config_Click(sender As Object, e As EventArgs) Handles Menu_Config.Click
@@ -126,18 +165,6 @@ Public Class frmMain
         Application.Exit()
     End Sub
 
-    Private Sub btnGrid_Click(sender As Object, e As EventArgs) Handles btnGrid.Click
-
-    End Sub
-
-    Private Sub btnPanel_Click(sender As Object, e As EventArgs) Handles btnPanel.Click
-
-    End Sub
-
-    Private Sub btnGraphics_Click(sender As Object, e As EventArgs) Handles btnGraphics.Click
-        frmMainGraphics.Show()
-    End Sub
-
     'Github链接
     Private Sub slblGithub_Click(sender As Object, e As EventArgs) Handles slblGithub.Click
         OpenUrl("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnx")
@@ -147,9 +174,9 @@ Public Class frmMain
     ''' KNX接口状态变化事件
     ''' </summary>
     Public Sub KnxConnectionChanged(sender As KnxBus, e As EventArgs)
-        slblIfDefault.Visible = (KS.Bus.Default.ConnectionState = BusConnectionState.Connected)
+        slblIfDefault.Visible = (KS.Bus.DefaultBus.ConnectionState = BusConnectionState.Connected)
         If KS.Bus.Count = 0 Then
-            slblIfDefault.Text = KS.Bus.Default.ConnectionState.ToString
+            slblIfDefault.Text = KS.Bus.DefaultBus.ConnectionState.ToString
             slblIfCount.Visible = False
         Else
             slblIfDefault.Text = "(+1)"

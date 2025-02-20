@@ -68,7 +68,7 @@ Public Class frmInterface
         '    End Select
         'Next
         Dim AllOk As Boolean = dgvIfColoring()
-        Dim DCS As BusConnectionState = KS.Bus.Default.ConnectionState
+        Dim DCS As BusConnectionState = KS.Bus.DefaultBus.ConnectionState
         lblIfDefault.Text = DCS.ToString
         lblIfDefault.ForeColor = IIf(DCS = BusConnectionState.Connected, Color.Green, Color.Red)
         'If AllOK Then Me.Hide()
