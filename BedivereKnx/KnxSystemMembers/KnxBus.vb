@@ -12,6 +12,21 @@ Public Class KnxBusCollection
 
     Implements IEnumerable
 
+    ''' <summary>
+    ''' 组地址轮询申请事件
+    ''' </summary>
+    Protected Friend Event GroupPollRequest()
+
+    ''' <summary>
+    ''' 接口连接状态变化事件
+    ''' </summary>
+    Public Event ConnectionChanged As EventHandler
+
+    ''' <summary>
+    ''' 组地址报文接收事件
+    ''' </summary>
+    Public Event GroupMessageReceived As KnxMessageHandler
+
     Private ReadOnly dicItems As New Dictionary(Of String, KnxBus)
 
     ''' <summary>
@@ -25,18 +40,6 @@ Public Class KnxBusCollection
     ''' </summary>
     ''' <returns></returns>
     Public Property Ready As Boolean = False
-
-    ''' <summary>
-    ''' 接口连接状态变化事件
-    ''' </summary>
-    Public Event ConnectionChanged As EventHandler
-
-    ''' <summary>
-    ''' 组地址报文接收事件
-    ''' </summary>
-    Public Event GroupMessageReceived As KnxMessageHandler
-
-    Protected Friend Event GroupPollRequest() '组地址轮询申请事件
 
     ''' <summary>
     ''' 默认接口（第一个IpRouting类型）

@@ -12,6 +12,10 @@ Public Class KnxHmiShape
 
     Protected Friend Tip As New ToolTip
 
+    ''' <summary>
+    ''' 控件形状
+    ''' </summary>
+    ''' <returns></returns>
     <Category("Appearance"), DefaultValue(HmiShapeType.Ellipse)>
     Public Property Shape As HmiShapeType
         Get
@@ -23,6 +27,10 @@ Public Class KnxHmiShape
         End Set
     End Property
 
+    ''' <summary>
+    ''' 控件原始尺寸
+    ''' </summary>
+    ''' <returns></returns>
     <Browsable(False)>
     Public Property RawSize As Size
         Get
@@ -34,6 +42,10 @@ Public Class KnxHmiShape
         End Set
     End Property
 
+    ''' <summary>
+    ''' 可见度
+    ''' </summary>
+    ''' <returns></returns>
     <Category("Appearance"), DefaultValue(CByte(255))>
     Public Property Opacity As Byte
         Get
@@ -45,6 +57,10 @@ Public Class KnxHmiShape
         End Set
     End Property
 
+    ''' <summary>
+    ''' 填充颜色
+    ''' </summary>
+    ''' <returns></returns>
     <Category("Appearance")>
     Public Property FillColor As Color
         Get
@@ -56,6 +72,10 @@ Public Class KnxHmiShape
         End Set
     End Property
 
+    ''' <summary>
+    ''' 线条颜色
+    ''' </summary>
+    ''' <returns></returns>
     <Category("Appearance")>
     Public Property StrokeColor As Color
         Get
@@ -67,6 +87,10 @@ Public Class KnxHmiShape
         End Set
     End Property
 
+    ''' <summary>
+    ''' 线条宽度
+    ''' </summary>
+    ''' <returns></returns>
     <Category("Appearance"), DefaultValue(0)>
     Public Property StrokeWidth As UInteger
         Get
@@ -78,7 +102,11 @@ Public Class KnxHmiShape
         End Set
     End Property
 
-    <Category("Mapping")>
+    ''' <summary>
+    ''' 绑定对象
+    ''' </summary>
+    ''' <returns></returns>
+    <Category("Mapping"), Browsable(False)>
     Public Property Mapping As KnxHmiMapping
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)

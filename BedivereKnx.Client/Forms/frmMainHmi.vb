@@ -63,7 +63,7 @@ Public Class frmMainHmi
             Select Case comp.Direction'根据控制-反馈新建不同的控件
                 Case HmiComponentDirection.Control '控制控件
                     Dim ctl As New KnxHmiButton(comp)
-                    AddHandler ctl.WriteValue, AddressOf WriteGroupValue
+                    AddHandler ctl.HmiWriteValue, AddressOf HmiWriteGroupValue '绑定组地址写入事件
                     pnlHmi.Controls.Add(ctl)'把按钮加入窗体中
                 Case HmiComponentDirection.Feedback '反馈控件
                     Dim fdb As New KnxHmiDigitalFdb(comp) '新建控件
@@ -81,7 +81,7 @@ Public Class frmMainHmi
         Next
         pnlHmi.Controls.Add(btnLeftHide)
         btnLeftHide.Height = pnlHmi.Height
-        ReadPageGroupValue() '读取当前页面的反馈值
+        PollPageGroupValue() '读取当前页面的反馈值
     End Sub
 
     Private Sub pnlGpx_SizeChanged(sender As Panel, e As EventArgs) Handles pnlHmi.SizeChanged
@@ -93,7 +93,7 @@ Public Class frmMainHmi
         If isBusy Then Exit Sub
         If IsNothing(dicPages(pageName)) Then Exit Sub
         For Each img As HmiImageElement In dicPages(pageName).Elements.OfType(Of HmiImageElement)
-            Dim g As System.Drawing.Graphics = pnlHmi.CreateGraphics()
+            Dim g As Graphics = pnlHmi.CreateGraphics()
             g.DrawImage(img.Image, New Rectangle(img.RawLocation, img.RawSize))
         Next
     End Sub
@@ -102,14 +102,14 @@ Public Class frmMainHmi
     ''' 写入组地址的值
     ''' </summary>
     ''' <param name="e"></param>
-    Private Sub WriteGroupValue(e As KnxWriteEventArgs)
+    Private Sub HmiWriteGroupValue(e As KnxWriteEventArgs)
         KS.WriteGroupAddress(e.InterfaceCode, e.GroupAddr, e.GroupVal, e.Priority)
     End Sub
 
     ''' <summary>
     ''' 读取当前页面的反馈值
     ''' </summary>
-    Private Sub ReadPageGroupValue()
+    Private Sub PollPageGroupValue()
 
     End Sub
 

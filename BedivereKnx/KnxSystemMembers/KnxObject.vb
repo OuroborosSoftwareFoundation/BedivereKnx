@@ -8,9 +8,6 @@ Public Class KnxObjectCollection
 
     Implements IEnumerable
 
-    Protected Friend ReadOnly AddressColumns As String() = {"Sw_Ctl_GrpAddr", "Sw_Fdb_GrpAddr", "Val_Ctl_GrpAddr", "Val_Fdb_GrpAddr"}
-    Private _Items As New Dictionary(Of Integer, KnxObject)
-
     ''' <summary>
     ''' 组地址写入请求
     ''' </summary>
@@ -20,6 +17,9 @@ Public Class KnxObjectCollection
     ''' 组地址读取请求
     ''' </summary>
     Protected Friend Event GroupReadRequest As GroupReadHandler
+
+    Private _Items As New Dictionary(Of Integer, KnxObject)
+    Protected Friend ReadOnly AddressColumns As String() = {"Sw_Ctl_GrpAddr", "Sw_Fdb_GrpAddr", "Val_Ctl_GrpAddr", "Val_Fdb_GrpAddr"}
 
     Public ReadOnly Property Table As DataTable
 

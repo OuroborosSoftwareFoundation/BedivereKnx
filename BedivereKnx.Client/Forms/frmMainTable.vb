@@ -44,7 +44,7 @@ Public Class frmMainTable
     End Sub
 
     Private Sub tmPoll_Tick(sender As Timer, e As EventArgs) Handles tmPoll.Tick
-        KS.PollObjectsValue() '对象内部会自动判断是否正在忙碌
+        KS.PollAllObjects() '对象内部会自动判断是否正在忙碌
     End Sub
 
     ''' <summary>

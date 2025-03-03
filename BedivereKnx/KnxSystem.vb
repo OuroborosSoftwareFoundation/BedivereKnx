@@ -65,7 +65,7 @@ Public Class KnxSystem
             If dicDt.TryGetValue("Interfaces", dtBus) Then
                 _Bus = New KnxBusCollection(dtBus)
                 AddHandler _Bus.GroupMessageReceived, AddressOf _GroupMessageReceived
-                AddHandler _Bus.GroupPollRequest, AddressOf PollObjectsValue
+                AddHandler _Bus.GroupPollRequest, AddressOf PollAllObjects
             End If
             Dim dtArea As DataTable = Nothing
             If dicDt.TryGetValue("Areas", dtArea) Then
@@ -140,7 +140,7 @@ Public Class KnxSystem
         For Each dr As DataRow In _Schedules.Table.Rows '逐行读取
             If dr("Enable") = 0 Then Continue For '无视禁用的定时
             Dim tgtType As KnxObjectPart = KnxObjectBase.GetKnxObjectPart($"{dr("TargetType")}_Ctl") '定时计划中的对象类型，后面加control确保是控制组地址
-            Dim tgtCodes As String() = GetStringArray(dr("TargetCode").ToString) '对象编号数组
+            Dim tgtCodes As String() = StringToArray(dr("TargetCode").ToString) '对象编号数组
             Dim grpList As New List(Of KnxGroup) '一条定时计划里的KNX组列表
 
             For Each code As String In tgtCodes '遍历一条定时计划中的全部对象
@@ -156,7 +156,7 @@ Public Class KnxSystem
                 End Select
             Next
 
-            For Each evtString As String In GetStringArray(dr("ScheduleEvents").ToString) '定时事件
+            For Each evtString As String In StringToArray(dr("ScheduleEvents").ToString) '定时事件
                 Dim tvPair As String() = evtString.Split("="c) '{时间, 值}
                 For Each grp As KnxGroup In grpList
                     Dim drNew As DataRow = _Schedules.Sequence.Table.NewRow()
@@ -243,6 +243,38 @@ Public Class KnxSystem
     ''' <param name="value">值</param>
     ''' <param name="priority">优先级，默认为Low</param>
     Public Async Sub WriteGroupAddress(ifCode As String, address As GroupAddress, value As GroupValue, Optional priority As MessagePriority = MessagePriority.Low)
+        If Not String.IsNullOrEmpty(ifCode) AndAlso ifCode.StartsWith("$"c) Then '使用特殊控制字符串的情况
+            ifCode = ifCode.Substring(1) '去除开头的$
+            Dim knxPart As KnxObjectPart
+            If [Enum].TryParse(Of KnxObjectPart)(ifCode, knxPart) Then
+                Dim lstBus As New List(Of String)
+                Select Case knxPart
+                    Case KnxObjectPart.SwitchControl, KnxObjectPart.ValueControl
+                        Dim matches = From row As DataRow In Objects.Table.AsEnumerable()
+                                      From col As String In {"Sw_Ctl_GrpAddr", "Val_Ctl_GrpAddr"}
+                                      Where row(col).ToString() = address.ToString
+                                      Select New With {
+                                        .ifCode = row.Field(Of String)("InterfaceCode")
+                          } '在各地址列中查找收到的组地址
+                        For Each match In matches '遍历所有包含组地址的结果
+                            lstBus.Add(match.ifCode)
+                        Next
+                    Case KnxObjectPart.SceneControl
+                        Dim matches = From row As DataRow In Scenes.Table.AsEnumerable()
+                                      From col As String In {"GroupAddress"}
+                                      Where row(col).ToString() = address.ToString
+                                      Select New With {
+                                        .ifCode = row.Field(Of String)("InterfaceCode")
+                          } '在各地址列中查找收到的组地址
+                        For Each match In matches '遍历所有包含组地址的结果
+                            lstBus.Add(match.ifCode)
+                        Next
+                End Select
+                ifCode = String.Join(",", lstBus)
+            Else
+                ifCode = vbNullString
+            End If
+        End If
         Dim BusArray As KnxBus() = GetKnxBus(ifCode) '从接口编号得到的KnxBus数组
         For Each bus As KnxBus In BusArray
             If bus.ConnectionState = BusConnectionState.Connected Then
@@ -338,15 +370,16 @@ Public Class KnxSystem
     ''' <summary>
     ''' 读取全部Objects表的反馈组地址
     ''' </summary>
-    Public Sub PollObjectsValue()
+    Public Sub PollAllObjects()
         If IsPolling Then Exit Sub '上次轮询未完成，不执行任何操作
         If _Bus.Ready Then
-            Dim th As New Threading.Thread(AddressOf _PollObjectsValue) '新建线程执行轮询防止卡顿
-            th.Start()
+            'Dim th As New Threading.Thread(AddressOf _PollAllObjects) '新建线程执行轮询防止卡顿
+            'th.Start()
+            Task.Run(Sub() _PollAllObjects()) '新建线程执行轮询防止卡顿
         End If
     End Sub
 
-    Private Sub _PollObjectsValue()
+    Private Sub _PollAllObjects()
         IsPolling = True
         Dim lstIC As New List(Of String) '连接成功总线的接口编号
         For Each r As DataRow In _Bus.Table.Rows
@@ -358,6 +391,21 @@ Public Class KnxSystem
             If lstIC.Contains(obj.InterfaceCode) Then
                 ReadObjectFeedback(obj) '读取组地址
             End If
+        Next
+        IsPolling = False
+    End Sub
+
+    Public Sub PollAddressList(addresses As List(Of GroupAddress))
+        If IsPolling Then Exit Sub '上次轮询未完成，不执行任何操作
+        If _Bus.Ready Then
+            Task.Run(Sub() _PollAddressList(addresses)) '新建线程执行轮询防止卡顿
+        End If
+    End Sub
+
+    Private Sub _PollAddressList(addresses As List(Of GroupAddress))
+        IsPolling = True
+        For Each ga As GroupAddress In addresses
+
         Next
         IsPolling = False
     End Sub
@@ -376,7 +424,7 @@ Public Class KnxSystem
                 k.Add(_Bus.DefaultBus) '默认接口
             End If
         Else
-            For Each str As String In GetStringArray(ifCode) '接口编号的数组
+            For Each str As String In StringToArray(ifCode) '接口编号的数组
                 k.Add(_Bus(str))
             Next
         End If
