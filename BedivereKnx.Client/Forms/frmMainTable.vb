@@ -13,6 +13,7 @@ Public Class frmMainTable
     WithEvents menuColFilter As New ContextMenuStrip '筛选DataGridView列的右键菜单
 
     Private Sub frmMainTable_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Control.CheckForIllegalCrossThreadCalls = False
         'KS = New KnxSystem(fp)
         'AddHandler KS.Bus.ConnectionChanged, AddressOf KnxConnectionChanged
         'AddHandler KS.Schedules.ScheduleTimerStateChanged, AddressOf ScheduleTimerStateChanged
@@ -315,6 +316,8 @@ Public Class frmMainTable
             Dim ga As New GroupAddress(r.Cells($"{PartCol}_Ctl_GrpAddr").Value.ToString)
             KS.WriteGroupAddress(r.Cells("InterfaceCode").Value.ToString, ga, Val)
         Next
+        'Await KS.Bus.DefaultBus.ReadGroupValueAsync("1/1/101")
+        'MsgBox("rrr")
     End Sub
 
     ''' <summary>

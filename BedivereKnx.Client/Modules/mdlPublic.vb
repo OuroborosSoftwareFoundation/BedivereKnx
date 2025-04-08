@@ -1,11 +1,13 @@
 ﻿Imports System.Configuration
-Imports Ouroboros.Authorization
+Imports Ouroboros.Authorization.Iris
 Imports BedivereKnx
+Imports System.Net
 
 Module mdlPublic
     Public _AuthInfo As AuthorizationInfoCollection
     Public _DataFile As String = vbNullString '默认数据文件路径
     Public _InitRead As Boolean = False '初始化读取
+    Public _LocalIp As IPAddress
     'Public dicDataColHead As New Dictionary(Of String, String)
     Public KS As KnxSystem 'KNX对象
 

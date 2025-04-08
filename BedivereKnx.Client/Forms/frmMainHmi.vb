@@ -23,15 +23,15 @@ Public Class frmMainHmi
         '    If ofd.ShowDialog(Me) = DialogResult.OK Then
         dicPages = ReadDrawioToDic(HmiPath) '从文件读取到的KNX界面信息
         For Each k As String In dicPages.Keys
-                    tvHmi.Nodes.Add(k, k)
-                Next
+            tvHmi.Nodes.Add(k, k)
+        Next
 
-                ''=========测试内容============
-                'Dim lst As New List(Of KnxSwitchIndicator)
-                'lst.Add(si1)
-                'Comps.Add(New GroupAddress("1/1/117"), lst)
-                'si1.FeedbackAddress = New GroupAddress("1/1/117")
-                Dim fdb As New KnxHmiDigitalFdb()
+        ''=========测试内容============
+        'Dim lst As New List(Of KnxSwitchIndicator)
+        'lst.Add(si1)
+        'Comps.Add(New GroupAddress("1/1/117"), lst)
+        'si1.FeedbackAddress = New GroupAddress("1/1/117")
+        Dim fdb As New KnxHmiDigitalFdb()
         ''=========测试内容============
 
 
@@ -46,6 +46,7 @@ Public Class frmMainHmi
         Me.Dock = DockStyle.Fill
         tvHmi.SelectedNode = tvHmi.Nodes(0)
         'ShowKnxGpxPage(tvGpx.Nodes(0).Name) '加载第一个页面
+        AddHandler KS.MessageTransmission, AddressOf KnxMessageTransmission
     End Sub
 
     Private Sub tvGpx_AfterSelect(sender As TreeView, e As TreeViewEventArgs) Handles tvHmi.AfterSelect

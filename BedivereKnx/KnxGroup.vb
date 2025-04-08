@@ -89,7 +89,7 @@ Public Class KnxGroup
                 Case 3 '调光（bit0~2-步，bit3-方向）
                     Dim b As Byte = Convert.ToByte(value)
                     value = New Knx3BitControlled((b >> 3) = 1, b And &B111)
-                Case 18 '场景控制（bit0~5-场景值，bit7-是否学习）
+                Case 18 '场景控制（bit0~5-场景值，bit6-保留值[忽略]，bit7-是否学习）
                     Dim b As Byte = Convert.ToByte(value)
                     value = New KnxSceneControl((b >> 7) = 1, b And &B111111)
                 Case 26 '场景信息（bit0~6-场景值，bit6-是否激活）
@@ -141,7 +141,7 @@ Public Class KnxGroup
     'End Function
 
     Public Sub SetValue(value As Object)
-        _Value = DPT.ToGroupValue(value)
+        _Value = value 'DPT.ToGroupValue(value)
     End Sub
 
 End Class

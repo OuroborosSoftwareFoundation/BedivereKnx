@@ -1,4 +1,5 @@
-﻿Imports Knx.Falcon
+﻿Imports System.Net
+Imports Knx.Falcon
 Imports Knx.Falcon.Sdk
 
 Public Class frmMain
@@ -87,7 +88,7 @@ Public Class frmMain
     ''' </summary>
     ''' <param name="path">文件路径</param>
     Private Sub OpenProject(path As String)
-        KS = New KnxSystem(path)
+        KS = New KnxSystem(path, _LocalIp)
         AddHandler KS.Bus.ConnectionChanged, AddressOf KnxConnectionChanged
         AddHandler KS.Schedules.ScheduleTimerStateChanged, AddressOf ScheduleTimerStateChanged
         'AddHandler KS.MessageTransmission, AddressOf KnxMessageTransmission

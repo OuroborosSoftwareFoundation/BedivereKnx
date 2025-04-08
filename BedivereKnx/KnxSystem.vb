@@ -24,6 +24,7 @@
 '   如果没有，请查阅 <http://www.gnu.org/licenses/> 
 
 Imports System.Data
+Imports System.Net
 Imports Knx.Falcon
 Imports Knx.Falcon.Sdk
 
@@ -57,13 +58,13 @@ Public Class KnxSystem
     ''' <returns></returns>
     Public ReadOnly Property MessageLog As New DataTable
 
-    Public Sub New(pathExcel As String)
+    Public Sub New(pathExcel As String, localIp As IPAddress)
         Try
             _NameSpace = System.Reflection.Assembly.GetExecutingAssembly.GetName.Name
             Dim dicDt As Dictionary(Of String, DataTable) = ReadExcelToDataTables(pathExcel, True, True)
             Dim dtBus As DataTable = Nothing
             If dicDt.TryGetValue("Interfaces", dtBus) Then
-                _Bus = New KnxBusCollection(dtBus)
+                _Bus = New KnxBusCollection(dtBus, localIp)
                 AddHandler _Bus.GroupMessageReceived, AddressOf _GroupMessageReceived
                 AddHandler _Bus.GroupPollRequest, AddressOf PollAllObjects
             End If
@@ -179,14 +180,16 @@ Public Class KnxSystem
                 Next
             Next
         Next
-        With _Schedules.Sequence
-            .Table.DefaultView.Sort = "Time" '按照触发时间排序
-            .Table = .Table.DefaultView.ToTable
-            For i = 0 To .Table.Rows.Count - 1
-                .Table(i)("Id") = i '根据时间顺序写入Id
-            Next
-            .NextId = 0 '设置下次定时事件的ID
-        End With
+        If _Schedules.Sequence.Count <> 0 Then
+            With _Schedules.Sequence
+                .Table.DefaultView.Sort = "Time" '按照触发时间排序
+                .Table = .Table.DefaultView.ToTable
+                For i = 0 To .Table.Rows.Count - 1
+                    .Table(i)("Id") = i '根据时间顺序写入Id
+                Next
+                .NextId = 0 '设置下次定时事件的ID
+            End With
+        End If
     End Sub
 
     ''' <summary>
@@ -255,7 +258,7 @@ Public Class KnxSystem
                                       Where row(col).ToString() = address.ToString
                                       Select New With {
                                         .ifCode = row.Field(Of String)("InterfaceCode")
-                          } '在各地址列中查找收到的组地址
+                                      } '在各地址列中查找收到的组地址
                         For Each match In matches '遍历所有包含组地址的结果
                             lstBus.Add(match.ifCode)
                         Next
@@ -265,7 +268,7 @@ Public Class KnxSystem
                                       Where row(col).ToString() = address.ToString
                                       Select New With {
                                         .ifCode = row.Field(Of String)("InterfaceCode")
-                          } '在各地址列中查找收到的组地址
+                                      } '在各地址列中查找收到的组地址
                         For Each match In matches '遍历所有包含组地址的结果
                             lstBus.Add(match.ifCode)
                         Next
@@ -348,13 +351,6 @@ Public Class KnxSystem
         If obj.ContainsGroup(KnxObjectPart.ValueFeedback) Then
             ReadGroupAddress(obj.InterfaceCode, obj.Groups(KnxObjectPart.ValueFeedback).Address, priority)
         End If
-
-        'If obj.Groups(KnxObjectPart.SwitchFeedback).Address.Address <> 0 Then
-        '    ReadGroupAddress(obj.InterfaceCode, obj.Groups(KnxObjectPart.SwitchFeedback).Address, priority)
-        'End If
-        'If obj.Groups(KnxObjectPart.ValueFeedback).Address.Address <> 0 Then
-        '    ReadGroupAddress(obj.InterfaceCode, obj.Groups(KnxObjectPart.ValueFeedback).Address, priority)
-        'End If
     End Sub
 
     ''' <summary>
@@ -398,14 +394,54 @@ Public Class KnxSystem
     Public Sub PollAddressList(addresses As List(Of GroupAddress))
         If IsPolling Then Exit Sub '上次轮询未完成，不执行任何操作
         If _Bus.Ready Then
-            Task.Run(Sub() _PollAddressList(addresses)) '新建线程执行轮询防止卡顿
+            Dim dicGa As New Dictionary(Of String, List(Of GroupAddress)) 'IfCode-GroupAddress的字典
+            For Each ga As GroupAddress In addresses '遍历组地址列表
+                Dim matchesObj = From row As DataRow In Objects.Table.AsEnumerable()
+                                 From col As String In {"Sw_Ctl_GrpAddr", "Val_Ctl_GrpAddr"}
+                                 Where row(col).ToString() = ga.ToString
+                                 Select New With {
+                                    .ifCode = row.Field(Of String)("InterfaceCode")
+                                 } '在各地址列中查找收到的组地址
+                For Each matchO In matchesObj '遍历所有包含组地址的结果
+                    If Not dicGa.ContainsKey(matchO.ifCode) Then '字典包含接口编号的情况
+                        dicGa.Add(matchO.ifCode, New List(Of GroupAddress))
+                    End If
+                    dicGa(matchO.ifCode).Add(ga) '把组地址添加进字典
+                Next
+                If matchesObj.Count = 0 Then '在Objects表里没找到的情况下，在Scenes表里找
+                    Dim matchesScn = From row As DataRow In Scenes.Table.AsEnumerable()
+                                     From col As String In {"GroupAddress"}
+                                     Where row(col).ToString() = ga.ToString
+                                     Select New With {
+                                        .ifCode = row.Field(Of String)("InterfaceCode")
+                                     } '在各地址列中查找收到的组地址
+                    For Each matchS In matchesScn '遍历所有包含组地址的结果
+                        If Not dicGa.ContainsKey(matchS.ifCode) Then '字典包含接口编号的情况
+                            dicGa.Add(matchS.ifCode, New List(Of GroupAddress))
+                        End If
+                        dicGa(matchS.ifCode).Add(ga) '把组地址添加进字典
+                    Next
+                    If matchesScn.Count = 0 Then 'Objects和Scene表都找不到的情况
+                        If Not dicGa.ContainsKey(vbNullString) Then '字典包含接口编号的情况
+                            dicGa.Add(vbNullString, New List(Of GroupAddress))
+                        End If
+                        dicGa(vbNullString).Add(ga) '把组地址添加进字典
+                    End If
+                End If
+            Next
+            Task.Run(Sub() _PollAddressList(dicGa)) '新建线程执行轮询防止卡顿
         End If
     End Sub
 
-    Private Sub _PollAddressList(addresses As List(Of GroupAddress))
+    Private Sub _PollAddressList(addresses As Dictionary(Of String, List(Of GroupAddress)))
         IsPolling = True
-        For Each ga As GroupAddress In addresses
-
+        For Each ifCode As String In addresses.Keys
+            Dim buses As KnxBus() = GetKnxBus(ifCode)
+            For Each ga As GroupAddress In addresses(ifCode)
+                For Each bus As KnxBus In buses
+                    ReadGroupAddress(bus, ga, MessagePriority.Low)
+                Next
+            Next
         Next
         IsPolling = False
     End Sub

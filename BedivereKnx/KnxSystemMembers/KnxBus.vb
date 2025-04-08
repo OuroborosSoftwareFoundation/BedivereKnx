@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Data
+Imports System.Net
 Imports System.Net.NetworkInformation
 Imports Knx.Falcon
 Imports Knx.Falcon.Configuration
@@ -113,7 +114,7 @@ Public Class KnxBusCollection
         AddHandler DefaultBus.GroupMessageReceived, AddressOf _GroupMessageReceived
     End Sub
 
-    Public Sub New(dt As DataTable)
+    Public Sub New(dt As DataTable, localIp As IPAddress)
         Table = dt
         With Table
             '.PrimaryKey = { .Columns("InterfaceCode")}
@@ -148,7 +149,8 @@ Public Class KnxBusCollection
                 dicItems.Add(dr("InterfaceCode").ToString, k)
             Next
         End With
-        DefaultBus = New KnxBus("Type=IpRouting") '默认接口
+        Dim cpD As New IpRoutingConnectorParameters(IpRoutingConnectorParameters.DefaultMulticastAddress, New IndividualAddress(0, 0, 254))
+        DefaultBus = New KnxBus($"Type=IpRouting;LocalIPAddress={localIp}") '("Type=IpRouting") '默认接口
         AddHandler DefaultBus.ConnectionStateChanged, AddressOf _ConnectionChanged
         AddHandler DefaultBus.GroupMessageReceived, AddressOf _GroupMessageReceived
     End Sub

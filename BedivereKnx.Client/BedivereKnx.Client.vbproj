@@ -43,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Authorization.iris" />
     <None Remove="BedivereKnx.Client.vbproj.vspscc" />
     <None Remove="data - 副本.xlsx" />
     <None Remove="data.csv" />
@@ -102,9 +103,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Authorization.iris">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="data.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -206,8 +206,10 @@ Public Class KnxObjectCollection
                           } '在各地址列中查找收到的组地址
         For Each match In matches
             _Items(match.id).Groups(match.col).SetValue(groupValue) '把对象中的KNX组写入值
-            Dim ValCol As String = match.col.Replace("groupValue", "Value") '对应组地址值的列
-            _Table(match.id)(ValCol) = groupValue.TypedValue '更新表格中的值
+            Dim ValCol As String = match.col.Replace("GrpAddr", "Value") '对应组地址值的列
+            If _Table.Columns.Contains(ValCol) Then
+                _Table(match.id)(ValCol) = groupValue.TypedValue '更新表格中的值
+            End If
         Next
     End Sub
 

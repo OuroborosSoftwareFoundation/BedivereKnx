@@ -24,6 +24,7 @@
 '   如果没有，请查阅 <http://www.gnu.org/licenses/> 
 
 Imports System.Configuration
+Imports System.Net
 Imports Microsoft.VisualBasic.ApplicationServices
 
 Namespace My
@@ -48,7 +49,7 @@ Namespace My
 
             '==============================测试内容================================
 
-            Dim str As String = "0/0/0=0|1&lt;div&gt;测试&lt;/div&gt;&lt;div&gt;wwwwwq&lt;23/2/1/div&gt;"
+            'Dim str As String = "0/0/0=0|1&lt;div&gt;测试&lt;/div&gt;&lt;div&gt;wwwwwq&lt;23/2/1/div&gt;"
             'Dim ms As MatchCollection = Regex.Matches(str, "&lt;div&gt;(.*?)&lt;/div&gt;")
             'For Each m As Match In ms
             '    MsgBox(m.Groups(1).Value)
@@ -65,11 +66,25 @@ Namespace My
             '    MsgBox(i.Name)
             'Next
 
+            'Dim scn As New KnxSceneControl(False, 12)
+            'MsgBox(scn.ToString)
+
+            Dim hostName As String = Dns.GetHostName()
+            Dim hostEntry As IPHostEntry = Dns.GetHostEntry(hostName)
+            Dim ipAddresses As IPAddress() = hostEntry.AddressList
+
+            'For Each ip As IPAddress In ipAddresses
+            '    ' 只显示 IPv4 地址
+            '    'If ip.AddressFamily = Net.Sockets.AddressFamily.InterNetwork Then
+            '    MsgBox(ip.ToString())
+            '    'End If
+            'Next
 
             '==============================测试内容================================
 
 #End If
-            _AuthInfo = New Ouroboros.Authorization.AuthorizationInfoCollection
+            _AuthInfo = New Ouroboros.Authorization.Iris.AuthorizationInfoCollection
+            AppSettingInit()
         End Sub
 
         Public Sub InitDics()
@@ -79,6 +94,13 @@ Namespace My
         End Sub
 
         Private Sub AppSettingInit()
+            '本地IP
+            Dim ipStr As String = ConfigurationManager.AppSettings.Item("LocalIP")
+            Dim localIp As New IPAddress({127, 0, 0, 1})
+            If IPAddress.TryParse(ipStr, localIp) Then
+                _LocalIp = localIp
+            End If
+
             '默认数据文件
             If Not String.IsNullOrEmpty(ConfigurationManager.AppSettings.Item("DataFile")) Then
                 Dim fp As String = ConfigurationManager.AppSettings.Item("DataFile")
@@ -97,6 +119,7 @@ Namespace My
                 End Try
             End If
         End Sub
+
 
         'Public Sub AppSettingsRepair()
         '    Dim cfg As String(,) = {{"DataFile", "data.xlsx"}, {"RouteMcAddr", "224.0.23.12"}}
