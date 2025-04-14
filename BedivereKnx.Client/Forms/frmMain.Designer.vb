@@ -49,7 +49,7 @@ Partial Class frmMain
         slblIf = New ToolStripStatusLabel()
         slblIfCount = New ToolStripStatusLabel()
         slblIfDefault = New ToolStripStatusLabel()
-        slblBlank = New ToolStripStatusLabel()
+        slblPolling = New ToolStripStatusLabel()
         slblScd = New ToolStripStatusLabel()
         slblScdState = New ToolStripStatusLabel()
         slblSpring = New ToolStripStatusLabel()
@@ -165,6 +165,7 @@ Partial Class frmMain
         btnPanel.Name = "btnPanel"
         btnPanel.Size = New Size(93, 24)
         btnPanel.Text = "控件视图"
+        btnPanel.Visible = False
         ' 
         ' btnHmi
         ' 
@@ -217,7 +218,7 @@ Partial Class frmMain
         ' stsBottom
         ' 
         stsBottom.ImageScalingSize = New Size(20, 20)
-        stsBottom.Items.AddRange(New ToolStripItem() {slblIf, slblIfCount, slblIfDefault, slblBlank, slblScd, slblScdState, slblSpring, slblGithub})
+        stsBottom.Items.AddRange(New ToolStripItem() {slblIf, slblIfCount, slblIfDefault, slblPolling, slblScd, slblScdState, slblSpring, slblGithub})
         stsBottom.Location = New Point(0, 627)
         stsBottom.Name = "stsBottom"
         stsBottom.Size = New Size(1282, 26)
@@ -245,14 +246,18 @@ Partial Class frmMain
         slblIfDefault.Text = "(+1)"
         slblIfDefault.Visible = False
         ' 
-        ' slblBlank
+        ' slblPolling
         ' 
-        slblBlank.AutoSize = False
-        slblBlank.Name = "slblBlank"
-        slblBlank.Size = New Size(20, 20)
+        slblPolling.ForeColor = Color.Red
+        slblPolling.Margin = New Padding(10, 4, 0, 2)
+        slblPolling.Name = "slblPolling"
+        slblPolling.Size = New Size(78, 20)
+        slblPolling.Text = "轮询中……"
+        slblPolling.Visible = False
         ' 
         ' slblScd
         ' 
+        slblScd.Margin = New Padding(15, 4, 0, 2)
         slblScd.Name = "slblScd"
         slblScd.Size = New Size(99, 20)
         slblScd.Text = "定时器状态："
@@ -267,7 +272,7 @@ Partial Class frmMain
         ' slblSpring
         ' 
         slblSpring.Name = "slblSpring"
-        slblSpring.Size = New Size(446, 20)
+        slblSpring.Size = New Size(285, 20)
         slblSpring.Spring = True
         ' 
         ' slblGithub
@@ -317,7 +322,6 @@ Partial Class frmMain
     Friend WithEvents slblIf As ToolStripStatusLabel
     Friend WithEvents slblIfCount As ToolStripStatusLabel
     Friend WithEvents slblIfDefault As ToolStripStatusLabel
-    Friend WithEvents slblBlank As ToolStripStatusLabel
     Friend WithEvents slblScd As ToolStripStatusLabel
     Friend WithEvents slblScdState As ToolStripStatusLabel
     Friend WithEvents slblSpring As ToolStripStatusLabel
@@ -327,4 +331,5 @@ Partial Class frmMain
     Friend WithEvents btnHmi As ToolStripButton
     Friend WithEvents Menu_Close As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
+    Friend WithEvents slblPolling As ToolStripStatusLabel
 End Class

@@ -6,6 +6,7 @@ Public Delegate Sub KnxMessageHandler(e As KnxMsgEventArgs, log As String)
 Public Delegate Sub ScheduleEventHandler(code As String, e As KnxWriteEventArgs)
 Public Delegate Sub ScheduleTimerHandler(e As KnxScheduleTimerState)
 Public Delegate Sub KnxDeviceStateHandler(sender As KnxDeviceInfo, e As IndAddressState)
+Public Delegate Sub ValueChangeHandler(Of T)(value As T)
 
 Public Class KnxReadEventArgs
 

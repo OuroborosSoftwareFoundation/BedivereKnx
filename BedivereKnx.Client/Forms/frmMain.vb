@@ -1,5 +1,4 @@
-﻿Imports System.Net
-Imports Knx.Falcon
+﻿Imports Knx.Falcon
 Imports Knx.Falcon.Sdk
 
 Public Class frmMain
@@ -45,7 +44,6 @@ Public Class frmMain
             .Filter = "Excel文件(*.xlsx)|*.xlsx"
         }
         If ofd.ShowDialog(Me) = DialogResult.OK Then
-            SetProjectState(True)
             OpenProject(ofd.FileName)
         End If
     End Sub
@@ -70,6 +68,7 @@ Public Class frmMain
 
     End Sub
 
+    '打开图形界面
     Private Sub btnHmi_Click(sender As Object, e As EventArgs) Handles btnHmi.Click
         Dim ofd As New OpenFileDialog With {
             .InitialDirectory = Application.StartupPath,
@@ -77,9 +76,10 @@ Public Class frmMain
             .Filter = "draw.io Diagrams(*.drawio)|*.drawio"
         }
         If ofd.ShowDialog(Me) = DialogResult.OK Then
-            frmMainHmi.HmiPath = ofd.FileName
-            'ShowSubForm(frmMainHmi)
-            frmMainHmi.Show()
+            'frmMainHmi.HmiPath = ofd.FileName
+            ''ShowSubForm(frmMainHmi)
+            'frmMainHmi.Show()
+            OpenHmiForm(ofd.FileName)
         End If
     End Sub
 
@@ -90,6 +90,7 @@ Public Class frmMain
     Private Sub OpenProject(path As String)
         KS = New KnxSystem(path, _LocalIp)
         AddHandler KS.Bus.ConnectionChanged, AddressOf KnxConnectionChanged
+        AddHandler KS.PollingStatusChanged, AddressOf PollingStatusChanged
         AddHandler KS.Schedules.ScheduleTimerStateChanged, AddressOf ScheduleTimerStateChanged
         'AddHandler KS.MessageTransmission, AddressOf KnxMessageTransmission
         KS.Bus.AllConnect(_InitRead) '打开全部KNX接口并初始化读取
@@ -98,7 +99,22 @@ Public Class frmMain
         frmMainTable.Close()
         'frmMainTable.fp = path
         ShowSubForm(frmMainTable)
+        SetProjectState(True)
+        If Not String.IsNullOrWhiteSpace(_HmiFile) Then
+            OpenHmiForm(_HmiFile)
+        End If
     End Sub
+
+    ''' <summary>
+    ''' 打开图形文件
+    ''' </summary>
+    ''' <param name="path"></param>
+    Private Sub OpenHmiForm(path As String)
+        frmMainHmi.HmiPath = path
+        'ShowSubForm(frmMainHmi)
+        frmMainHmi.Show()
+    End Sub
+
 
     ''' <summary>
     ''' 显示子窗体
@@ -211,6 +227,13 @@ Public Class frmMain
         '            r.DefaultCellStyle.BackColor = Color.LightCoral
         '    End Select
         'Next
+    End Sub
+
+    ''' <summary>
+    ''' 轮询状态变化事件
+    ''' </summary>
+    Private Sub PollingStatusChanged(value As Boolean)
+        slblPolling.Visible = value
     End Sub
 
     ''' <summary>

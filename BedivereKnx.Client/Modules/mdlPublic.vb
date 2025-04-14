@@ -4,12 +4,35 @@ Imports BedivereKnx
 Imports System.Net
 
 Module mdlPublic
+
     Public _AuthInfo As AuthorizationInfoCollection
-    Public _DataFile As String = vbNullString '默认数据文件路径
-    Public _InitRead As Boolean = False '初始化读取
+
+    ''' <summary>
+    ''' 默认数据文件路径
+    ''' </summary>
+    Public _DataFile As String = vbNullString
+
+    ''' <summary>
+    ''' 默认HMI文件路径
+    ''' </summary>
+    Public _HmiFile As String = vbNullString
+
+    ''' <summary>
+    ''' 是否初始化读取
+    ''' </summary>
+    Public _InitRead As Boolean = False
+
+    ''' <summary>
+    ''' 本地IP
+    ''' </summary>
     Public _LocalIp As IPAddress
+
+    ''' <summary>
+    ''' KNX系统对象
+    ''' </summary>
+    Public KS As KnxSystem
+
     'Public dicDataColHead As New Dictionary(Of String, String)
-    Public KS As KnxSystem 'KNX对象
 
     Public Sub AppSettingSave(Key As String, Value As String)
         If ConfigurationManager.AppSettings.Item(Key) = Value Then Exit Sub '设置值相同时跳过

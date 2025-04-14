@@ -93,9 +93,13 @@ Public Class KnxHmiButton : Inherits Button
             Case Ouroboros.Hmi.HmiValueChangeType.Fixed
                 gv = Mapping.Values(0)
             Case Ouroboros.Hmi.HmiValueChangeType.Toggle
+                'If DPT.MainNumber = 1 Then
+
+                'Else
                 CurrentValueId += 1
-                If CurrentValueId = Mapping.Values.Length Then CurrentValueId = 0
-                gv = Mapping.Values(CurrentValueId)
+                    If CurrentValueId = Mapping.Values.Length Then CurrentValueId = 0
+                    gv = Mapping.Values(CurrentValueId)
+                'End If
             Case Else
                 gv = Mapping.Values(0)
         End Select

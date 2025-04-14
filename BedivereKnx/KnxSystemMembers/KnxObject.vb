@@ -81,7 +81,7 @@ Public Class KnxObjectCollection
     ''' <param name="gaString"></param>
     ''' <param name="objPart">Sw_Ctl,Sw_Fdb,Val_Ctl,Val_Fdb</param>
     ''' <returns></returns>
-    Default Public ReadOnly Property Items(gaString As String, objPart As String) As KnxObject()
+    Default Public ReadOnly Property Items(gaString As GroupAddress, objPart As String) As KnxObject()
         Get
             Dim drs As DataRow() = _Table.Select($"{objPart}_GrpAddr = '{gaString}'") '找出组地址所属对象，可能有多个
             If drs.Length > 0 Then
@@ -205,7 +205,7 @@ Public Class KnxObjectCollection
                           col
                           } '在各地址列中查找收到的组地址
         For Each match In matches
-            _Items(match.id).Groups(match.col).SetValue(groupValue) '把对象中的KNX组写入值
+            _Items(match.id).Groups(match.col).Value = groupValue '把对象中的KNX组写入值
             Dim ValCol As String = match.col.Replace("GrpAddr", "Value") '对应组地址值的列
             If _Table.Columns.Contains(ValCol) Then
                 _Table(match.id)(ValCol) = groupValue.TypedValue '更新表格中的值
@@ -257,6 +257,19 @@ Public Class KnxObject : Inherits KnxObjectBase
     ''' <param name="ifCode">接口编号</param>
     Public Sub New(type As KnxGroupType, id As Integer, code As String, name As String, ifCode As String)
         MyBase.New(type, id, code, name, ifCode)
+    End Sub
+
+    ''' <summary>
+    ''' 切换开关状态
+    ''' </summary>
+    Public Sub SwitchToggle()
+        If Me.Groups(KnxObjectPart.SwitchFeedback).DPT.MainNumber <> 1 Then Exit Sub
+        Dim fdb As GroupValue = Me.Groups(KnxObjectPart.SwitchFeedback).Value
+        If IsNothing(fdb) Then
+            Me.WriteValue(KnxObjectPart.SwitchControl, True)
+        Else
+            Me.WriteValue(KnxObjectPart.SwitchControl, (fdb.TypedValue = 0))
+        End If
     End Sub
 
 End Class

@@ -99,6 +99,8 @@ Namespace My
             Dim localIp As New IPAddress({127, 0, 0, 1})
             If IPAddress.TryParse(ipStr, localIp) Then
                 _LocalIp = localIp
+            Else
+                _LocalIp = New IPAddress({127, 0, 0, 1})
             End If
 
             '默认数据文件
@@ -110,6 +112,17 @@ Namespace My
                     _DataFile = vbNullString
                 End If
             End If
+
+            '默认图形文件
+            If Not String.IsNullOrEmpty(ConfigurationManager.AppSettings.Item("HmiFile")) Then
+                Dim fp As String = ConfigurationManager.AppSettings.Item("HmiFile")
+                If IO.File.Exists(fp) Then
+                    _HmiFile = ConfigurationManager.AppSettings.Item("HmiFile") '设置默认数据文件
+                Else
+                    _HmiFile = vbNullString
+                End If
+            End If
+
             '初始化读取
             If Not String.IsNullOrEmpty(ConfigurationManager.AppSettings.Item("InitRead")) Then
                 Try
@@ -118,6 +131,7 @@ Namespace My
                     _InitRead = False
                 End Try
             End If
+
         End Sub
 
 

@@ -22,8 +22,9 @@ Public Module mdlDrawIo
         Dim xr As XmlReader = XmlReader.Create(fs, New XmlReaderSettings)
         xr.ReadStartElement("mxfile")
         Dim Pages As New Dictionary(Of String, HmiPage)
-        Dim PageName As String = vbNullString '页面名称
-        Dim lstElem As New List(Of HmiElement) '当前页面的全部控件的列表
+        Dim PageName As String = vbNullString '当前页面名称
+        'Dim dicParent As New Dictionary(Of String, String) '图层字典（id-名称）
+        'Dim lstElem As New List(Of HmiElement) '当前页面的全部控件的列表
         While xr.Read
             If xr.NodeType = XmlNodeType.Whitespace Then Continue While '跳过标记间的空白
             If xr.NodeType = XmlNodeType.Element Then
@@ -31,13 +32,27 @@ Public Module mdlDrawIo
                     Case "diagram" '页面开始
                         PageName = xr.GetAttribute("name") '设定当前页面名称
                         Pages.Add(PageName, New HmiPage) '在输出字典中新建一个页的键值对
+                        Pages(PageName).Elements = New List(Of HmiElement)
                     Case "mxgraphmodel"
                         Pages(PageName).PageSize = New Size With {
                             .Width = xr.GetAttribute("pageWidth"),
                             .Height = xr.GetAttribute("pageHeight")
                         }
                     Case "mxcell" '页面中新单元开始
-                        If String.IsNullOrWhiteSpace(xr.GetAttribute("parent") = vbNullString) Then Continue While '跳过parent为空的项
+                        Dim parent As String = xr.GetAttribute("parent") '元素的图层名称
+                        If String.IsNullOrWhiteSpace(parent) Then Continue While '跳过parent为空的项
+                        'Select Case parent'元素的图层
+                        '    Case vbNullString
+                        '        Continue While '跳过parent为空的项
+                        '    Case "0"'parent属性为0的是图层
+
+                        '    Case "1" 'parent为1的是背景图层
+                        '        'Case "bg" '背景图片
+
+                        '    Case Else '其他图层，认为是控件
+
+                        'End Select
+
                         Dim valueStr As String = xr.GetAttribute("value") '控件的值
                         Dim styleStr As String = xr.GetAttribute("style") 'style属性
                         Dim inner As String = xr.ReadInnerXml() 'xmCell内部的mxGeometry元素
@@ -45,15 +60,21 @@ Public Module mdlDrawIo
                         Dim geom As HmiGeometry = HmiGeometry.FromInnerXml(inner) '控件坐标和尺寸
                         Dim match As Match = Regex.Match(styleStr, "shape=image;.*?image=data:image/.*?,(.*?);") '暂时忽略图片格式
                         If String.IsNullOrEmpty(match.Value) Then '控件的情况
-                            lstElem.Add(New KnxHmiComponent(geom, styleStr, valueStr)) '控件加入列表
+                            'lstElem.Add(New KnxHmiComponent(geom, styleStr, valueStr)) '控件加入列表
+                            Pages(PageName).Elements.Add(New KnxHmiComponent(geom, styleStr, valueStr)) '控件加入列表
                         Else '图片的情况
-                            lstElem.Add(New HmiImageElement(geom, match.Groups(1).Value)) '图片加入列表
+                            If parent = "1" Then '背景图层
+                                Pages(PageName).BackImages.Add(New HmiImageElement(geom, match.Groups(1).Value)) '图片加入背景列表
+                            Else
+                                'lstElem.Add(New HmiImageElement(geom, match.Groups(1).Value)) '图片加入列表
+                                Pages(PageName).Elements.Add(New HmiImageElement(geom, match.Groups(1).Value)) '图片加入列表
+                            End If
                         End If
                 End Select
             ElseIf xr.NodeType = XmlNodeType.EndElement Then
                 If xr.Name.ToLower = "diagram" Then '页面结束
-                    Pages(PageName).Elements = lstElem.ToArray '写入上个页面的信息
-                    lstElem.Clear() '清空控件信息
+                    'Pages(PageName).Elements = lstElem.ToArray '写入上个页面的信息
+                    'lstElem.Clear() '清空控件信息
                 End If
             End If
         End While

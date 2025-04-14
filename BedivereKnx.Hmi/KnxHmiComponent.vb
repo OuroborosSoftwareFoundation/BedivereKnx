@@ -64,16 +64,16 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
 
     ''' <summary>
     ''' 读取value属性字符串
-    ''' 控制格式：$[ObjectCode]=[数值]，[组地址]=[数值]，[组地址]=[数值]#[DPT].[DPST]
+    ''' 控制格式：*[ObjectCode]=[数值]，$[SceneCode]=[数值]，[组地址]=[数值]，[组地址]=[数值]#[DPT].[DPST]
     '''     开关量控制：$Channel1=0|1，0/0/0=0|1，0/0/0=0
     '''     数字量控制：$Channel1=100，0/0/0=0~255，0/0/0=000
-    ''' 反馈格式：$[ObjectCode]@[数值]，[组地址]@[数值]，[组地址]@[数值]#[DPT].[DPST]
+    ''' 反馈格式：*[ObjectCode]@[数值]，$[SceneCode]@[数值]，[组地址]@[数值]，[组地址]@[数值]#[DPT].[DPST]
     '''     开关量反馈：0/0/0@0|1，0/0/0
     '''     数字量反馈：0/0/0@0~255
     ''' </summary>
     Private Sub ReadValueAttribute(valueAttribute As String)
         valueAttribute = Regex.Replace(valueAttribute, "<span>.*?</span>", "", RegexOptions.IgnoreCase Or RegexOptions.Singleline) '去除格式信息
-        If valueAttribute.StartsWith("$"c) Then '$开头的为数据表映射模式
+        If valueAttribute.StartsWith("*"c) OrElse valueAttribute.StartsWith("$"c) Then '*和$开头的为数据表映射模式
             Me.MappingMode = HmiMappingMode.DataTable
         ElseIf ContainsGroupAddress(valueAttribute) Then '包含合法组地址为地址映射模式
             Me.MappingMode = HmiMappingMode.Address
@@ -121,7 +121,8 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
             Select Case Me.MappingMode
                 Case HmiMappingMode.DataTable
                     Me.Mapping = New KnxHmiMapping(mappingArry(1))
-                    Me.Text &= $"{textString}{mappingArry(0)}" '把ObjectCode加在文本后面备用
+                    'Me.Text &= $"{textString}{mappingArry(0)}" '把ObjectCode加在文本后面备用
+                    Me.Text = $"{textString}{mappingString}"
                 Case HmiMappingMode.Address
                     Dim ga As New GroupAddress '组地址
                     If GroupAddress.TryParse(mappingArry(0), ga) Then '组地址有效的情况

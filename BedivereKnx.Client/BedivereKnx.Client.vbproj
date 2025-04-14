@@ -27,18 +27,15 @@
 
   <ItemGroup>
     <Compile Remove="Classes\**" />
+    <Compile Remove="Controls\**" />
     <EmbeddedResource Remove="Classes\**" />
+    <EmbeddedResource Remove="Controls\**" />
     <None Remove="Classes\**" />
+    <None Remove="Controls\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="clsKnx.vb" />
-    <Compile Remove="Controls\ctlIndicatorLight.Designer.vb" />
-    <Compile Remove="Controls\ctlIndicatorLight.vb" />
-    <Compile Remove="Controls\HmiFeedbackWidget.Designer.vb" />
-    <Compile Remove="Controls\HmiFeedbackWidget.vb" />
-    <Compile Remove="Controls\KnxHmiFeedbacker.Designer.vb" />
-    <Compile Remove="Controls\KnxHmiFeedbacker.vb" />
     <Compile Remove="Modules\mdlDataFile_Excel.vb" />
   </ItemGroup>
 
@@ -72,6 +69,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Ouroboros.Authorization\Ouroboros.Authorization\Ouroboros.Authorization.vbproj" />
+    <ProjectReference Include="..\BedivereKnx.Hmi.Controls\BedivereKnx.Hmi.Controls.vbproj" />
     <ProjectReference Include="..\BedivereKnx.Hmi\BedivereKnx.Hmi.vbproj" />
     <ProjectReference Include="..\BedivereKnx\BedivereKnx.vbproj" />
   </ItemGroup>

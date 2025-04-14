@@ -37,6 +37,7 @@ Partial Class frmMainTable
         numObjVal = New TrackBar()
         Label1 = New Label()
         lblObjVal = New Label()
+        btnToggle = New Button()
         tpScene = New TabPage()
         dgvScene = New DataGridView()
         tlpScene = New TableLayoutPanel()
@@ -135,15 +136,14 @@ Partial Class frmMainTable
         ' tlpTool
         ' 
         tlpTool.ColumnCount = 1
-        tlpTool.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50F))
+        tlpTool.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
         tlpTool.Controls.Add(btnInterface, 0, 0)
-        tlpTool.Controls.Add(btnSchedule, 0, 1)
         tlpTool.Dock = DockStyle.Fill
         tlpTool.Location = New Point(3, 503)
         tlpTool.Name = "tlpTool"
         tlpTool.RowCount = 2
-        tlpTool.RowStyles.Add(New RowStyle(SizeType.Percent, 50F))
-        tlpTool.RowStyles.Add(New RowStyle(SizeType.Percent, 50F))
+        tlpTool.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        tlpTool.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
         tlpTool.Size = New Size(244, 94)
         tlpTool.TabIndex = 5
         ' 
@@ -152,17 +152,17 @@ Partial Class frmMainTable
         btnInterface.Dock = DockStyle.Fill
         btnInterface.Location = New Point(3, 3)
         btnInterface.Name = "btnInterface"
-        btnInterface.Size = New Size(238, 41)
+        btnInterface.Size = New Size(238, 68)
         btnInterface.TabIndex = 0
         btnInterface.Text = "KNX接口"
         btnInterface.UseVisualStyleBackColor = True
         ' 
         ' btnSchedule
         ' 
-        btnSchedule.Dock = DockStyle.Fill
-        btnSchedule.Location = New Point(3, 50)
+        btnSchedule.Dock = DockStyle.Bottom
+        btnSchedule.Location = New Point(0, 420)
         btnSchedule.Name = "btnSchedule"
-        btnSchedule.Size = New Size(238, 41)
+        btnSchedule.Size = New Size(936, 41)
         btnSchedule.TabIndex = 0
         btnSchedule.Text = "定时队列"
         btnSchedule.UseVisualStyleBackColor = True
@@ -205,17 +205,19 @@ Partial Class frmMainTable
         ' 
         ' tlpObject
         ' 
-        tlpObject.ColumnCount = 5
-        tlpObject.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 36.363636F))
-        tlpObject.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 36.363636F))
+        tlpObject.ColumnCount = 6
+        tlpObject.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 25F))
+        tlpObject.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 25F))
+        tlpObject.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 25F))
         tlpObject.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 60F))
-        tlpObject.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 27.272728F))
+        tlpObject.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 25F))
         tlpObject.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 50F))
-        tlpObject.Controls.Add(btnCtlFalse, 1, 0)
-        tlpObject.Controls.Add(btnCtlTrue, 0, 0)
-        tlpObject.Controls.Add(numObjVal, 3, 0)
-        tlpObject.Controls.Add(Label1, 2, 0)
-        tlpObject.Controls.Add(lblObjVal, 4, 0)
+        tlpObject.Controls.Add(btnCtlFalse, 2, 0)
+        tlpObject.Controls.Add(btnCtlTrue, 1, 0)
+        tlpObject.Controls.Add(numObjVal, 4, 0)
+        tlpObject.Controls.Add(Label1, 3, 0)
+        tlpObject.Controls.Add(lblObjVal, 5, 0)
+        tlpObject.Controls.Add(btnToggle, 0, 0)
         tlpObject.Dock = DockStyle.Bottom
         tlpObject.Location = New Point(0, 411)
         tlpObject.Name = "tlpObject"
@@ -227,9 +229,9 @@ Partial Class frmMainTable
         ' btnCtlFalse
         ' 
         btnCtlFalse.Dock = DockStyle.Fill
-        btnCtlFalse.Location = New Point(303, 3)
+        btnCtlFalse.Location = New Point(415, 3)
         btnCtlFalse.Name = "btnCtlFalse"
-        btnCtlFalse.Size = New Size(294, 44)
+        btnCtlFalse.Size = New Size(200, 44)
         btnCtlFalse.TabIndex = 0
         btnCtlFalse.Tag = "0"
         btnCtlFalse.Text = "关"
@@ -238,9 +240,9 @@ Partial Class frmMainTable
         ' btnCtlTrue
         ' 
         btnCtlTrue.Dock = DockStyle.Fill
-        btnCtlTrue.Location = New Point(3, 3)
+        btnCtlTrue.Location = New Point(209, 3)
         btnCtlTrue.Name = "btnCtlTrue"
-        btnCtlTrue.Size = New Size(294, 44)
+        btnCtlTrue.Size = New Size(200, 44)
         btnCtlTrue.TabIndex = 0
         btnCtlTrue.Tag = "1"
         btnCtlTrue.Text = "开"
@@ -251,10 +253,10 @@ Partial Class frmMainTable
         numObjVal.Dock = DockStyle.Fill
         numObjVal.Enabled = False
         numObjVal.LargeChange = 10
-        numObjVal.Location = New Point(663, 3)
+        numObjVal.Location = New Point(681, 3)
         numObjVal.Maximum = 100
         numObjVal.Name = "numObjVal"
-        numObjVal.Size = New Size(219, 44)
+        numObjVal.Size = New Size(200, 44)
         numObjVal.SmallChange = 5
         numObjVal.TabIndex = 1
         numObjVal.TickFrequency = 10
@@ -262,7 +264,7 @@ Partial Class frmMainTable
         ' Label1
         ' 
         Label1.Dock = DockStyle.Fill
-        Label1.Location = New Point(603, 0)
+        Label1.Location = New Point(621, 0)
         Label1.Name = "Label1"
         Label1.Size = New Size(54, 50)
         Label1.TabIndex = 2
@@ -272,11 +274,21 @@ Partial Class frmMainTable
         ' lblObjVal
         ' 
         lblObjVal.Dock = DockStyle.Fill
-        lblObjVal.Location = New Point(888, 0)
+        lblObjVal.Location = New Point(887, 0)
         lblObjVal.Name = "lblObjVal"
-        lblObjVal.Size = New Size(45, 50)
+        lblObjVal.Size = New Size(46, 50)
         lblObjVal.TabIndex = 3
         lblObjVal.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' btnToggle
+        ' 
+        btnToggle.Dock = DockStyle.Fill
+        btnToggle.Location = New Point(3, 3)
+        btnToggle.Name = "btnToggle"
+        btnToggle.Size = New Size(200, 44)
+        btnToggle.TabIndex = 4
+        btnToggle.Text = "切换"
+        btnToggle.UseVisualStyleBackColor = True
         ' 
         ' tpScene
         ' 
@@ -285,7 +297,7 @@ Partial Class frmMainTable
         tpScene.Controls.Add(tlpScene)
         tpScene.Location = New Point(4, 29)
         tpScene.Name = "tpScene"
-        tpScene.Size = New Size(936, 435)
+        tpScene.Size = New Size(936, 461)
         tpScene.TabIndex = 0
         tpScene.Tag = "Scene"
         tpScene.Text = "场景"
@@ -311,7 +323,7 @@ Partial Class frmMainTable
         dgvScene.ShowCellToolTips = False
         dgvScene.ShowEditingIcon = False
         dgvScene.ShowRowErrors = False
-        dgvScene.Size = New Size(936, 385)
+        dgvScene.Size = New Size(936, 411)
         dgvScene.TabIndex = 0
         dgvScene.Tag = "Scenes"
         ' 
@@ -322,7 +334,7 @@ Partial Class frmMainTable
         tlpScene.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50F))
         tlpScene.Controls.Add(btnCtlScn, 0, 0)
         tlpScene.Dock = DockStyle.Bottom
-        tlpScene.Location = New Point(0, 385)
+        tlpScene.Location = New Point(0, 411)
         tlpScene.Name = "tlpScene"
         tlpScene.RowCount = 1
         tlpScene.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
@@ -349,7 +361,7 @@ Partial Class frmMainTable
         tpDevice.Controls.Add(dgvDevice)
         tpDevice.Location = New Point(4, 29)
         tpDevice.Name = "tpDevice"
-        tpDevice.Size = New Size(936, 435)
+        tpDevice.Size = New Size(936, 461)
         tpDevice.TabIndex = 4
         tpDevice.Tag = "Device"
         tpDevice.Text = "设备"
@@ -375,7 +387,7 @@ Partial Class frmMainTable
         dgvDevice.ShowCellToolTips = False
         dgvDevice.ShowEditingIcon = False
         dgvDevice.ShowRowErrors = False
-        dgvDevice.Size = New Size(936, 435)
+        dgvDevice.Size = New Size(936, 461)
         dgvDevice.TabIndex = 2
         dgvDevice.Tag = "Objects"
         dgvDevice.VirtualMode = True
@@ -384,9 +396,10 @@ Partial Class frmMainTable
         ' 
         tpSchedule.BackColor = SystemColors.Control
         tpSchedule.Controls.Add(dgvSchedule)
+        tpSchedule.Controls.Add(btnSchedule)
         tpSchedule.Location = New Point(4, 29)
         tpSchedule.Name = "tpSchedule"
-        tpSchedule.Size = New Size(936, 435)
+        tpSchedule.Size = New Size(936, 461)
         tpSchedule.TabIndex = 2
         tpSchedule.Tag = "Schedule"
         tpSchedule.Text = "定时"
@@ -413,7 +426,7 @@ Partial Class frmMainTable
         dgvSchedule.ShowCellToolTips = False
         dgvSchedule.ShowEditingIcon = False
         dgvSchedule.ShowRowErrors = False
-        dgvSchedule.Size = New Size(936, 435)
+        dgvSchedule.Size = New Size(936, 420)
         dgvSchedule.TabIndex = 1
         ' 
         ' tpLink
@@ -421,7 +434,7 @@ Partial Class frmMainTable
         tpLink.Controls.Add(dgvLink)
         tpLink.Location = New Point(4, 29)
         tpLink.Name = "tpLink"
-        tpLink.Size = New Size(936, 435)
+        tpLink.Size = New Size(936, 461)
         tpLink.TabIndex = 5
         tpLink.Text = "链接"
         tpLink.UseVisualStyleBackColor = True
@@ -446,7 +459,7 @@ Partial Class frmMainTable
         dgvLink.ShowCellToolTips = False
         dgvLink.ShowEditingIcon = False
         dgvLink.ShowRowErrors = False
-        dgvLink.Size = New Size(936, 435)
+        dgvLink.Size = New Size(936, 461)
         dgvLink.TabIndex = 3
         dgvLink.Tag = "Objects"
         dgvLink.VirtualMode = True
@@ -458,7 +471,7 @@ Partial Class frmMainTable
         tpInterface.Controls.Add(TableLayoutPanel1)
         tpInterface.Location = New Point(4, 29)
         tpInterface.Name = "tpInterface"
-        tpInterface.Size = New Size(936, 435)
+        tpInterface.Size = New Size(936, 461)
         tpInterface.TabIndex = 3
         tpInterface.Tag = "Interface"
         tpInterface.Text = "接口"
@@ -485,7 +498,7 @@ Partial Class frmMainTable
         dgvIf.ShowCellToolTips = False
         dgvIf.ShowEditingIcon = False
         dgvIf.ShowRowErrors = False
-        dgvIf.Size = New Size(936, 385)
+        dgvIf.Size = New Size(936, 411)
         dgvIf.TabIndex = 3
         ' 
         ' TableLayoutPanel1
@@ -494,7 +507,7 @@ Partial Class frmMainTable
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50F))
         TableLayoutPanel1.Controls.Add(btnConnect, 0, 0)
         TableLayoutPanel1.Dock = DockStyle.Bottom
-        TableLayoutPanel1.Location = New Point(0, 385)
+        TableLayoutPanel1.Location = New Point(0, 411)
         TableLayoutPanel1.Name = "TableLayoutPanel1"
         TableLayoutPanel1.RowCount = 1
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 50F))
@@ -601,14 +614,14 @@ Partial Class frmMainTable
         ' slblSpring
         ' 
         slblSpring.Name = "slblSpring"
-        slblSpring.Size = New Size(360, 20)
+        slblSpring.Size = New Size(402, 20)
         slblSpring.Spring = True
         ' 
         ' slblGithub
         ' 
         slblGithub.IsLink = True
         slblGithub.Name = "slblGithub"
-        slblGithub.Size = New Size(520, 20)
+        slblGithub.Size = New Size(478, 20)
         slblGithub.Text = "https://github.com/OuroborosSoftwareFoundation/BedivereKnx"
         ' 
         ' frmMainTable
@@ -695,4 +708,5 @@ Partial Class frmMainTable
     Friend WithEvents slblIfDefault As ToolStripStatusLabel
     Friend WithEvents tpLink As TabPage
     Friend WithEvents dgvLink As DataGridView
+    Friend WithEvents btnToggle As Button
 End Class

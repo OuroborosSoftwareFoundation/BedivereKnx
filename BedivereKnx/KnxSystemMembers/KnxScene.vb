@@ -15,7 +15,7 @@ Public Class KnxSceneCollection
     Public ReadOnly Property Table As DataTable
 
     ''' <summary>
-    ''' 根据ID获取场景
+    ''' 获取场景（根据ID）
     ''' </summary>
     ''' <param name="index">场景ID</param>
     ''' <returns></returns>
@@ -32,7 +32,7 @@ Public Class KnxSceneCollection
     End Property
 
     ''' <summary>
-    ''' 根据编号获取场景
+    ''' 获取场景（根据编号）
     ''' </summary>
     ''' <param name="code">场景编号</param>
     ''' <returns></returns>
@@ -47,6 +47,26 @@ Public Class KnxSceneCollection
                 Return l.ToArray
             Else '找不到时返回错误
                 Throw New KeyNotFoundException($"Can't found SceneCode '{code}' in Scenes.")
+            End If
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' 获取场景（根据组地址）
+    ''' </summary>
+    ''' <param name="gaString"></param>
+    ''' <returns></returns>
+    Default Public ReadOnly Property Items(gaString As GroupAddress) As KnxScene()
+        Get
+            Dim drs As DataRow() = _Table.Select($"GroupAddress = '{gaString}'") '找出组地址所属对象，可能有多个
+            If drs.Length > 0 Then
+                Dim l As New List(Of KnxScene)
+                For Each dr As DataRow In drs
+                    l.Add(_Items(dr("Id")))
+                Next
+                Return l.ToArray
+            Else
+                Throw New KeyNotFoundException($"Can't found GroupAddress '{gaString}' in Scenes.")
             End If
         End Get
     End Property

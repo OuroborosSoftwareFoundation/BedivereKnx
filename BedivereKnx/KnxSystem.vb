@@ -31,7 +31,28 @@ Imports Knx.Falcon.Sdk
 Public Class KnxSystem
 
     Private ReadOnly _NameSpace As String
-    Private IsPolling As Boolean = False '正在轮询
+    Private _IsPolling As Boolean = False '正在轮询
+
+    ''' <summary>
+    ''' 正在轮询
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property IsPolling As Boolean
+        Get
+            Return _IsPolling
+        End Get
+        Set
+            If _IsPolling <> Value Then
+                _IsPolling = Value
+                RaiseEvent PollingStatusChanged(Value)
+            End If
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' 轮询状态变化事件
+    ''' </summary>
+    Public Event PollingStatusChanged As ValueChangeHandler(Of Boolean)
 
     ''' <summary>
     ''' 报文收发传输事件
@@ -284,7 +305,7 @@ Public Class KnxSystem
                 Dim MsgArgs As New KnxMsgEventArgs(KnxMessageType.ToBus, GroupEventType.ValueWrite, priority, 6, address, bus.InterfaceConfiguration.IndividualAddress, False, value)
                 RaiseEvent MessageTransmission(MsgArgs, $"By {_NameSpace}") '触发事件
                 Await bus.WriteGroupValueAsync(address, value, priority)
-                Threading.Thread.Sleep(100) '短暂停顿防止丢包
+                Threading.Thread.Sleep(150) '短暂停顿防止丢包
             End If
         Next
     End Sub
@@ -306,8 +327,8 @@ Public Class KnxSystem
         If bus.ConnectionState = BusConnectionState.Connected Then
             Dim MsgArgs As New KnxMsgEventArgs(KnxMessageType.ToBus, GroupEventType.ValueRead, priority, 6, address, bus.InterfaceConfiguration.IndividualAddress, False)
             RaiseEvent MessageTransmission(MsgArgs, $"By {_NameSpace}") '触发事件
-            Await bus.ReadGroupValueAsync(address, priority)
-            Threading.Thread.Sleep(100) '短暂停顿防止丢包
+            Await bus.ReadGroupValueAsync(address, New TimeSpan(0, 0, 0, 0, 100), priority,)
+            'Threading.Thread.Sleep(100) '短暂停顿防止丢包
         End If
     End Sub
 
@@ -369,9 +390,9 @@ Public Class KnxSystem
     Public Sub PollAllObjects()
         If IsPolling Then Exit Sub '上次轮询未完成，不执行任何操作
         If _Bus.Ready Then
-            'Dim th As New Threading.Thread(AddressOf _PollAllObjects) '新建线程执行轮询防止卡顿
-            'th.Start()
-            Task.Run(Sub() _PollAllObjects()) '新建线程执行轮询防止卡顿
+            Dim th As New Threading.Thread(AddressOf _PollAllObjects) '新建线程执行轮询防止卡顿
+            th.Start()
+            'Task.Run(Sub() _PollAllObjects()) '新建线程执行轮询防止卡顿
         End If
     End Sub
 
@@ -384,8 +405,9 @@ Public Class KnxSystem
             End If
         Next
         For Each obj As KnxObject In _Objects
-            If lstIC.Contains(obj.InterfaceCode) Then
+            If obj.InterfaceCode = vbNullString OrElse lstIC.Contains(obj.InterfaceCode) Then
                 ReadObjectFeedback(obj) '读取组地址
+                Threading.Thread.Sleep(200)
             End If
         Next
         IsPolling = False

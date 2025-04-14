@@ -5,6 +5,12 @@ Imports Knx.Falcon.ApplicationData.DatapointTypes
 Imports Knx.Falcon.ApplicationData.MasterData
 
 Public Class KnxGroup
+    Private _Value As GroupValue
+
+    ''' <summary>
+    ''' 值变化事件
+    ''' </summary>
+    Public Event GroupValueChanged As ValueChangeHandler(Of GroupValue)
 
     ''' <summary>
     ''' KNX数据类型
@@ -23,7 +29,22 @@ Public Class KnxGroup
     ''' </summary>
     ''' <returns></returns>
     Public Property Value As GroupValue
+        Get
+            Return _Value
+        End Get
+        Set
+            If (_Value Is Nothing) OrElse (Not _Value.Equals(Value)) Then
+                _Value = Value
+                RaiseEvent GroupValueChanged(Value)
+            End If
+        End Set
+    End Property
 
+    ''' <summary>
+    ''' 新建KNX组
+    ''' </summary>
+    ''' <param name="dptMain">DPT主类型</param>
+    ''' <param name="dptSub">DPT子类型</param>
     Public Sub New(Optional dptMain As Integer = 1, Optional dptSub As Integer = -1)
         Me.DPT = DptFactory.Default.Get(dptMain, dptSub)
         If Me.DPT Is Nothing Then
@@ -31,6 +52,10 @@ Public Class KnxGroup
         End If
     End Sub
 
+    ''' <summary>
+    ''' 新建KNX组
+    ''' </summary>
+    ''' <param name="dpt">{DPT主类型，DPT子类型}，子类型可以省略</param>
     Public Sub New(dpt As Integer())
         If dpt Is Nothing Then
             Me.DPT = DptFactory.Default.Get(1, -1) 'DptFactory.Default.Create(DptFactory.Default.GetDatapointType(1))
@@ -44,20 +69,42 @@ Public Class KnxGroup
         'End If
     End Sub
 
+    ''' <summary>
+    ''' 新建KNX组
+    ''' </summary>
+    ''' <param name="address">组地址</param>
+    ''' <param name="dptMain">DPT主类型</param>
+    ''' <param name="dptSub">DPT子类型</param>
     Public Sub New(address As GroupAddress, Optional dptMain As Integer = 1, Optional dptSub As Integer = -1)
         Me.New(dptMain, dptSub)
         _Address = address
     End Sub
 
+    ''' <summary>
+    ''' 新建KNX组
+    ''' </summary>
+    ''' <param name="address">组地址</param>
+    ''' <param name="dpt">{DPT主类型，DPT子类型}，子类型可以省略</param>
     Public Sub New(address As GroupAddress, Optional dpt As Integer() = Nothing)
         Me.New(dpt)
         _Address = address
     End Sub
 
+    ''' <summary>
+    ''' 新建KNX组
+    ''' </summary>
+    ''' <param name="addressString">组地址字符串</param>
+    ''' <param name="dptMain">DPT主类型</param>
+    ''' <param name="dptSub">DPT子类型</param>
     Public Sub New(addressString As String, Optional dptMain As Integer = 1, Optional dptSub As Integer = 0)
         Me.New(addressString, {dptMain, dptSub})
     End Sub
 
+    ''' <summary>
+    ''' 新建KNX组
+    ''' </summary>
+    ''' <param name="addressString">组地址字符串</param>
+    ''' <param name="dpt">{DPT主类型，DPT子类型}，子类型可以省略</param>
     Public Sub New(addressString As String, Optional dpt As Integer() = Nothing)
         Me.New(dpt)
         Dim ga As New GroupAddress
@@ -68,6 +115,11 @@ Public Class KnxGroup
         End If
     End Sub
 
+    ''' <summary>
+    ''' 新建KNX组
+    ''' </summary>
+    ''' <param name="addressString">组地址字符串</param>
+    ''' <param name="dptString">DPT类型字符串</param>
     Public Sub New(addressString As String, dptString As String)
         Me.New(addressString, GetDptIdFromDt(dptString))
     End Sub
@@ -130,97 +182,12 @@ Public Class KnxGroup
         Return {NumM, NumS}
     End Function
 
-    'Private Shared Function GetDptId(dptString As String) As Integer()
-    '    If IsNumeric(dptString) Then
-    '        Dim DptArry As String() = dptString.Replace("-"c, vbNullChar).Split(","c) '去除符号并并分割
-    '        Return Array.ConvertAll(DptArry, Function(s As String) Convert.ToInt32(s))
-    '    Else
-    '        Throw New ArgumentException($"Invalid DatapointType string: {dptString}.")
-    '        Return {-1, -1}
-    '    End If
-    'End Function
-
-    Public Sub SetValue(value As Object)
-        _Value = value 'DPT.ToGroupValue(value)
-    End Sub
+    '''' <summary>
+    '''' 设置值
+    '''' </summary>
+    '''' <param name="value"></param>
+    'Public Sub SetValue(value As Object)
+    '    Value = value 'DPT.ToGroupValue(value)
+    'End Sub
 
 End Class
-
-''' <summary>
-''' 【废弃】KNX组成员
-''' </summary>
-'Public Class KnxGroupPair
-
-'    ''' <summary>
-'    ''' KNX数据类型（子类型）
-'    ''' </summary>
-'    ''' <returns></returns>
-'    Public ReadOnly Property DPST As DatapointSubtype
-
-'    ''' <summary>
-'    ''' 控制组地址
-'    ''' </summary>
-'    ''' <returns></returns>
-'    Public ReadOnly Property CtlAddr As New GroupAddress
-
-'    ''' <summary>
-'    ''' 控制值
-'    ''' </summary>
-'    ''' <returns></returns>
-'    Public Property CtlValue As GroupValue
-
-'    ''' <summary>
-'    ''' 反馈组地址
-'    ''' </summary>
-'    ''' <returns></returns>
-'    Public ReadOnly Property FdbAddr As New GroupAddress
-
-'    ''' <summary>
-'    ''' 反馈值
-'    ''' </summary>
-'    ''' <returns></returns>
-'    Public Property FdbValue As GroupValue
-
-'    Public Sub SetPointValue(PointEnum As KnxObjectPartPoint, PointValue As GroupValue)
-'        Select Case PointEnum
-'            Case KnxObjectPartPoint.Control
-'                _CtlValue = PointValue
-'            Case KnxObjectPartPoint.Feedback
-'                _FdbValue = PointValue
-'            Case Else
-'                Throw New InvalidEnumArgumentException($"Wrong KnxObjectPartPoint: {PointEnum}.")
-'        End Select
-'    End Sub
-
-'    Public Sub SetPointValue(PointString As String, PointValue As GroupValue)
-'        Dim pnt As KnxObjectPartPoint
-'        Select Case PointString.ToLower.Trim
-'            Case "control", "ctl"
-'                pnt = KnxObjectPartPoint.Control
-'            Case "feedback", "fdb"
-'                pnt = KnxObjectPartPoint.Feedback
-'            Case Else
-'                Throw New InvalidEnumArgumentException($"Wrong KnxObjectPartPoint: {PointString}.")
-'        End Select
-'        SetPointValue(pnt, PointValue)
-'    End Sub
-
-'    Public Sub New(dptMain As Integer, dptSub As Integer, AddrCtl As String, AddrFdb As String)
-'        If Not String.IsNullOrEmpty(AddrCtl) Then _CtlAddr = New GroupAddress(AddrCtl)
-'        If Not String.IsNullOrEmpty(AddrFdb) Then _FdbAddr = New GroupAddress(AddrFdb)
-'        Me.DPST = DptFactory.Default.GetDatapointSubtype(dptMain, dptSub)
-'        'Dim gaC As New GroupAddress
-'        'If GroupAddress.TryParse(AddrCtl, gaC) Then
-'        '    _CtlAddr = gaC
-'        'Else
-'        '    Throw New ArgumentException($"Wrong GroupAddress format: '{AddrCtl}'.")
-'        'End If
-'        'Dim gaF As New GroupAddress
-'        'If GroupAddress.TryParse(AddrFdb, gaF) Then
-'        '    _FdbAddr = gaF
-'        'Else
-'        '    Throw New ArgumentException($"Wrong GroupAddress format: '{AddrFdb}'.")
-'        'End If
-'    End Sub
-
-'End Class

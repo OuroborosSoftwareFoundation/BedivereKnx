@@ -2,7 +2,6 @@
 Imports System.Text
 Imports System.Net.NetworkInformation
 Imports System.ComponentModel
-Imports BedivereKnx
 Imports Knx.Falcon
 Imports Knx.Falcon.Sdk
 
@@ -304,6 +303,15 @@ Public Class frmMainTable
 
     Private Sub numObjVal_Scroll(sender As TrackBar, e As EventArgs) Handles numObjVal.Scroll
         lblObjVal.Text = sender.Value '实时显示亮度值
+    End Sub
+
+    '开关切换
+    Private Sub btnToggle_Click(sender As Object, e As EventArgs) Handles btnToggle.Click
+        If isBusy Then Exit Sub
+        If IsNothing(dgvObject.CurrentRow) OrElse (dgvObject.SelectedRows.Count = 0) Then Exit Sub
+        For Each r As DataGridViewRow In dgvObject.SelectedRows
+            KS.Objects(r.Cells("ObjectCode").Value.ToString)(0).SwitchToggle()
+        Next
     End Sub
 
     ''' <summary>

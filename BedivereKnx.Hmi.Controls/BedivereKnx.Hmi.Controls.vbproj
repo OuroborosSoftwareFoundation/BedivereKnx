@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Version>0.3.0</Version>
+    <Authors>BHC666</Authors>
+    <Company>Ouroboros Software Foundation</Company>
+    <Copyright>Copyright © 2025 Ouroboros Software Foundation</Copyright>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://www.github.com/OuroborosSoftwareFoundation/BedivereKnx</PackageProjectUrl>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BedivereKnx.Hmi\BedivereKnx.Hmi.vbproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="KnxHmiButton.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="KnxHmiDigitalFdb.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="KnxHmiDigitalGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="KnxHmiShape.vb" />
+  </ItemGroup>
+
+</Project>

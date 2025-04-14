@@ -1,8 +1,12 @@
 ﻿Imports System.ComponentModel
 Imports BedivereKnx.Hmi
+Imports Knx.Falcon
 Imports Ouroboros.Hmi
 
-Public Class KnxHmiShape
+Public MustInherit Class KnxHmiShape
+
+    Public Event GroupValueChanged As ValueChangeHandler(Of GroupValue)
+
     Private _Shape As HmiShapeType = HmiShapeType.Ellipse
     Private _RawSize As Size
     Private _Opacity As Byte
@@ -11,21 +15,6 @@ Public Class KnxHmiShape
     Private _StrokeWidth As UInteger = 0
 
     Protected Friend Tip As New ToolTip
-
-    ''' <summary>
-    ''' 控件形状
-    ''' </summary>
-    ''' <returns></returns>
-    <Category("Appearance"), DefaultValue(HmiShapeType.Ellipse)>
-    Public Property Shape As HmiShapeType
-        Get
-            Return _Shape
-        End Get
-        Set
-            _Shape = Value
-            Invalidate() '重绘控件
-        End Set
-    End Property
 
     ''' <summary>
     ''' 控件原始尺寸
@@ -38,6 +27,21 @@ Public Class KnxHmiShape
         End Get
         Set
             _RawSize = Value
+            Invalidate() '重绘控件
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' 控件形状
+    ''' </summary>
+    ''' <returns></returns>
+    <Category("Appearance"), DefaultValue(HmiShapeType.Ellipse)>
+    Public Property Shape As HmiShapeType
+        Get
+            Return _Shape
+        End Get
+        Set
+            _Shape = Value
             Invalidate() '重绘控件
         End Set
     End Property
@@ -103,11 +107,14 @@ Public Class KnxHmiShape
     End Property
 
     ''' <summary>
-    ''' 绑定对象
+    ''' 绑定效果
     ''' </summary>
     ''' <returns></returns>
     <Category("Mapping"), Browsable(False)>
     Public Property Mapping As KnxHmiMapping
+
+    <Category("Mapping"), Browsable(False)>
+    Public Property KnxGroup As KnxGroup
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         Dim g As Graphics = e.Graphics '创建一个Graphics对象
@@ -144,6 +151,9 @@ Public Class KnxHmiShape
         InitializeComponent()
         RawSize = Size
         SetStyle(ControlStyles.SupportsTransparentBackColor, True)
+        BackColor = Color.Transparent
+        Me.KnxGroup = New KnxGroup()
+        AddHandler Me.KnxGroup.GroupValueChanged, AddressOf _GroupValueChanged
     End Sub
 
     Public Sub New(comp As KnxHmiComponent)
@@ -152,8 +162,8 @@ Public Class KnxHmiShape
         BackColor = Color.Transparent
         With comp
             Padding = New Padding(Math.Ceiling(.StrokeWidth \ 2) + 0) '内边距，防止绘制不完整
-            Left = .RawLocation.X - -Padding.All
-            Top = .RawLocation.Y - -Padding.All
+            Left = .RawLocation.X - Padding.All
+            Top = .RawLocation.Y - Padding.All
             Width = .RawSize.Width + Padding.All * 2
             Height = .RawSize.Height + Padding.All * 2
             RawSize = .RawSize
@@ -164,7 +174,9 @@ Public Class KnxHmiShape
             Mapping = .Mapping
             Text = .Text
             Visible = True
+            KnxGroup = .Group
         End With
+        AddHandler Me.KnxGroup.GroupValueChanged, AddressOf _GroupValueChanged
     End Sub
 
     Private Sub KnxHmiShape_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter
@@ -174,5 +186,7 @@ Public Class KnxHmiShape
     Private Sub KnxHmiShape_MouseLeave(sender As Object, e As EventArgs) Handles Me.MouseLeave
         Tip.Hide(sender)
     End Sub
+
+    Protected Friend MustOverride Sub _GroupValueChanged(value As GroupValue)
 
 End Class
