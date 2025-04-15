@@ -32,6 +32,7 @@ Public Module mdlDrawIo
                     Case "diagram" '页面开始
                         PageName = xr.GetAttribute("name") '设定当前页面名称
                         Pages.Add(PageName, New HmiPage) '在输出字典中新建一个页的键值对
+                        'Pages(PageName).BackColor = ColorTranslator.FromHtml(xr.GetAttribute("background"))
                         Pages(PageName).Elements = New List(Of HmiElement)
                     Case "mxgraphmodel"
                         Pages(PageName).PageSize = New Size With {

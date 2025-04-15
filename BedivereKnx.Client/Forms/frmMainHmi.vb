@@ -92,6 +92,7 @@ Public Class frmMainHmi
                             Case HmiComponentDirection.Feedback
                                 objPart = IIf(isSwitch, KnxObjectPart.SwitchFeedback, KnxObjectPart.ValueFeedback)
                         End Select
+                        comp.ObjectId = KS.Objects(objCode)(0).Id
                         comp.Group = KS.Objects(objCode)(0).Groups(objPart)
                         AddHandler comp.Group.GroupValueChanged, AddressOf GroupValueChanged
 
@@ -115,14 +116,22 @@ Public Class frmMainHmi
         pnlHmi.Controls.Clear() '清理Panel的控件
         pnlHmi.Refresh() '刷新Panel
         If IsNothing(dicPages(pageName)) Then Exit Sub
+        pnlHmi.BackColor = dicPages(pageName).BackColor '设置背景色
         DrawPic(pageName) '绘制图片
         For Each comp As KnxHmiComponent In dicPages(pageName).Elements.OfType(Of KnxHmiComponent)
             'If IsNothing(fdb.ColorConvertion) Then Continue For '只添加有变化效果的控件
             Select Case comp.Direction'根据控制-反馈新建不同的控件
                 Case HmiComponentDirection.Control '控制控件
-                    Dim ctl As New KnxHmiButton(comp)
-                    AddHandler ctl.HmiWriteValue, AddressOf HmiWriteGroupValue '绑定组地址写入事件
-                    pnlHmi.Controls.Add(ctl)'把按钮加入窗体中
+                    If comp.ObjectId >= 0 Then
+                        Dim ctl As New KnxHmiDigitalGroup(comp) With {
+                            .KnxObject = KS.Objects(comp.ObjectId)
+                        }
+                        pnlHmi.Controls.Add(ctl) '把按钮加入窗体中
+                    Else
+                        Dim ctl As New KnxHmiButton(comp)
+                        AddHandler ctl.HmiWriteValue, AddressOf HmiWriteGroupValue '绑定组地址写入事件
+                        pnlHmi.Controls.Add(ctl) '把按钮加入窗体中
+                    End If
                 Case HmiComponentDirection.Feedback '反馈控件
                     Dim fdb As New KnxHmiDigitalFdb(comp) '新建控件
                     pnlHmi.Controls.Add(fdb) '把控件加到窗体
@@ -169,12 +178,12 @@ Public Class frmMainHmi
     End Sub
 
     ''' <summary>
-    ''' 读取当前页面的反馈值
+    ''' 读取当前页面的反馈值（有问题，同样组地址的控件如果有多个，会多次读取）
     ''' </summary>
     Private Sub PollPageGroupValue()
-        For Each ctl As KnxHmiDigitalFdb In pnlHmi.Controls.OfType(Of KnxHmiDigitalFdb)
-            KS.ReadGroupAddress(vbNullString, ctl.KnxGroup.Address) 'ctl.GroupAddress)
-        Next
+        'For Each ctl As KnxHmiDigitalFdb In pnlHmi.Controls.OfType(Of KnxHmiDigitalFdb)
+        '    KS.ReadGroupAddress(vbNullString, ctl.KnxGroup.Address) 'ctl.GroupAddress)
+        'Next
     End Sub
 
     ''' <summary>

@@ -69,9 +69,9 @@ Namespace My
             'Dim scn As New KnxSceneControl(False, 12)
             'MsgBox(scn.ToString)
 
-            Dim hostName As String = Dns.GetHostName()
-            Dim hostEntry As IPHostEntry = Dns.GetHostEntry(hostName)
-            Dim ipAddresses As IPAddress() = hostEntry.AddressList
+            'Dim hostName As String = Dns.GetHostName()
+            'Dim hostEntry As IPHostEntry = Dns.GetHostEntry(hostName)
+            'Dim ipAddresses As IPAddress() = hostEntry.AddressList
 
             'For Each ip As IPAddress In ipAddresses
             '    ' 只显示 IPv4 地址
@@ -80,6 +80,8 @@ Namespace My
             '    'End If
             'Next
 
+            'Dim c As Color = System.Drawing.ColorTranslator.FromHtml("light-dark(#000000)")
+            'MsgBox(c.ToString)
             '==============================测试内容================================
 
 #End If

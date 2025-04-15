@@ -71,7 +71,9 @@ Public Class KnxHmiButton : Inherits Button
             Me.Top = .RawLocation.Y
             Me.Width = .RawSize.Width
             Me.Height = .RawSize.Height
+            Me.BackColor = .FillColor
             Me.Text = .Text
+            Me.ForeColor = .FontColor
             Me.Font = New Font(Me.Font.Name, .FontSize)
             Me.Visible = True
             _KnxGroup = .Group

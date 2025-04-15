@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
-Imports BedivereKnx.Hmi
 Imports Knx.Falcon
+Imports BedivereKnx.Hmi
 Imports Ouroboros.Hmi
 
 Public MustInherit Class KnxHmiShape
@@ -147,14 +147,14 @@ Public MustInherit Class KnxHmiShape
         Invalidate() '重新绘制控件以应用新的大小
     End Sub
 
-    Public Sub New()
-        InitializeComponent()
-        RawSize = Size
-        SetStyle(ControlStyles.SupportsTransparentBackColor, True)
-        BackColor = Color.Transparent
-        Me.KnxGroup = New KnxGroup()
-        AddHandler Me.KnxGroup.GroupValueChanged, AddressOf _GroupValueChanged
-    End Sub
+    'Public Sub New()
+    '    InitializeComponent()
+    '    RawSize = Size
+    '    SetStyle(ControlStyles.SupportsTransparentBackColor, True)
+    '    BackColor = Color.Transparent
+    '    Me.KnxGroup = New KnxGroup()
+    '    AddHandler Me.KnxGroup.GroupValueChanged, AddressOf _GroupValueChanged
+    'End Sub
 
     Public Sub New(comp As KnxHmiComponent)
         InitializeComponent()
@@ -177,6 +177,7 @@ Public MustInherit Class KnxHmiShape
             KnxGroup = .Group
         End With
         AddHandler Me.KnxGroup.GroupValueChanged, AddressOf _GroupValueChanged
+        _GroupValueChanged(Me.KnxGroup.Value) '初始化时调用值变化事件
     End Sub
 
     Private Sub KnxHmiShape_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter

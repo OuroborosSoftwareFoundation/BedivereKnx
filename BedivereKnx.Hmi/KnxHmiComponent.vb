@@ -32,6 +32,8 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
     ''' <returns></returns>
     Public Property Group As New KnxGroup(1)
 
+    Public Property ObjectId As Integer = -1
+
     '''' <summary>
     '''' KNX填充颜色变化对象
     '''' </summary>
@@ -280,18 +282,21 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
         Dim strokecolors As Color() = ReadColorStyle("strokeColor", dicStyle) '线条颜色
         Dim fontcolors As Color() = ReadColorStyle("fontColor", dicStyle) '字体颜色
         Me.StrokeWidth = ReadNumStyle("strokeWidth", dicStyle) '线条宽度
-        Me.FontSize = ReadNumStyle("fontSize", dicStyle, 12) '字体大小
+        Dim fontSize As Integer = ReadNumStyle("fontSize", dicStyle, 12) '字体大小
+        Me.FontSize = fontSize / 1.33 'drawio中字体单位为像素，Winform中字体单位为点，1点=1.33像素
         Me.Alignment = ReadAlign(dicStyle) '文本对齐方式
 
         If Me.MappingMode = HmiMappingMode.None Then '静态控件颜色设置（设为开启颜色）
             Me.FillColor = fillcolors.Last
             Me.StrokeColor = strokecolors.Last
+            Me.FontColor = fontcolors.Last
         Else '动态控件颜色设置（设为关闭颜色）
             Me.Mapping.FillColors = fillcolors '填充颜色
             Me.Mapping.StrokeColors = strokecolors '线条颜色
             Me.Mapping.FontColors = fontcolors '字体颜色
             Me.FillColor = fillcolors.First
             Me.StrokeColor = strokecolors.First
+            Me.FontColor = fontcolors.First
         End If
     End Sub
 
@@ -513,7 +518,7 @@ Public Class KnxHmiComponent : Inherits HmiComponentElement
                 Case 0 '没有颜色的情况，使用默认值（一般不会出现这种情况）
                     Return {DEFAULTCOLOR_OFF, dicColorDefault(key)}
                 Case 1 '一种颜色的情况
-                    Return {DEFAULTCOLOR_OFF, ColorTranslator.FromHtml(matchC(0).Value)}
+                    Return {ColorTranslator.FromHtml(matchC(0).Value)} '{DEFAULTCOLOR_OFF, ColorTranslator.FromHtml(matchC(0).Value)}
                 Case Else '浅色-深色模式，浅色为开启时颜色
                     Return {ColorTranslator.FromHtml(matchC(1).Value), ColorTranslator.FromHtml(matchC(0).Value)}
             End Select
