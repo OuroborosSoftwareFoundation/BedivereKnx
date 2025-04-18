@@ -8,7 +8,7 @@ Module mdlDataFile_Excel
 
     Private ReadOnly DataSheets As String() = {"Interfaces", "Areas", "Objects", "Scenes", "Devices", "Schedules", "Links"}
 
-    Public Function ReadExcelToDataTables(FilePath As String, Optional HasSubTitle As Boolean = False, Optional AddIdCol As Boolean = False) As Dictionary(Of String, DataTable)
+    Friend Function ReadExcelToDataTables(FilePath As String, Optional HasSubTitle As Boolean = False, Optional AddIdCol As Boolean = False) As Dictionary(Of String, DataTable)
         If String.IsNullOrEmpty(FilePath) Then
             Throw New ArgumentNullException(NameOf(FilePath), "Data File path cannot be null.")
             Return Nothing
@@ -37,6 +37,14 @@ Module mdlDataFile_Excel
         End Try
     End Function
 
+    ''' <summary>
+    ''' 工作表转为DataTable
+    ''' </summary>
+    ''' <param name="wbp"></param>
+    ''' <param name="rId"></param>
+    ''' <param name="HasSubTitle"></param>
+    ''' <param name="AddIdCol"></param>
+    ''' <returns></returns>
     Private Function SheetToDataTable(wbp As WorkbookPart, rId As String, Optional HasSubTitle As Boolean = False, Optional AddIdCol As Boolean = False) As DataTable
         Dim wsp As WorksheetPart = wbp.GetPartById(rId) '用rid检索工作表
         Dim dt As New DataTable

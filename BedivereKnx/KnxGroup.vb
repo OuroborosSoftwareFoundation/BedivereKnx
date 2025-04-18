@@ -2,9 +2,12 @@
 Imports Knx.Falcon
 Imports Knx.Falcon.ApplicationData
 Imports Knx.Falcon.ApplicationData.DatapointTypes
-Imports Knx.Falcon.ApplicationData.MasterData
 
+''' <summary>
+''' KNX组
+''' </summary>
 Public Class KnxGroup
+
     Private _Value As GroupValue
 
     ''' <summary>
@@ -13,7 +16,7 @@ Public Class KnxGroup
     Public Event GroupValueChanged As ValueChangeHandler(Of GroupValue)
 
     ''' <summary>
-    ''' KNX数据类型
+    ''' 数据类型
     ''' </summary>
     ''' <returns></returns>
     Public Property DPT As DptBase
@@ -181,13 +184,5 @@ Public Class KnxGroup
         End If
         Return {NumM, NumS}
     End Function
-
-    '''' <summary>
-    '''' 设置值
-    '''' </summary>
-    '''' <param name="value"></param>
-    'Public Sub SetValue(value As Object)
-    '    Value = value 'DPT.ToGroupValue(value)
-    'End Sub
 
 End Class

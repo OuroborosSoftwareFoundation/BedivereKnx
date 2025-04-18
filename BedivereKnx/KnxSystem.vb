@@ -28,6 +28,9 @@ Imports System.Net
 Imports Knx.Falcon
 Imports Knx.Falcon.Sdk
 
+''' <summary>
+''' KNX系统对象
+''' </summary>
 Public Class KnxSystem
 
     Private ReadOnly _NameSpace As String
@@ -59,18 +62,46 @@ Public Class KnxSystem
     ''' </summary>
     Public Event MessageTransmission As KnxMessageHandler
 
-    Public ReadOnly Property Bus As KnxBusCollection
-
+    ''' <summary>
+    ''' KNX区域
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Areas As DataTable 'KnxAreaCollection
 
+    ''' <summary>
+    ''' KNX总线
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property Bus As KnxBusCollection
+
+    ''' <summary>
+    ''' KNX对象
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Objects As KnxObjectCollection
 
+    ''' <summary>
+    ''' KNX场景
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Scenes As KnxSceneCollection
 
+    ''' <summary>
+    ''' KNX设备
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Devices As KnxDeviceCollection
 
+    ''' <summary>
+    ''' 定时计划
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Schedules As KnxScheduleCollection
 
+    ''' <summary>
+    ''' 外部链接
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Links As DataTable
 
     ''' <summary>
@@ -83,37 +114,44 @@ Public Class KnxSystem
         Try
             _NameSpace = System.Reflection.Assembly.GetExecutingAssembly.GetName.Name
             Dim dicDt As Dictionary(Of String, DataTable) = ReadExcelToDataTables(pathExcel, True, True)
+            '区域部分初始化：
+            Dim dtArea As DataTable = Nothing
+            If dicDt.TryGetValue("Areas", dtArea) Then
+                _Areas = dtArea ' New KnxAreaCollection(dtArea)
+            End If
+            '接口部分初始化：
             Dim dtBus As DataTable = Nothing
             If dicDt.TryGetValue("Interfaces", dtBus) Then
                 _Bus = New KnxBusCollection(dtBus, localIp)
                 AddHandler _Bus.GroupMessageReceived, AddressOf _GroupMessageReceived
                 AddHandler _Bus.GroupPollRequest, AddressOf PollAllObjects
             End If
-            Dim dtArea As DataTable = Nothing
-            If dicDt.TryGetValue("Areas", dtArea) Then
-                _Areas = dtArea ' New KnxAreaCollection(dtArea)
-            End If
+            '对象部分初始化：
             Dim dtObj As DataTable = Nothing
             If dicDt.TryGetValue("Objects", dtObj) Then
                 _Objects = New KnxObjectCollection(dtObj)
                 AddHandler _Objects.GroupWriteRequest, AddressOf _GroupWriteRequest
                 AddHandler _Objects.GroupReadRequest, AddressOf _GroupReadRequest
             End If
+            '场景部分初始化：
             Dim dtScn As DataTable = Nothing
             If dicDt.TryGetValue("Scenes", dtScn) Then
                 _Scenes = New KnxSceneCollection(dtScn)
                 AddHandler _Scenes.SceneControlRequest, AddressOf _GroupWriteRequest
             End If
+            '设备部分初始化：
             Dim dtDev As DataTable = Nothing
             If dicDt.TryGetValue("Devices", dtDev) Then
                 _Devices = New KnxDeviceCollection(dtDev)
             End If
+            '定时部分初始化：
             Dim dtScd As DataTable = Nothing
             If dicDt.TryGetValue("Schedules", dtScd) Then
                 _Schedules = New KnxScheduleCollection(dtScd)
                 ScheduleEventsInit() '初始化定时事件表
                 AddHandler _Schedules.ScheduleEventTriggered, AddressOf _ScheduleEventTriggered
             End If
+            '外链部分初始化：
             Dim dtLink As DataTable = Nothing
             If dicDt.TryGetValue("Links", dtLink) Then
                 _Links = dtLink
@@ -407,7 +445,7 @@ Public Class KnxSystem
         For Each obj As KnxObject In _Objects
             If obj.InterfaceCode = vbNullString OrElse lstIC.Contains(obj.InterfaceCode) Then
                 ReadObjectFeedback(obj) '读取组地址
-                Threading.Thread.Sleep(200)
+                Threading.Thread.Sleep(100)
             End If
         Next
         IsPolling = False
@@ -462,6 +500,7 @@ Public Class KnxSystem
             For Each ga As GroupAddress In addresses(ifCode)
                 For Each bus As KnxBus In buses
                     ReadGroupAddress(bus, ga, MessagePriority.Low)
+                    Threading.Thread.Sleep(100)
                 Next
             Next
         Next
@@ -526,6 +565,7 @@ Public Class KnxSystem
             For Each kdi As KnxDeviceInfo In kdis
                 Dim result As Boolean = Await kn.PingIndividualAddressAsync(kdi.IndAddress)
                 kdi.State = If(result, IndAddressState.Online, IndAddressState.Offline)
+                Threading.Thread.Sleep(100)
             Next
         End Using
 
