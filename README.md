@@ -180,6 +180,12 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 - `1/2/201@0~100#5.003`：1/2/201组地址的反馈，DPT为5.003，在0~100之间变化
 - （格式暂略，将在之后的版本中补充……）
 
+## USB接口连接问题
+
+连接USB接口时可能会报错“KnxUsbFix not installed”，安装KnxUsbFix修复即可。
+
+详情参见：https://support.knx.org/hc/en-us/articles/115001443670-KNX-USB-interface-not-recognized
+
 ## 依赖项
 
 - [Knx.Falcon.Sdk](https://help.knx.org/falconsdk)

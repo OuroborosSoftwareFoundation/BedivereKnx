@@ -120,8 +120,10 @@ Public Class KnxObjectCollection
         _Table = dt
         With _Table
             .Columns.Add("Sw_Fdb_Value", GetType(Byte)) '附加反馈状态列
+            '.Columns.Add("Sw_Fdb_Value", GetType(GroupValue)) '附加反馈状态列
             .Columns.Item("Sw_Fdb_Value").Caption = "开关反馈"
-            .Columns.Add("Val_Fdb_Value", GetType(Decimal)) '附加反馈状态列
+            .Columns.Add("Val_Fdb_Value", GetType(Object)) '附加反馈状态列
+            '.Columns.Add("Val_Fdb_Value", GetType(GroupValue)) '附加反馈状态列
             .Columns.Item("Val_Fdb_Value").Caption = "数值反馈"
             For Each dr As DataRow In _Table.Rows
                 'MsgBox(dr("ObjectCode"))
@@ -205,10 +207,17 @@ Public Class KnxObjectCollection
                           col
                           } '在各地址列中查找收到的组地址
         For Each match In matches
-            _Items(match.id).Groups(match.col).Value = groupValue '把对象中的KNX组写入值
+            '_Items(match.id).Groups(match.col).Value = groupValue '把对象中的KNX组写入值
+            'Dim ValCol As String = match.col.Replace("GrpAddr", "Value") '对应组地址值的列
+            'If _Table.Columns.Contains(ValCol) Then
+            '    _Table(match.id)(ValCol) = groupValue.TypedValue '更新表格中的值
+            'End If
+
+            Dim grp As KnxGroup = _Items(match.id).Groups(match.col)
+            grp.Value = groupValue '把对象中的KNX组写入值
             Dim ValCol As String = match.col.Replace("GrpAddr", "Value") '对应组地址值的列
             If _Table.Columns.Contains(ValCol) Then
-                _Table(match.id)(ValCol) = groupValue.TypedValue '更新表格中的值
+                _Table(match.id)(ValCol) = groupValue.TypedValue ' grp.DPT.ToValue(groupValue) '更新表格中的值
             End If
         Next
     End Sub

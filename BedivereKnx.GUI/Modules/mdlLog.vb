@@ -3,6 +3,12 @@ Imports System.Text
 
 Module mdlLog
 
+    ''' <summary>
+    ''' 写入日志文件
+    ''' </summary>
+    ''' <param name="dt">日志DataTable对象</param>
+    ''' <param name="path">日志路径</param>
+    ''' <param name="coding">编码，默认UTF-8</param>
     Public Sub WriteCsvLog(dt As DataTable, path As String, Optional coding As String = "utf-8")
         Dim sw As New StreamWriter(path, False, Encoding.GetEncoding(coding))
         Dim header As New List(Of String)

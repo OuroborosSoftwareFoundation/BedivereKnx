@@ -13,6 +13,8 @@ Public Class frmMain
         lblAuth.Text = _AuthInfo.Text
         tmDoe.Interval = 1000
         tmDoe.Start()
+
+
     End Sub
 
     Private Sub frmMain_Shown(sender As Object, e As EventArgs) Handles Me.Shown
@@ -93,7 +95,8 @@ Public Class frmMain
         AddHandler KS.PollingStatusChanged, AddressOf PollingStatusChanged
         AddHandler KS.Schedules.ScheduleTimerStateChanged, AddressOf ScheduleTimerStateChanged
         'AddHandler KS.MessageTransmission, AddressOf KnxMessageTransmission
-        KS.Bus.AllConnect(_InitRead) '打开全部KNX接口并初始化读取
+        'KS.Bus.AllConnect(_InitRead) '打开全部KNX接口并初始化读取
+        OpenAllKnxInterface(_InitRead) '打开全部KNX接口并初始化读取
         KS.Schedules.TimerStart() '开启定时器
         'frmInterface.Show() '启动时展示接口
         frmMainTable.Close()

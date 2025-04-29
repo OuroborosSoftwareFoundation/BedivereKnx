@@ -1,5 +1,0 @@
-System.ArgumentException: 参数“projectFile”的长度不能为零。
-   在 Microsoft.Build.Shared.ErrorUtilities.ThrowArgumentLength(String parameterName)
-   在 Microsoft.Build.Execution.ProjectInstance..ctor(String projectFile, IDictionary`2 globalProperties, String toolsVersion, String subToolsetVersion, ProjectCollection projectCollection, Nullable`1 projectLoadSettings, EvaluationContext evaluationContext, IDirectoryCacheFactory directoryCacheFactory, Boolean interactive)
-   在 Microsoft.SdvMenuCommand.DriverVerificationLicense..ctor()
-   在 Microsoft.SdvMenuCommand.SdvMenuCommandPackage.StaticToolsLogoMenuItemCallback(Object sender, EventArgs e)

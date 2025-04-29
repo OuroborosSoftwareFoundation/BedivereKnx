@@ -172,6 +172,7 @@ Public Class frmMainTable
     ''' <param name="dgv">DataGridView对象</param>
     ''' <param name="area">筛选区域，全部显示留空</param>
     Private Sub DgvRowFilter(dgv As DataGridView, Optional area As String = vbNullString)
+        If dgv.Rows.Count = 0 Then Exit Sub '防止有表格行数为0报错
         Dim cm As CurrencyManager = BindingContext(dgv.DataSource)
         cm.SuspendBinding() '挂起数据绑定
         dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None '禁止自动调整列宽加速显示

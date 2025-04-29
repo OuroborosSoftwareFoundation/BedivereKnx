@@ -178,6 +178,12 @@ Data type refers to DPT, preceded by `#`, such as`#1.001`、`#5.003`, etc. This 
 - `1/2/201@0~100#5.003`: feedback of group address 1/2/201, DPTis 5.003, changes between 0 and 100.
 - ...
 
+## USB Interface Connect Exception
+
+When connecting the USB interface, there may be an error exception "KnxUsbFix not installed", install KnxUsbFix to fix it.
+
+For details, please refer to: https://support.knx.org/hc/en-us/articles/115001443670-KNX-USB-interface-not-recognized
+
 ## Reference
 
 - [Knx.Falcon.Sdk](https://help.knx.org/falconsdk)

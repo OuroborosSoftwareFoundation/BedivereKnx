@@ -127,7 +127,15 @@ Public Class KnxBusCollection
                 Dim cp As ConnectorParameters
                 Select Case dr("InterfaceType").ToString.ToLower
                     Case "usb"
-                        cp = New UsbConnectorParameters
+                        cp = New UsbConnectorParameters()
+                        ''cp = ConnectorParameters.FromConnectionString("Type=Usb;DevicePath=\\?\hid#vid_135e&pid_0024#6&29744e9f&8&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}")
+                        'For Each usb In KnxBus.GetAttachedUsbDevices()
+                        '    Debug.Print(usb.ToString)
+                        '    Dim connectionString = usb.ToConnectionString()
+                        '    Debug.Print(connectionString)
+                        '    Dim cpusb As UsbConnectorParameters = UsbConnectorParameters.FromDiscovery(usb)
+                        '    cp = cpusb
+                        'Next
                     Case "iptunnel"
                         cp = New IpTunnelingConnectorParameters(dr("InterfaceAddress"), Convert.ToInt32(dr("Port")))
                     Case "iprouter"
@@ -165,12 +173,12 @@ Public Class KnxBusCollection
     End Sub
 
     Private Async Sub _AllConnect(Optional GroupPoll As Boolean = False)
-        Ready = False
-        If DefaultBus.ConnectionState = BusConnectionState.Closed Then
-            Await DefaultBus.ConnectAsync() '打开默认接口
-        End If
-        For Each dr As DataRow In _Table.Rows
-            Try
+        Try
+            Ready = False
+            If DefaultBus.ConnectionState = BusConnectionState.Closed Then
+                Await DefaultBus.ConnectAsync() '打开默认接口
+            End If
+            For Each dr As DataRow In _Table.Rows
                 If dr("Enable").ToString = "0" Then Continue For
                 If dr("CnState") = BusConnectionState.Closed Then '只处理Close状态的接口
                     Dim IfCode As String = dr("InterfaceCode").ToString
@@ -186,12 +194,13 @@ Public Class KnxBusCollection
                         Await dicItems(IfCode).ConnectAsync() '异步方式打开接口提高显示速度
                     End If
                 End If '跳过已经连接的接口
-            Catch ex As Exception
-                Throw
-            End Try
-        Next
-        Ready = True
-        If GroupPoll Then RaiseEvent GroupPollRequest()
+            Next
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.OkOnly, "Error")
+        Finally
+            Ready = True
+            If GroupPoll Then RaiseEvent GroupPollRequest()
+        End Try
     End Sub
 
     Private Sub _ConnectionChanged(sender As KnxBus, e As EventArgs)

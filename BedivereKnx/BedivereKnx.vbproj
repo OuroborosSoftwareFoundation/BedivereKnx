@@ -12,7 +12,7 @@
     <Version>0.4.2</Version>
     <Authors>BHC666</Authors>
     <Company>Ouroboros Software Foundation</Company>
-    <Copyright>Copyright © 2024 Ouroboros Software Foundation</Copyright>
+    <Copyright>© 2024 $(Company)</Copyright>
     <Description>A KNX Library depends on Falcon SDK.</Description>
     <Title>$(AssemblyName)</Title>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>

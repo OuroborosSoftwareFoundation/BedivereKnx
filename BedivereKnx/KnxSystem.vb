@@ -110,10 +110,15 @@ Public Class KnxSystem
     ''' <returns></returns>
     Public ReadOnly Property MessageLog As New DataTable
 
-    Public Sub New(pathExcel As String, localIp As IPAddress)
+    ''' <summary>
+    ''' 新建KNX系统
+    ''' </summary>
+    ''' <param name="dataFilePath">数据文件路径</param>
+    ''' <param name="localIp">本地IP（用于路由接口）</param>
+    Public Sub New(dataFilePath As String, localIp As IPAddress)
         Try
             _NameSpace = System.Reflection.Assembly.GetExecutingAssembly.GetName.Name
-            Dim dicDt As Dictionary(Of String, DataTable) = ReadExcelToDataTables(pathExcel, True, True)
+            Dim dicDt As Dictionary(Of String, DataTable) = ReadExcelToDataTables(dataFilePath, True, True)
             '区域部分初始化：
             Dim dtArea As DataTable = Nothing
             If dicDt.TryGetValue("Areas", dtArea) Then
@@ -167,7 +172,7 @@ Public Class KnxSystem
     ''' </summary>
     Private Sub MsgLogTableInit()
 
-        With _MessageLog
+        With MessageLog
             .Clear()
             .Columns.Add("DateTime", GetType(DateTime))
             .Columns("DateTime").Caption = "报文时间"
@@ -268,7 +273,7 @@ Public Class KnxSystem
     ''' </summary>
     ''' <param name="e"></param>
     Private Sub _MessageTransmission(e As KnxMsgEventArgs, log As String) Handles Me.MessageTransmission
-        Dim dr As DataRow = _MessageLog.NewRow
+        Dim dr As DataRow = MessageLog.NewRow
         dr("DateTime") = DateTime.Now
         dr("MessageType") = e.MessageType
         dr("EventType") = e.EventType
@@ -279,7 +284,7 @@ Public Class KnxSystem
         dr("HopCount") = e.HopCount
         dr("IsSecure") = e.IsSecure
         dr("Log") = log
-        _MessageLog.Rows.Add(dr)
+        MessageLog.Rows.Add(dr)
     End Sub
 
     ''' <summary>
@@ -508,27 +513,6 @@ Public Class KnxSystem
     End Sub
 
     ''' <summary>
-    ''' 从接口编号到总线对象数组
-    ''' </summary>
-    ''' <param name="ifCode">接口编号字符串</param>
-    ''' <returns>KnxBus对象数组</returns>
-    Private Function GetKnxBus(ifCode As String) As KnxBus()
-        Dim k As New List(Of KnxBus)
-        If String.IsNullOrEmpty(ifCode) Then '接口编号为空的情况使用默认接口
-            If IsNothing(_Bus.DefaultBus) Then '不可能出现没有默认接口的情况
-                Throw New ArgumentNullException(NameOf(ifCode), "No available KNX Interface.")
-            Else
-                k.Add(_Bus.DefaultBus) '默认接口
-            End If
-        Else
-            For Each str As String In StringToArray(ifCode) '接口编号的数组
-                k.Add(_Bus(str))
-            Next
-        End If
-        Return k.ToArray
-    End Function
-
-    ''' <summary>
     ''' 检查设备通讯
     ''' </summary>
     ''' <param name="index"></param>
@@ -568,7 +552,27 @@ Public Class KnxSystem
                 Threading.Thread.Sleep(100)
             Next
         End Using
-
     End Sub
+
+    ''' <summary>
+    ''' 从接口编号到总线对象数组
+    ''' </summary>
+    ''' <param name="ifCode">接口编号字符串</param>
+    ''' <returns>KnxBus对象数组</returns>
+    Private Function GetKnxBus(ifCode As String) As KnxBus()
+        Dim k As New List(Of KnxBus)
+        If String.IsNullOrEmpty(ifCode) Then '接口编号为空的情况使用默认接口
+            If IsNothing(_Bus.DefaultBus) Then '不可能出现没有默认接口的情况
+                Throw New ArgumentNullException(NameOf(ifCode), "No available KNX Interface.")
+            Else
+                k.Add(_Bus.DefaultBus) '默认接口
+            End If
+        Else
+            For Each str As String In StringToArray(ifCode) '接口编号的数组
+                k.Add(_Bus(str))
+            Next
+        End If
+        Return k.ToArray
+    End Function
 
 End Class

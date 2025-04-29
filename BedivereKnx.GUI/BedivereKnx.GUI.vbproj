@@ -15,8 +15,8 @@
     <MyType>WindowsForms</MyType>
     <Authors>BHC666</Authors>
     <Company>Ouroboros Software Foundation</Company>
-    <Copyright>Copyright © 2024 Ouroboros Software Foundation</Copyright>
-    <Version>0.5.0</Version>
+    <Copyright>© 2024 $(Company)</Copyright>
+    <Version>0.5.1</Version>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Title>$(AssemblyName)</Title>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
@@ -54,7 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ouroboros.Authorization\Ouroboros.Authorization\Ouroboros.Authorization.vbproj" />
+    <ProjectReference Include="..\..\Ouroboros.AuthManager\Ouroboros.Authorization\Ouroboros.Authorization.vbproj" />
     <ProjectReference Include="..\..\Ouroboros.Hmi\Ouroboros.Hmi.Library\Ouroboros.Hmi.Library.vbproj" />
     <ProjectReference Include="..\BedivereKnx\BedivereKnx.vbproj" />
   </ItemGroup>

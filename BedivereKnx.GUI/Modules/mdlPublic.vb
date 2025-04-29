@@ -5,6 +5,17 @@ Imports System.Net
 
 Module mdlPublic
 
+    ''' <summary>
+    ''' 打开全部KNX接口
+    ''' </summary>
+    Friend Sub OpenAllKnxInterface(Optional GroupPoll As Boolean = False)
+        Try
+            KS.Bus.AllConnect(GroupPoll)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
     Public Sub AppSettingSave(Key As String, Value As String)
         If ConfigurationManager.AppSettings.Item(Key) = Value Then Exit Sub '设置值相同时跳过
         Dim cfg As Configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None)
