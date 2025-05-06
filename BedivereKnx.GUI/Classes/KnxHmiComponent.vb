@@ -1,7 +1,8 @@
-﻿Imports System.Drawing
-Imports System.Text.RegularExpressions
-Imports Ouroboros.Hmi.Library
+﻿Imports System.Text.RegularExpressions
 Imports Knx.Falcon
+Imports Ouroboros.Hmi.Library
+Imports Ouroboros.Hmi.Library.Elements
+Imports Ouroboros.Hmi.Library.Mapping
 
 Public Class KnxHmiComponent : Inherits HmiComponentElement
 

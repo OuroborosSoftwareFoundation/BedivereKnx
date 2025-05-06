@@ -3,6 +3,8 @@ Imports System.Text.RegularExpressions
 Imports System.Xml
 Imports System.Drawing
 Imports Ouroboros.Hmi.Library
+Imports Ouroboros.Hmi.Library.Elements
+
 Public Module mdlDrawIo
 
     Public ReadOnly DEFAULTCOLOR_OFF As Color = Color.Gray
@@ -58,7 +60,7 @@ Public Module mdlDrawIo
                         Dim styleStr As String = xr.GetAttribute("style") 'style属性
                         Dim inner As String = xr.ReadInnerXml() 'xmCell内部的mxGeometry元素
                         If String.IsNullOrWhiteSpace(inner) Then Continue While '跳过无内部XML的元素
-                        Dim geom As HmiGeometry = HmiGeometry.FromInnerXml(inner) '控件坐标和尺寸
+                        Dim geom As HmiGeometry = HmiGeometry.FromDrawioXml(inner) '控件坐标和尺寸
                         Dim match As Match = Regex.Match(styleStr, "shape=image;.*?image=data:image/.*?,(.*?);") '暂时忽略图片格式
                         If String.IsNullOrEmpty(match.Value) Then '控件的情况
                             'lstElem.Add(New KnxHmiComponent(geom, styleStr, valueStr)) '控件加入列表

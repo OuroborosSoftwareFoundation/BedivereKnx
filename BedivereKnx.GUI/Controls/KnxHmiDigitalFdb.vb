@@ -25,10 +25,10 @@ Public Class KnxHmiDigitalFdb : Inherits KnxHmiShape
             Case Else
                 isOn = False
         End Select
-        If Mapping.HasFillColorConvertion Then
+        If Mapping.HasFillColorChange Then
             FillColor = IIf(isOn, Mapping.FillColors.Last, Mapping.FillColors.First)
         End If
-        If Mapping.HasStrokeColorConvertion Then
+        If Mapping.HasStrokeColorChange Then
             StrokeColor = IIf(isOn, Mapping.StrokeColors.Last, Mapping.StrokeColors.First)
         End If
     End Sub

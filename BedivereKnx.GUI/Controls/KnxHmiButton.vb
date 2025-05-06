@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
-Imports Ouroboros.Hmi.Library
 Imports Knx.Falcon
 Imports Knx.Falcon.ApplicationData.DatapointTypes
+Imports Ouroboros.Hmi.Library.Mapping
 
 Public Class KnxHmiButton : Inherits Button
 

@@ -1,5 +1,5 @@
 ﻿Imports System.ComponentModel
-Imports Ouroboros.Hmi.Library
+Imports Ouroboros.Hmi.Library.Elements
 Imports Knx.Falcon
 
 Public MustInherit Class KnxHmiShape

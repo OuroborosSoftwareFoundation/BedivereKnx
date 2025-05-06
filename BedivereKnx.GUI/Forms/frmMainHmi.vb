@@ -1,5 +1,7 @@
 ﻿Imports Knx.Falcon
 Imports Ouroboros.Hmi.Library
+Imports Ouroboros.Hmi.Library.Mapping
+Imports Ouroboros.Hmi.Library.Elements
 
 Public Class frmMainHmi
 
@@ -22,6 +24,7 @@ Public Class frmMainHmi
         tvHmi.SelectedNode = tvHmi.Nodes(0) '选择第一个页面
         AddHandler KS.MessageTransmission, AddressOf KnxMessageTransmission
         Me.WindowState = FormWindowState.Maximized
+        ShowKnxGpxPage(tvHmi.SelectedNode.Name)
     End Sub
 
     Private Sub tvHmi_AfterSelect(sender As TreeView, e As TreeViewEventArgs) Handles tvHmi.AfterSelect
@@ -90,7 +93,7 @@ Public Class frmMainHmi
         pnlHmi.Refresh() '刷新Panel
         If IsNothing(dicPages(pageName)) Then Exit Sub
         pnlHmi.BackColor = dicPages(pageName).BackColor '设置背景色
-        DrawPic(pageName) '绘制图片
+        DrawBackImage(pageName) '绘制图片
         For Each comp As KnxHmiComponent In dicPages(pageName).Elements.OfType(Of KnxHmiComponent)
             'If IsNothing(fdb.ColorConvertion) Then Continue For '只添加有变化效果的控件
             Select Case comp.Direction'根据控制-反馈新建不同的控件
@@ -124,22 +127,22 @@ Public Class frmMainHmi
         PollPageGroupValue() '读取当前页面的反馈值
     End Sub
 
-    Private Sub pnlGpx_SizeChanged(sender As Panel, e As EventArgs) Handles pnlHmi.SizeChanged
-        If isBusy Then Exit Sub
-        ShowKnxGpxPage(tvHmi.SelectedNode.Name)
-    End Sub
-
     ''' <summary>
-    ''' 绘制图片
+    ''' 绘制背景图片
     ''' </summary>
     ''' <param name="pageName"></param>
-    Private Sub DrawPic(pageName As String)
+    Private Sub DrawBackImage(pageName As String)
         If isBusy Then Exit Sub
         If IsNothing(dicPages(pageName)) Then Exit Sub
         For Each img As HmiImageElement In dicPages(pageName).BackImages '.Elements.OfType(Of HmiImageElement)
             Dim g As Graphics = pnlHmi.CreateGraphics()
             g.DrawImage(img.Image, New Rectangle(img.RawLocation, img.RawSize))
         Next
+    End Sub
+
+    Private Sub pnlGpx_SizeChanged(sender As Panel, e As EventArgs) Handles pnlHmi.SizeChanged
+        If isBusy Then Exit Sub
+        ShowKnxGpxPage(tvHmi.SelectedNode.Name)
     End Sub
 
     ''' <summary>

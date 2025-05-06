@@ -1,9 +1,10 @@
-﻿Imports System.Drawing
-Imports Ouroboros.Hmi.Library
-Imports Knx.Falcon
+﻿Imports Knx.Falcon
 Imports Knx.Falcon.ApplicationData.DatapointTypes
+Imports Ouroboros.Hmi.Library.Mapping
 
 Public Class KnxHmiMapping : Inherits HmiMappingBase(Of GroupValue)
+
+    'Private DPT As DptBase
 
     Public Sub New(values As GroupValue(), changeType As HmiValueChangeType)
         MyBase.New(values, changeType)
@@ -19,12 +20,21 @@ Public Class KnxHmiMapping : Inherits HmiMappingBase(Of GroupValue)
 
     Public Sub New(valsString As String, dpt As DptBase)
         MyBase.New(valsString)
-        '此时基类的RawValue被设置值
+        '此时基类的RawValues被设置值
         Dim valList As New List(Of GroupValue)
         For Each valStr As String In RawValues
             valList.Add(dpt.ToGroupValue(Convert.ToDecimal(valStr)))
         Next
         Values = valList.ToArray
     End Sub
+
+    '''' <summary>
+    '''' 字符串转GroupValue的方法
+    '''' </summary>
+    '''' <param name="str"></param>
+    '''' <returns></returns>
+    'Protected Overrides Function StringToTValue(str As String) As GroupValue
+    '    Return DPT.ToGroupValue(Convert.ToDecimal(str))
+    'End Function
 
 End Class

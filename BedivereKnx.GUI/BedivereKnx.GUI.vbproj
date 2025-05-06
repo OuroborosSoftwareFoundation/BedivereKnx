@@ -29,6 +29,7 @@
     <Compile Remove="clsKnx.vb" />
     <Compile Remove="Modules\clsMsgShow.vb" />
     <Compile Remove="Modules\mdlAuthorization.vb" />
+    <Compile Remove="Modules\mdlDataFile_Csv.vb" />
     <Compile Remove="Modules\mdlDataFile_Excel.vb" />
     <Compile Remove="Modules\mdlDongle.vb" />
     <Compile Remove="Modules\mdlEncrypt.vb" />
@@ -55,7 +56,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Ouroboros.AuthManager\Ouroboros.Authorization\Ouroboros.Authorization.vbproj" />
-    <ProjectReference Include="..\..\Ouroboros.Hmi\Ouroboros.Hmi.Library\Ouroboros.Hmi.Library.vbproj" />
+    <ProjectReference Include="..\..\Ouroboros.Hmi\Ouroboros.Hmi.Library\Ouroboros.Hmi.Library.csproj" />
     <ProjectReference Include="..\BedivereKnx\BedivereKnx.vbproj" />
   </ItemGroup>
 
@@ -63,9 +64,7 @@
     <Compile Update="Controls\KnxHmiButton.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="Controls\KnxHmiDigitalFdb.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="Controls\KnxHmiDigitalFdb.vb" />
     <Compile Update="Controls\KnxHmiDigitalGroup.vb">
       <SubType>Component</SubType>
     </Compile>
