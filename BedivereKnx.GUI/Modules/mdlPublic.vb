@@ -1,5 +1,4 @@
 ﻿Imports System.Configuration
-Imports Ouroboros.Authorization.Iris
 Imports BedivereKnx
 Imports System.Net
 
@@ -14,13 +13,6 @@ Module mdlPublic
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
-    End Sub
-
-    Public Sub AppSettingSave(Key As String, Value As String)
-        If ConfigurationManager.AppSettings.Item(Key) = Value Then Exit Sub '设置值相同时跳过
-        Dim cfg As Configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None)
-        cfg.AppSettings.Settings(Key).Value = Value
-        cfg.Save(ConfigurationSaveMode.Modified)
     End Sub
 
     Public Sub OpenUrl(url As String)

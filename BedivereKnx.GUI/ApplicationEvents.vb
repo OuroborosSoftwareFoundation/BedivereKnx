@@ -86,7 +86,6 @@ Namespace My
 
 #End If
             _AuthInfo = New Ouroboros.Authorization.Iris.AuthorizationInfoCollection
-            AppSettingInit()
         End Sub
 
         Public Sub InitDics()
@@ -94,57 +93,6 @@ Namespace My
             '    dicDataColHead.Add("", "")
             '    dicDataColHead.Add("SceneName", "场景名称")
         End Sub
-
-        Private Sub AppSettingInit()
-            '本地IP
-            Dim ipStr As String = ConfigurationManager.AppSettings.Item("LocalIP")
-            Dim localIp As New IPAddress({127, 0, 0, 1})
-            If IPAddress.TryParse(ipStr, localIp) Then
-                _LocalIp = localIp
-            Else
-                _LocalIp = New IPAddress({127, 0, 0, 1})
-            End If
-
-            '默认数据文件
-            If Not String.IsNullOrEmpty(ConfigurationManager.AppSettings.Item("DataFile")) Then
-                Dim fp As String = ConfigurationManager.AppSettings.Item("DataFile")
-                If IO.File.Exists(fp) Then
-                    _DataFile = ConfigurationManager.AppSettings.Item("DataFile") '设置默认数据文件
-                Else
-                    _DataFile = vbNullString
-                End If
-            End If
-
-            '默认图形文件
-            If Not String.IsNullOrEmpty(ConfigurationManager.AppSettings.Item("HmiFile")) Then
-                Dim fp As String = ConfigurationManager.AppSettings.Item("HmiFile")
-                If IO.File.Exists(fp) Then
-                    _HmiFile = ConfigurationManager.AppSettings.Item("HmiFile") '设置默认数据文件
-                Else
-                    _HmiFile = vbNullString
-                End If
-            End If
-
-            '初始化读取
-            If Not String.IsNullOrEmpty(ConfigurationManager.AppSettings.Item("InitRead")) Then
-                Try
-                    _InitRead = Convert.ToBoolean(ConfigurationManager.AppSettings.Item("InitRead"))
-                Catch ex As Exception
-                    _InitRead = False
-                End Try
-            End If
-
-        End Sub
-
-
-        'Public Sub AppSettingsRepair()
-        '    Dim cfg As String(,) = {{"DataFile", "data.xlsx"}, {"RouteMcAddr", "224.0.23.12"}}
-        '    For i = 0 To cfg.GetUpperBound(0)
-        '        If String.IsNullOrEmpty(AppSettings.Items(cfg(i, 0)).Trim) Then
-        '            AppSettings.Add(cfg(i, 0), cfg(i, 1))
-        '        End If
-        '    Next
-        'End Sub
 
     End Class
 

@@ -36,7 +36,7 @@ Public Class frmInterface
         For Each r As DataGridViewRow In dgvIf.Rows
             r.DefaultCellStyle.BackColor = Color.LightGray
         Next
-        KS.Bus.AllConnect(_InitRead) '打开全部KNX接口并初始化读取
+        KS.Bus.AllConnect(AppConfig.InitPolling) '打开全部KNX接口并初始化读取
     End Sub
 
     Private Sub dgvIf_SelectionChanged(sender As DataGridView, e As EventArgs) Handles dgvIf.SelectionChanged

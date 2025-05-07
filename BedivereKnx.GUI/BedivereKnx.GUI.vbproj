@@ -16,7 +16,7 @@
     <Authors>BHC666</Authors>
     <Company>Ouroboros Software Foundation</Company>
     <Copyright>© 2024 $(Company)</Copyright>
-    <Version>0.5.1</Version>
+    <Version>0.5.2</Version>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Title>$(AssemblyName)</Title>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>

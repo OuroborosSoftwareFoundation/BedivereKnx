@@ -13,17 +13,24 @@ Public Class frmMain
         lblAuth.Text = _AuthInfo.Text
         tmDoe.Interval = 1000
         tmDoe.Start()
-
-
+        If (AppConfig.KnxLocalIP Is Nothing) OrElse AppConfig.KnxLocalIP.Equals(Net.IPAddress.Parse("127.0.0.1")) Then
+            Dim r As DialogResult = MessageBox.Show("检测到无效的KNX路由接口本地IP，是否修改配置？", "Info", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
+            If r = DialogResult.OK Then
+                If frmNetworkInfo.ShowDialog() = DialogResult.OK Then
+                    'SaveAppSetting("LocalIP", frmNetworkInfo.SelectedIp)
+                    AppConfig.Save()
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub frmMain_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         '自动打开默认数据文件
-        If Not String.IsNullOrEmpty(_DataFile) Then
+        If Not String.IsNullOrEmpty(AppConfig.DefaultDataFile) Then
             'frmMainTable.Close()
             'frmMainTable.fp = _DataFile
             'ShowSubForm(frmMainTable)
-            OpenProject(_DataFile)
+            OpenProject(AppConfig.DefaultDataFile)
         End If
     End Sub
 
@@ -90,21 +97,21 @@ Public Class frmMain
     ''' </summary>
     ''' <param name="path">文件路径</param>
     Private Sub OpenProject(path As String)
-        KS = New KnxSystem(path, _LocalIp)
+        KS = New KnxSystem(path, AppConfig.KnxLocalIP)
         AddHandler KS.Bus.ConnectionChanged, AddressOf KnxConnectionChanged
         AddHandler KS.PollingStatusChanged, AddressOf PollingStatusChanged
         AddHandler KS.Schedules.ScheduleTimerStateChanged, AddressOf ScheduleTimerStateChanged
         'AddHandler KS.MessageTransmission, AddressOf KnxMessageTransmission
-        'KS.Bus.AllConnect(_InitRead) '打开全部KNX接口并初始化读取
-        OpenAllKnxInterface(_InitRead) '打开全部KNX接口并初始化读取
+        'KS.Bus.AllConnect(AppConfig.InitPolling) '打开全部KNX接口并初始化读取
+        OpenAllKnxInterface(AppConfig.InitPolling) '打开全部KNX接口并初始化读取
         KS.Schedules.TimerStart() '开启定时器
         'frmInterface.Show() '启动时展示接口
         frmMainTable.Close()
         'frmMainTable.fp = path
         ShowSubForm(frmMainTable)
         SetProjectState(True)
-        If Not String.IsNullOrWhiteSpace(_HmiFile) Then
-            OpenHmiForm(_HmiFile)
+        If Not String.IsNullOrWhiteSpace(AppConfig.DefaultHmiFile) Then
+            OpenHmiForm(AppConfig.DefaultHmiFile)
         End If
     End Sub
 

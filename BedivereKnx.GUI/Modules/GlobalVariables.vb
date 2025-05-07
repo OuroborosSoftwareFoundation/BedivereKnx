@@ -1,29 +1,16 @@
 ﻿Imports Ouroboros.Authorization.Iris
-Imports System.Net
 
 Module GlobalVariables
 
+    ''' <summary>
+    ''' 授权信息
+    ''' </summary>
     Public _AuthInfo As AuthorizationInfoCollection
 
     ''' <summary>
-    ''' 默认数据文件路径
+    ''' 程序配置
     ''' </summary>
-    Public _DataFile As String = vbNullString
-
-    ''' <summary>
-    ''' 默认HMI文件路径
-    ''' </summary>
-    Public _HmiFile As String = vbNullString
-
-    ''' <summary>
-    ''' 是否初始化读取
-    ''' </summary>
-    Public _InitRead As Boolean = False
-
-    ''' <summary>
-    ''' 本地IP
-    ''' </summary>
-    Public _LocalIp As IPAddress
+    Public AppConfig As New AppConfigManager
 
     ''' <summary>
     ''' KNX系统对象

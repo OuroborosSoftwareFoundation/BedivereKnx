@@ -35,17 +35,3 @@ Public Class frmReference
     End Sub
 
 End Class
-
-Module ListViewExten
-
-    <Extension()>
-    Public Function ContainsGroup(lv As ListView, key As String) As Boolean
-        For Each grp As ListViewGroup In lv.Groups
-            If grp.Name = key Then
-                Return True
-            End If
-        Next
-        Return False
-    End Function
-
-End Module

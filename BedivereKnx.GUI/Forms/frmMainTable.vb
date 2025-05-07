@@ -32,13 +32,13 @@ Public Class frmMainTable
 
     Private Sub frmMainTable_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         isBusy = False
-        'KS.Bus.AllConnect(_InitRead) '打开全部KNX接口并初始化读取
+        'KS.Bus.AllConnect(_InitPolling) '打开全部KNX接口并初始化读取
         'KS.Schedules.TimerStart() '开启定时器
         ''frmInterface.Show() '启动时展示接口
     End Sub
 
     Private Sub btnConnect_Click(sender As Object, e As EventArgs) Handles btnConnect.Click
-        KS.Bus.AllConnect(_InitRead) '打开全部KNX接口并初始化读取
+        KS.Bus.AllConnect(AppConfig.InitPolling) '打开全部KNX接口并初始化读取
     End Sub
 
     Private Sub tmPoll_Tick(sender As Timer, e As EventArgs) Handles tmPoll.Tick
