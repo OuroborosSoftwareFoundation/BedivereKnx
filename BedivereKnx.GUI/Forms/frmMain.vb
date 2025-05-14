@@ -1,4 +1,5 @@
-﻿Imports Knx.Falcon
+﻿Imports System.Net.NetworkInformation
+Imports Knx.Falcon
 Imports Knx.Falcon.Sdk
 
 Public Class frmMain
@@ -8,23 +9,44 @@ Public Class frmMain
     Dim rand As New Random
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
-        If Not _AuthInfo.Valid Then Application.Exit()
+        'If Not _AuthInfo.Valid Then Application.Exit()
         Me.Text = $"{My.Application.Info.ProductName} (Ver.{My.Application.Info.Version})"
-        lblAuth.Text = _AuthInfo.Text
+        'lblAuth.Text = _AuthInfo.Text
+        lblAuth.Text = _AuthInfo.Title
         tmDoe.Interval = 1000
         tmDoe.Start()
-        If (AppConfig.KnxLocalIP Is Nothing) OrElse AppConfig.KnxLocalIP.Equals(Net.IPAddress.Parse("127.0.0.1")) Then
-            Dim r As DialogResult = MessageBox.Show("检测到无效的KNX路由接口本地IP，是否修改配置？", "Info", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
-            If r = DialogResult.OK Then
-                If frmNetworkInfo.ShowDialog() = DialogResult.OK Then
-                    'SaveAppSetting("LocalIP", frmNetworkInfo.SelectedIp)
-                    AppConfig.Save()
-                End If
+    End Sub
+
+    ''' <summary>
+    ''' 选择KNX路由本地IP
+    ''' </summary>
+    Private Sub LocalIpSelect()
+        Dim r As DialogResult = MessageBox.Show($"检测到无效的KNX路由接口本地IP{AppConfig.KnxLocalIP}，是否修改配置？", "Info", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
+        If r = DialogResult.OK Then
+            If frmNetworkInfo.ShowDialog() = DialogResult.OK Then
+                AppConfig.KnxLocalIP = frmNetworkInfo.SelectedIp
+                AppConfig.Save()
             End If
         End If
     End Sub
 
     Private Sub frmMain_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        '测试KNX路由本地IP
+        Dim lclIpErr As Boolean = True 'KNX路由本地IP故障
+        If (AppConfig.KnxLocalIP Is Nothing) OrElse AppConfig.KnxLocalIP.Equals(Net.IPAddress.Parse("127.0.0.1")) Then
+            lclIpErr = True
+        Else
+            Dim pr As PingReply = (New Ping).Send(AppConfig.KnxLocalIP, 500) '测试通讯
+            If pr.Status = IPStatus.Success Then
+                lclIpErr = False
+            Else
+                lclIpErr = True
+            End If
+        End If
+        If lclIpErr Then
+            LocalIpSelect()
+        End If
+
         '自动打开默认数据文件
         If Not String.IsNullOrEmpty(AppConfig.DefaultDataFile) Then
             'frmMainTable.Close()
@@ -98,12 +120,17 @@ Public Class frmMain
     ''' <param name="path">文件路径</param>
     Private Sub OpenProject(path As String)
         KS = New KnxSystem(path, AppConfig.KnxLocalIP)
+        AddHandler KS.Bus.ConnectionExceptionOccurred, AddressOf ConnectError
         AddHandler KS.Bus.ConnectionChanged, AddressOf KnxConnectionChanged
         AddHandler KS.PollingStatusChanged, AddressOf PollingStatusChanged
         AddHandler KS.Schedules.ScheduleTimerStateChanged, AddressOf ScheduleTimerStateChanged
         'AddHandler KS.MessageTransmission, AddressOf KnxMessageTransmission
-        'KS.Bus.AllConnect(AppConfig.InitPolling) '打开全部KNX接口并初始化读取
-        OpenAllKnxInterface(AppConfig.InitPolling) '打开全部KNX接口并初始化读取
+        KS.Bus.AllConnect(AppConfig.InitPolling) '打开全部KNX接口并初始化读取
+        'Try
+        '    OpenAllKnxInterface(AppConfig.InitPolling) '打开全部KNX接口并初始化读取
+        'Catch ex As Exception
+        '    'MsgBox(ex.Message)
+        'End Try
         KS.Schedules.TimerStart() '开启定时器
         'frmInterface.Show() '启动时展示接口
         frmMainTable.Close()
@@ -167,11 +194,20 @@ Public Class frmMain
 
     Private Sub tmDoe_Tick(sender As Timer, e As EventArgs) Handles tmDoe.Tick
         Try
-            If _AuthInfo.Current.DOE.Date = Date.MaxValue.Date Then
+            'If _AuthInfo.Current.DOE.Date = Date.MaxValue.Date Then
+            '    sender.Stop()
+            '    Exit Sub
+            'Else
+            '    Dim span = _AuthInfo.Current.DOE.Subtract(Now)
+            '    'Dim cdv As String = $"{span.Days.ToString("X2")}{span.Hours.ToString("X2")}{span.Minutes.ToString("X2")}{span.Seconds.ToString("X2")}"
+            '    Dim cdv = Convert.ToInt64(span.TotalSeconds).ToString("X")
+            '    lblCtDn.Text = cdv
+            'End If
+            If _AuthInfo.ExpiryDate.Date = Date.MaxValue.Date Then
                 sender.Stop()
                 Exit Sub
             Else
-                Dim span = _AuthInfo.Current.DOE.Subtract(Now)
+                Dim span = _AuthInfo.ExpiryDate.Subtract(Now)
                 'Dim cdv As String = $"{span.Days.ToString("X2")}{span.Hours.ToString("X2")}{span.Minutes.ToString("X2")}{span.Seconds.ToString("X2")}"
                 Dim cdv = Convert.ToInt64(span.TotalSeconds).ToString("X")
                 lblCtDn.Text = cdv
@@ -181,7 +217,8 @@ Public Class frmMain
         Finally
             sender.Interval = rand.Next(1000, 10000)
         End Try
-        If Now.Date > _AuthInfo.Current.DOE.Date Then Application.Exit()
+        'If Now.Date > _AuthInfo.Current.DOE.Date Then Application.Exit()
+        If Now.Date > _AuthInfo.ExpiryDate.Date Then Application.Exit()
     End Sub
 
     Private Sub tmSec_Tick(sender As Object, e As EventArgs) Handles tmSec.Tick
@@ -195,6 +232,14 @@ Public Class frmMain
     'Github链接
     Private Sub slblGithub_Click(sender As Object, e As EventArgs) Handles slblGithub.Click
         OpenUrl("https://www.github.com/OuroborosSoftwareFoundation/BedivereKnx")
+    End Sub
+
+    ''' <summary>
+    ''' 接口连接异常事件
+    ''' </summary>
+    ''' <param name="ex"></param>
+    Private Sub ConnectError(ex As Exception)
+        MessageBox.Show(ex.Message, "ConnectionError", MessageBoxButtons.OK, MessageBoxIcon.Error)
     End Sub
 
     ''' <summary>

@@ -28,6 +28,11 @@ Public Class KnxBusCollection
     ''' </summary>
     Public Event GroupMessageReceived As KnxMessageHandler
 
+    ''' <summary>
+    ''' 连接故障事件
+    ''' </summary>
+    Public Event ConnectionExceptionOccurred As Action(Of Exception)
+
     Private ReadOnly dicItems As New Dictionary(Of String, KnxBus)
 
     ''' <summary>
@@ -168,8 +173,13 @@ Public Class KnxBusCollection
     ''' </summary>
     ''' <param name="GroupPoll"></param>
     Public Sub AllConnect(Optional GroupPoll As Boolean = False)
+        'Try
         Dim th As New Threading.Thread(Sub() _AllConnect(GroupPoll)) '新建线程打开KNX接口
         th.Start() '启动新线程
+        'Catch ex As Exception
+        '    'Throw
+        '    MsgBox(ex.Message)
+        'End Try
     End Sub
 
     Private Async Sub _AllConnect(Optional GroupPoll As Boolean = False)
@@ -182,7 +192,7 @@ Public Class KnxBusCollection
                 If dr("Enable").ToString = "0" Then Continue For
                 If dr("CnState") = BusConnectionState.Closed Then '只处理Close状态的接口
                     Dim IfCode As String = dr("InterfaceCode").ToString
-                    If dr("InterfaceType").ToString.ToLower.Contains("iptunnel") Then '网络接口
+                    If dr("InterfaceType").ToString.ToLower.Contains("iptunnel", StringComparison.CurrentCultureIgnoreCase) Then '网络接口
                         Dim p As New Ping
                         Dim pr As PingReply = p.Send(dr("InterfaceAddress").ToString, 100)
                         dr("NetState") = pr.Status
@@ -196,7 +206,8 @@ Public Class KnxBusCollection
                 End If '跳过已经连接的接口
             Next
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.OkOnly, "Error")
+            'Throw New Exception(ex.Message)
+            RaiseEvent ConnectionExceptionOccurred(ex) '触发连接异常事件
         Finally
             Ready = True
             If GroupPoll Then RaiseEvent GroupPollRequest()

@@ -1,11 +1,12 @@
-﻿Imports System.Net.NetworkInformation
+﻿Imports System.Net
+Imports System.Net.NetworkInformation
 
 Public Class frmNetworkInfo
 
     ''' <summary>
     ''' 选中的IP地址
     ''' </summary>
-    Friend SelectedIp As String = vbNullString
+    Friend SelectedIp As IPAddress
 
     Private Sub frmNetworkInfo_Load(sender As Object, e As EventArgs) Handles Me.Load
         LvInit()
@@ -30,23 +31,32 @@ Public Class frmNetworkInfo
                 Case Else
                     If Not lvNI.ContainsGroup(ni.Id) Then
                         Dim niMac As String = String.Join(":"c, ni.GetPhysicalAddress.GetAddressBytes().Select(Function(b) b.ToString("X2")))
-                        lvNI.Groups.Add(ni.Id, $"{ni.Name}({niMac})") '组名：{网卡名}({MAC})
-                        For Each addr As UnicastIPAddressInformation In ni.GetIPProperties().UnicastAddresses
-                            Dim ipFam As String = vbNullString 'IP地址类型
-                            Select Case addr.Address.AddressFamily
-                                Case Net.Sockets.AddressFamily.InterNetwork 'IPv4
-                                    ipFam = "IPv4"
-                                Case Net.Sockets.AddressFamily.InterNetworkV6 'IPv6
-                                    ipFam = "IPv6"
-                                Case Else
-                                    ipFam = addr.Address.AddressFamily.ToString()
-                            End Select
-                            Dim lvi As New ListViewItem(ipFam) '新建ListView项
-                            lvi.SubItems.Add(addr.Address.ToString()) '新建子项，内容为IP地址
-                            lvi.Group = lvNI.Groups(ni.Id) '设置组
-                            lvNI.Items.Add(lvi)
-                        Next
+                        Dim status As String
+                        Select Case ni.OperationalStatus
+                            Case OperationalStatus.Up
+                                status = "已连接"
+                            Case OperationalStatus.Down
+                                status = "未连接"
+                            Case Else
+                                status = ni.OperationalStatus.ToString()
+                        End Select
+                        lvNI.Groups.Add(ni.Id, $"{ni.Name}({niMac}), {status}") '组名：{网卡名}({MAC})
                     End If
+                    For Each addr As UnicastIPAddressInformation In ni.GetIPProperties().UnicastAddresses
+                        Dim ipFam As String = vbNullString 'IP地址类型
+                        Select Case addr.Address.AddressFamily
+                            Case Net.Sockets.AddressFamily.InterNetwork 'IPv4
+                                ipFam = "IPv4"
+                            Case Net.Sockets.AddressFamily.InterNetworkV6 'IPv6
+                                ipFam = "IPv6"
+                            Case Else
+                                ipFam = addr.Address.AddressFamily.ToString()
+                        End Select
+                        Dim lvi As New ListViewItem(ipFam) '新建ListView项
+                        lvi.SubItems.Add(addr.Address.ToString()) '新建子项，内容为IP地址
+                        lvi.Group = lvNI.Groups(ni.Id) '设置组
+                        lvNI.Items.Add(lvi)
+                    Next
             End Select
         Next
         lvNI.EndUpdate() 'ListView结束更新操作
@@ -55,8 +65,7 @@ Public Class frmNetworkInfo
 
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         If lvNI.SelectedItems.Count = 0 Then Exit Sub
-        SelectedIp = lvNI.SelectedItems(0).SubItems(1).Text
-        'SaveAppSetting("LocalIP", lvNI.SelectedItems(0).SubItems(1).Text)
+        SelectedIp = IPAddress.Parse(lvNI.SelectedItems(0).SubItems(1).Text)
         Me.DialogResult = DialogResult.OK
         Me.Close()
     End Sub

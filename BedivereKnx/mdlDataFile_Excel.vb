@@ -4,7 +4,7 @@ Imports System.Text.RegularExpressions
 Imports DocumentFormat.OpenXml.Packaging
 Imports DocumentFormat.OpenXml.Spreadsheet
 
-Module mdlDataFile_Excel
+Friend Module mdlDataFile_Excel
 
     Private ReadOnly DataSheets As String() = {"Interfaces", "Areas", "Objects", "Scenes", "Devices", "Schedules", "Links"}
 

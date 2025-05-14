@@ -26,6 +26,7 @@
 Imports System.Configuration
 Imports System.Net
 Imports Microsoft.VisualBasic.ApplicationServices
+Imports Ouroboros.AuthManager.Eos
 
 Namespace My
     ' Example:
@@ -85,7 +86,13 @@ Namespace My
             '==============================测试内容================================
 
 #End If
-            _AuthInfo = New Ouroboros.Authorization.Iris.AuthorizationInfoCollection
+            '_AuthInfo = New Ouroboros.Authorization.Iris.AuthorizationInfoCollection
+            Try
+                _AuthInfo = New AuthInfo
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                'Environment.Exit(-1)
+            End Try
         End Sub
 
         Public Sub InitDics()

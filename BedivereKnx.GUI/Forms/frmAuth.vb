@@ -14,14 +14,23 @@ Public Class frmAuth
             .Items.Add("ProductName", "ProductName", 1)
             .Items.Add("Version", "Version", 2)
             .Items.Add("DOE", "Expiration Date", 3)
-            .Items("Text").SubItems.Add(_AuthInfo.Text)
-            .Items("ProductName").SubItems.Add(_AuthInfo.Current.ProductName)
-            .Items("Version").SubItems.Add(_AuthInfo.Current.Version.ToString)
-            If _AuthInfo.Current.DOE.Date < DateTime.MaxValue.Date Then
+            '.Items("Text").SubItems.Add(_AuthInfo.Text)
+            '.Items("ProductName").SubItems.Add(_AuthInfo.Current.ProductName)
+            '.Items("Version").SubItems.Add(_AuthInfo.Current.Version.ToString)
+            'If _AuthInfo.Current.DOE.Date < DateTime.MaxValue.Date Then
+            '    .Items("DOE").SubItems.Add("(Hidden)")
+            'Else
+            '    .Items("DOE").SubItems.Add("Permanent")
+            'End If
+            .Items("Text").SubItems.Add(_AuthInfo.Title)
+            .Items("ProductName").SubItems.Add(_AuthInfo.ProductName)
+            .Items("Version").SubItems.Add(_AuthInfo.Version.ToString)
+            If _AuthInfo.ExpiryDate.Date < DateTime.MaxValue.Date Then
                 .Items("DOE").SubItems.Add("(Hidden)")
             Else
                 .Items("DOE").SubItems.Add("Permanent")
             End If
+
             .AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
         End With
     End Sub
@@ -30,7 +39,7 @@ Public Class frmAuth
         If e.Button = MouseButtons.Left Then
             If IsNothing(sender.SelectedItems) OrElse (sender.SelectedItems.Count = 0) Then Exit Sub
             If sender.SelectedItems(0).Name = "DOE" Then
-                MessageBox.Show($"Expiration Date: {_AuthInfo.Current.DOE.ToShortDateString}", "Expiration Date", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show($"Expiration Date: {_AuthInfo.ExpiryDate.ToShortDateString}", "Expiration Date", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
     End Sub

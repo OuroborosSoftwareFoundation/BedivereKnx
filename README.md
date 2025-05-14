@@ -19,7 +19,7 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 
 ## 授权机制
 
-本软件使用 `Ouroboros.AuthManager.Iris`进行授权，无需使用授权机制的情况下删除相关代码即可。
+本软件使用 `Ouroboros.AuthManager.Eos`进行授权，无需使用授权机制的情况下删除相关代码即可。
 
 ## 数据表格式
 

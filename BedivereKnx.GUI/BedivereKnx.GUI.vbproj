@@ -16,7 +16,7 @@
     <Authors>BHC666</Authors>
     <Company>Ouroboros Software Foundation</Company>
     <Copyright>© 2024 $(Company)</Copyright>
-    <Version>0.5.2</Version>
+    <Version>0.6.0</Version>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Title>$(AssemblyName)</Title>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
@@ -50,12 +50,12 @@
 
   <ItemGroup>
     <PackageReference Include="Knx.Falcon.Sdk" Version="6.3.7959" />
-    <PackageReference Include="System.Management" Version="9.0.1" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.1" />
+    <PackageReference Include="System.Management" Version="9.0.5" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ouroboros.AuthManager\Ouroboros.Authorization\Ouroboros.Authorization.vbproj" />
+    <ProjectReference Include="..\..\Ouroboros.AuthManager\Ouroboros.AuthManager\Ouroboros.AuthManager.csproj" />
     <ProjectReference Include="..\..\Ouroboros.Hmi\Ouroboros.Hmi.Library\Ouroboros.Hmi.Library.csproj" />
     <ProjectReference Include="..\BedivereKnx\BedivereKnx.vbproj" />
   </ItemGroup>
@@ -97,7 +97,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Authorization.iris">
+    <None Update="BedivereKnx.GUI.iris">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="data.xlsx">

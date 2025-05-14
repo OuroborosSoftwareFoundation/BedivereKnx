@@ -1,10 +1,11 @@
 ﻿
 Public Enum KnxGroupType As Integer
-    Switch = 10
-    Dimming = 20
-    Value = 30
-    EnableCtl = 40
-    Scene = 50
+    Switch = 1
+    Dimming
+    Curtain
+    Value
+    EnableCtl
+    Scene
 End Enum
 
 'Public Enum GroupValueType As Integer

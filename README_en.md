@@ -17,7 +17,7 @@ You should have received a copy Of the GNU General Public License along with thi
 
 ## Authorization
 
-This software is authorized with `Ouroboros.AuthMnager.Iris`. If you don't need authorization , you can simply delete the relevant code and compile it.
+This software is authorized with `Ouroboros.AuthMnager.Eos`. If you don't need authorization , you can simply delete the relevant code and compile it.
 
 ## Data File Format
 

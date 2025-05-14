@@ -1,6 +1,4 @@
-﻿Imports DocumentFormat.OpenXml.Office2010.ExcelAc
-Imports Knx.Falcon.IoT.RobustOperation
-Module mdlDataFile_EtsGa
+﻿Module mdlDataFile_EtsGa
     '    using System;
     'using System.Collections.Generic;
     'using System.Data;

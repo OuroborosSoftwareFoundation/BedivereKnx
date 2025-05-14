@@ -27,7 +27,6 @@ Partial Class frmMainTable
         tlpMain = New TableLayoutPanel()
         tlpTool = New TableLayoutPanel()
         btnInterface = New Button()
-        btnSchedule = New Button()
         tvArea = New TreeView()
         tabMain = New TabControl()
         tpObject = New TabPage()
@@ -46,6 +45,7 @@ Partial Class frmMainTable
         dgvDevice = New DataGridView()
         tpSchedule = New TabPage()
         dgvSchedule = New DataGridView()
+        btnSchedule = New Button()
         tpLink = New TabPage()
         dgvLink = New DataGridView()
         tpInterface = New TabPage()
@@ -156,16 +156,6 @@ Partial Class frmMainTable
         btnInterface.TabIndex = 0
         btnInterface.Text = "KNX接口"
         btnInterface.UseVisualStyleBackColor = True
-        ' 
-        ' btnSchedule
-        ' 
-        btnSchedule.Dock = DockStyle.Bottom
-        btnSchedule.Location = New Point(0, 420)
-        btnSchedule.Name = "btnSchedule"
-        btnSchedule.Size = New Size(936, 41)
-        btnSchedule.TabIndex = 0
-        btnSchedule.Text = "定时队列"
-        btnSchedule.UseVisualStyleBackColor = True
         ' 
         ' tvArea
         ' 
@@ -428,6 +418,16 @@ Partial Class frmMainTable
         dgvSchedule.ShowRowErrors = False
         dgvSchedule.Size = New Size(936, 420)
         dgvSchedule.TabIndex = 1
+        ' 
+        ' btnSchedule
+        ' 
+        btnSchedule.Dock = DockStyle.Bottom
+        btnSchedule.Location = New Point(0, 420)
+        btnSchedule.Name = "btnSchedule"
+        btnSchedule.Size = New Size(936, 41)
+        btnSchedule.TabIndex = 0
+        btnSchedule.Text = "定时队列"
+        btnSchedule.UseVisualStyleBackColor = True
         ' 
         ' tpLink
         ' 

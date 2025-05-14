@@ -43,7 +43,7 @@ Public Class frmConfig
 
     Private Sub btnLocalIpSel_Click(sender As Object, e As EventArgs) Handles btnLocalIpSel.Click
         If frmNetworkInfo.ShowDialog() = DialogResult.OK Then
-            tbLocalIp.Text = frmNetworkInfo.SelectedIp
+            tbLocalIp.Text = frmNetworkInfo.SelectedIp.ToString()
         End If
     End Sub
 
