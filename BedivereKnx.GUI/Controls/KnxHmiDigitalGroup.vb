@@ -85,12 +85,12 @@ Public Class KnxHmiDigitalGroup
             Me.MappingColors.Add(comp.Mapping.Values(i), comp.Mapping.StrokeColors(i)) '控件的线条变换颜色为颜色绑定对象
         Next
         Me.btn = New Button With {
-        .Dock = DockStyle.Right,
-        .Width = comp.RawSize.Width - Me.FdbWidth,
-        .BackColor = comp.FillColor,
-        .ForeColor = comp.FontColor,
-        .Text = comp.Text,
-        .Visible = True
+            .Dock = DockStyle.Right,
+            .Width = comp.RawSize.Width - Me.FdbWidth,
+            .BackColor = comp.FillColor,
+            .ForeColor = comp.FontColor,
+            .Text = comp.Text,
+            .Visible = True
         } '设置按钮属性
         btn.Font = New Font(btn.Font.Name, comp.FontSize) '按钮字体大小
         Me.Controls.Add(Me.btn) '向控件中添加按钮

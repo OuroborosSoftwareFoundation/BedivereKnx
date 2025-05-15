@@ -36,12 +36,6 @@ Public Class KnxBusCollection
     Private ReadOnly dicItems As New Dictionary(Of String, KnxBus)
 
     ''' <summary>
-    ''' 仅隧道模式，无默认接口
-    ''' </summary>
-    ''' <returns></returns>
-    Protected Friend Property AllTunnelMode As Boolean = False
-
-    ''' <summary>
     ''' 总线就绪状态
     ''' </summary>
     ''' <returns></returns>

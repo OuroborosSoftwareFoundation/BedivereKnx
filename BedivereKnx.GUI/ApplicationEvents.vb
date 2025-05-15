@@ -91,7 +91,7 @@ Namespace My
                 _AuthInfo = New AuthInfo
             Catch ex As Exception
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                'Environment.Exit(-1)
+                Environment.Exit(-1)
             End Try
         End Sub
 
