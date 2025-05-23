@@ -17,19 +17,6 @@ Public Class frmMain
         tmDoe.Start()
     End Sub
 
-    ''' <summary>
-    ''' 选择KNX路由本地IP
-    ''' </summary>
-    Private Sub LocalIpSelect()
-        Dim r As DialogResult = MessageBox.Show($"检测到无效的KNX路由接口本地IP{AppConfig.KnxLocalIP}，是否修改配置？", "Info", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
-        If r = DialogResult.OK Then
-            If frmNetworkInfo.ShowDialog() = DialogResult.OK Then
-                AppConfig.KnxLocalIP = frmNetworkInfo.SelectedIp
-                AppConfig.Save()
-            End If
-        End If
-    End Sub
-
     Private Sub frmMain_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         '测试KNX路由本地IP
         Dim lclIpErr As Boolean = True 'KNX路由本地IP故障
@@ -53,6 +40,19 @@ Public Class frmMain
             'frmMainTable.fp = _DataFile
             'ShowSubForm(frmMainTable)
             OpenProject(AppConfig.DefaultDataFile)
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' 选择KNX路由本地IP
+    ''' </summary>
+    Private Sub LocalIpSelect()
+        Dim r As DialogResult = MessageBox.Show($"检测到无效的KNX路由接口本地IP{AppConfig.KnxLocalIP}，是否修改配置？", "Info", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
+        If r = DialogResult.OK Then
+            If frmNetworkInfo.ShowDialog() = DialogResult.OK Then
+                AppConfig.KnxLocalIP = frmNetworkInfo.SelectedIp
+                AppConfig.Save()
+            End If
         End If
     End Sub
 

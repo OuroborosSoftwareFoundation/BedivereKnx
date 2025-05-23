@@ -61,7 +61,6 @@ Partial Class frmAbout
         lblProdName.Name = "lblProdName"
         lblProdName.Size = New Size(304, 64)
         lblProdName.TabIndex = 0
-        lblProdName.Text = "BedivereKnx.Client"
         lblProdName.TextAlign = ContentAlignment.BottomLeft
         ' 
         ' lblCopyright
@@ -276,7 +275,6 @@ Partial Class frmAbout
         Padding = New Padding(5)
         ShowInTaskbar = False
         StartPosition = FormStartPosition.CenterParent
-        Text = "About BedivereKnx.Client"
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         tlpBtns.ResumeLayout(False)
         pnlTitle.ResumeLayout(False)

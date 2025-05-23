@@ -23,8 +23,6 @@
 '   你理当已收到一份GNU通用公共许可协议的副本。
 '   如果没有，请查阅 <http://www.gnu.org/licenses/> 
 
-Imports System.Configuration
-Imports System.Net
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Ouroboros.AuthManager.Eos
 
@@ -86,19 +84,25 @@ Namespace My
             '==============================测试内容================================
 
 #End If
+
+        End Sub
+
+        Private Sub InitAuth()
             '_AuthInfo = New Ouroboros.Authorization.Iris.AuthorizationInfoCollection
             Try
                 _AuthInfo = New AuthInfo
             Catch ex As Exception
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Environment.Exit(-1)
+                If MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) = DialogResult.Retry Then
+                    frmAuthModify.lblExpMsg.Text = ex.Message
+                    frmAuthModify.ShowDialog()
+                Else
+                    Environment.Exit(-1)
+                End If
             End Try
         End Sub
 
-        Public Sub InitDics()
-            '    dicDataColHead.Add("InterfaceCode", "接口编号")
-            '    dicDataColHead.Add("", "")
-            '    dicDataColHead.Add("SceneName", "场景名称")
+        Private Sub MyApplication_ApplyApplicationDefaults(sender As Object, e As ApplyApplicationDefaultsEventArgs) Handles Me.ApplyApplicationDefaults
+            InitAuth()
         End Sub
 
     End Class

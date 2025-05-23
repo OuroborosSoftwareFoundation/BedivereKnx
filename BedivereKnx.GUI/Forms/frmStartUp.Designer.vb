@@ -42,11 +42,11 @@ Partial Class frmStartUp
         ' 
         lblVersion.BackColor = Color.Transparent
         lblVersion.Dock = DockStyle.Fill
-        lblVersion.Font = New Font("Microsoft Sans Serif", 9.0F)
+        lblVersion.Font = New Font("Microsoft Sans Serif", 9F)
         lblVersion.ForeColor = Color.White
-        lblVersion.Location = New Point(3, 132)
+        lblVersion.Location = New Point(3, 154)
         lblVersion.Name = "lblVersion"
-        lblVersion.Size = New Size(386, 50)
+        lblVersion.Size = New Size(388, 50)
         lblVersion.TabIndex = 1
         lblVersion.Text = "Version"
         lblVersion.TextAlign = ContentAlignment.MiddleLeft
@@ -55,13 +55,13 @@ Partial Class frmStartUp
         ' 
         lblCopyright.BackColor = Color.Transparent
         lblCopyright.Dock = DockStyle.Fill
-        lblCopyright.Font = New Font("Microsoft Sans Serif", 9.0F)
+        lblCopyright.Font = New Font("Microsoft Sans Serif", 9F)
         lblCopyright.ForeColor = Color.White
-        lblCopyright.Location = New Point(3, 242)
+        lblCopyright.Location = New Point(3, 264)
         lblCopyright.Name = "lblCopyright"
-        lblCopyright.Size = New Size(386, 50)
+        lblCopyright.Size = New Size(388, 50)
         lblCopyright.TabIndex = 2
-        lblCopyright.Text = "Copyright © 2024 Ouroboros Software Foundation." & vbCrLf & "All rights reserved."
+        lblCopyright.Text = "© 2024 Ouroboros Software Foundation." & vbCrLf & "All rights reserved."
         lblCopyright.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' lblProdName
@@ -72,9 +72,10 @@ Partial Class frmStartUp
         lblProdName.ForeColor = Color.Azure
         lblProdName.Location = New Point(3, 0)
         lblProdName.Name = "lblProdName"
-        lblProdName.Size = New Size(386, 132)
+        lblProdName.Size = New Size(388, 154)
         lblProdName.TabIndex = 0
-        lblProdName.Text = "BedivereKnx.Client"
+        'lblProdName.Text = "BedivereKnx.GUI"
+        lblProdName.Text = My.Application.Info.ProductName
         lblProdName.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' tlpInfo
@@ -87,7 +88,7 @@ Partial Class frmStartUp
         tlpInfo.Controls.Add(pbrLoad, 0, 3)
         tlpInfo.Controls.Add(lblAuth, 0, 2)
         tlpInfo.Dock = DockStyle.Fill
-        tlpInfo.Location = New Point(303, 3)
+        tlpInfo.Location = New Point(323, 3)
         tlpInfo.Name = "tlpInfo"
         tlpInfo.RowCount = 5
         tlpInfo.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
@@ -95,15 +96,15 @@ Partial Class frmStartUp
         tlpInfo.RowStyles.Add(New RowStyle(SizeType.Absolute, 30F))
         tlpInfo.RowStyles.Add(New RowStyle(SizeType.Absolute, 30F))
         tlpInfo.RowStyles.Add(New RowStyle(SizeType.Absolute, 50F))
-        tlpInfo.Size = New Size(392, 292)
+        tlpInfo.Size = New Size(394, 314)
         tlpInfo.TabIndex = 3
         ' 
         ' pbrLoad
         ' 
         pbrLoad.Dock = DockStyle.Fill
-        pbrLoad.Location = New Point(3, 215)
+        pbrLoad.Location = New Point(3, 237)
         pbrLoad.Name = "pbrLoad"
-        pbrLoad.Size = New Size(386, 24)
+        pbrLoad.Size = New Size(388, 24)
         pbrLoad.Style = ProgressBarStyle.Marquee
         pbrLoad.TabIndex = 3
         ' 
@@ -111,18 +112,17 @@ Partial Class frmStartUp
         ' 
         lblAuth.Dock = DockStyle.Fill
         lblAuth.ForeColor = Color.White
-        lblAuth.Location = New Point(3, 182)
+        lblAuth.Location = New Point(3, 204)
         lblAuth.Name = "lblAuth"
-        lblAuth.Size = New Size(386, 30)
+        lblAuth.Size = New Size(388, 30)
         lblAuth.TabIndex = 4
         lblAuth.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' tlpMain
         ' 
         tlpMain.ColumnCount = 2
-        tlpMain.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 300F))
+        tlpMain.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 320F))
         tlpMain.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
-        tlpMain.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
         tlpMain.Controls.Add(tlpInfo, 2, 0)
         tlpMain.Controls.Add(picTitle, 0, 0)
         tlpMain.Dock = DockStyle.Fill
@@ -131,17 +131,18 @@ Partial Class frmStartUp
         tlpMain.Name = "tlpMain"
         tlpMain.RowCount = 1
         tlpMain.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
-        tlpMain.Size = New Size(698, 298)
+        tlpMain.Size = New Size(720, 320)
         tlpMain.TabIndex = 4
         ' 
         ' picTitle
         ' 
+        picTitle.BorderStyle = BorderStyle.FixedSingle
         picTitle.Dock = DockStyle.Fill
         picTitle.Image = My.Resources.Resources.StartUp
-        picTitle.Location = New Point(0, 0)
-        picTitle.Margin = New Padding(0)
+        picTitle.Location = New Point(10, 10)
+        picTitle.Margin = New Padding(10)
         picTitle.Name = "picTitle"
-        picTitle.Size = New Size(300, 298)
+        picTitle.Size = New Size(300, 300)
         picTitle.SizeMode = PictureBoxSizeMode.Zoom
         picTitle.TabIndex = 4
         picTitle.TabStop = False
@@ -151,7 +152,7 @@ Partial Class frmStartUp
         AutoScaleDimensions = New SizeF(9F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.SteelBlue
-        ClientSize = New Size(698, 298)
+        ClientSize = New Size(720, 320)
         ControlBox = False
         Controls.Add(tlpMain)
         FormBorderStyle = FormBorderStyle.None

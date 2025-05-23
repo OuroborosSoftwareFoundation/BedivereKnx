@@ -19,6 +19,4 @@ Module GlobalVariables
     ''' </summary>
     Public KS As KnxSystem
 
-    'Public dicDataColHead As New Dictionary(Of String, String)
-
 End Module

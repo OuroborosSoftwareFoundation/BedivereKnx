@@ -23,6 +23,7 @@
     <ApplicationIcon>Resources\ico_Bedivere.ico</ApplicationIcon>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <PackageProjectUrl>https://www.github.com/OuroborosSoftwareFoundation/BedivereKnx</PackageProjectUrl>
+    <Product>Bedivere Knx GUI</Product>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,9 +38,6 @@
 
   <ItemGroup>
     <None Remove="BedivereKnx.GUI.vbproj.vspscc" />
-    <None Remove="data.csv" />
-    <None Remove="Resources\ico_Bedivere.ico" />
-    <None Remove="Resources\ico_BKC.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -294,7 +294,8 @@ Partial Class frmMain
         IsMdiContainer = True
         Name = "frmMain"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "BedivereKnx.Client"
+        'Text = "Bedivere Knx GUI"
+        'Me.Text = $"{My.Application.Info.ProductName} (Ver.{My.Application.Info.Version})"
         Menu.ResumeLayout(False)
         Menu.PerformLayout()
         stsBottom.ResumeLayout(False)
