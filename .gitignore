@@ -366,4 +366,7 @@ $tf/
 $tf*/
 
 _others/
-/BedivereKnxClient/data - 副本.xlsx
+/BedivereKnx_CS/BedivereKnx_CS.csproj
+/BedivereKnx_CS.test/BedivereKnx_CS.test.csproj
+/BedivereKnx_CS/BedivereKnx_CS.csproj
+/BedivereKnx_CS.test/BedivereKnx_CS.test.csproj

@@ -1,0 +1,44 @@
+﻿using System.Data;
+using System.Net;
+using BedivereKnx.DataFile;
+using BedivereKnx.KnxSystem;
+
+namespace BedivereKnx_CS.test
+{
+    public partial class Form1 : Form
+    {
+
+        public KnxSystem KS = new("data.xlsx", new IPAddress([127, 0, 0, 1]));
+        DataTableCollection dtc;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            dtc = ExcelDataFile.FromExcel("data.xlsx", true, true);
+            foreach (DataTable dt in dtc)
+            {
+                cb.Items.Add(dt.TableName);
+            }
+        }
+
+        private void cb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cb.SelectedItem is null) return;
+            if (string.IsNullOrWhiteSpace(cb.SelectedItem.ToString())) return;
+            string tbn = cb.SelectedItem.ToString()!;
+            DataTable dt = dtc[tbn]!;
+            dgv.DataSource = dt;
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                dgv.Columns[i].HeaderText = dt.Columns[i].Caption;
+            }
+
+
+        }
+
+    }
+}
