@@ -127,7 +127,7 @@ Public Class KnxObjectCollection
             .Columns.Item("Val_Fdb_Value").Caption = "数值反馈"
             For Each dr As DataRow In _Table.Rows
                 'MsgBox(dr("ObjectCode"))
-                Dim GrpType As KnxGroupType '组地址类型
+                Dim GrpType As KnxObjectType '组地址类型
                 If Not [Enum].TryParse(dr("ObjectType"), GrpType) Then '字符串转枚举
                     Throw New ArgumentException($"Wrong ObjectType in Objects: [{dr("ObjectCode")}]{dr("ObjectName")}.")
                 End If
@@ -252,7 +252,7 @@ Public Class KnxObject : Inherits KnxObjectBase
     ''' <param name="type">对象类型</param>
     ''' <param name="id">对象ID</param>
     ''' <param name="ifCode">接口编号</param>
-    Public Sub New(type As KnxGroupType, id As Integer, ifCode As String)
+    Public Sub New(type As KnxObjectType, id As Integer, ifCode As String)
         MyBase.New(type, id, ifCode)
     End Sub
 
@@ -264,7 +264,7 @@ Public Class KnxObject : Inherits KnxObjectBase
     ''' <param name="code">对象编号</param>
     ''' <param name="name">对象名称</param>
     ''' <param name="ifCode">接口编号</param>
-    Public Sub New(type As KnxGroupType, id As Integer, code As String, name As String, ifCode As String)
+    Public Sub New(type As KnxObjectType, id As Integer, code As String, name As String, ifCode As String)
         MyBase.New(type, id, code, name, ifCode)
     End Sub
 

@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Knx.Falcon;
+using Knx.Falcon.Configuration;
 
 namespace BedivereKnx.DataFile
 {
@@ -125,52 +126,88 @@ namespace BedivereKnx.DataFile
                     bool isAllEmpty = true; //行是否全空
                     foreach (Cell cell in row.Elements<Cell>())
                     {
-                        int cid = GetCellIndex(cell)[1]; //获取单元格的列ID
+                        int[] ci = GetCellIndex(cell); //{行ID, 列ID}
+                        int rid = ci[0]; //单元格的行ID
+                        int cid = ci[1]; //单元格的列ID
                         if (cid >= dt.Columns.Count) continue; //确保单元格列ID不超过DataTable列ID
                         //无视超出标题列宽的数据
                         string cv = GetCellValue(cell, wbp); //单元格内容
                         if (!string.IsNullOrWhiteSpace(cv)) isAllEmpty = false; //判断行是否全空
 
+                        string colName = dt.Columns[cid].ColumnName; //列名
                         Type colType = dt.Columns[cid].DataType; //列的数据类型
-                        switch (Type.GetTypeCode(colType)) //判断数据类型
+                        if (colType.IsEnum) //枚举类型的情况
                         {
-                            case TypeCode.String: //字符串
-                                dr[cid] = cv;
-                                break;
-                            case TypeCode.Boolean: //布尔型
-                                dr[cid] = (cv != "0" || cv.ToLower() == "true");
-                                break;
-                            //case TypeCode.Byte:
-                            //case TypeCode.SByte:
-                            //case TypeCode.Int16:
-                            //case TypeCode.Int32:
-                            //case TypeCode.Int64:
-                            //case TypeCode.UInt16:
-                            //case TypeCode.UInt32:
-                            //case TypeCode.UInt64:
-                            //case TypeCode.Single:
-                            //case TypeCode.Double:
-                            //case TypeCode.Decimal:
-                            //    dr[cid] = cv;
-                            //    break;
-                            default:
-                                string colName = dt.Columns[cid].ColumnName;
-                                if (StaticDict.ColumnType.ContainsKey(colName)) //特殊的列数据类型
+                            if (colType == typeof(ConnectorType))
+                            {
+                                if (Enum.TryParse(cv, true, out ConnectorType ct))
                                 {
-                                    if (colType == typeof(GroupAddress)) //组地址
-                                    {
-                                        dr[cid] = new GroupAddress(cv);
-                                    }
-                                    else if (colType == typeof(IndividualAddress)) //物理地址
-                                    {
-                                        dr[cid] = new IndividualAddress(cv);
-                                    }
+                                    dr[cid] = ct;
                                 }
                                 else
                                 {
-                                    dr[cid] = cv.ToString();
+                                    if (string.IsNullOrWhiteSpace(cv)) cv = "null";
+                                    throw new ArgumentException(string.Format(ResString.ExMsg_EnumInvalid, $"ConnectorType = {cv}", $"Table={sheet.Name}, Row={rid}"));
                                 }
-                                break;
+                            }
+                            else if (colType == typeof(KnxObjectType))
+                            {
+                                if (Enum.TryParse(cv, true, out KnxObjectType kot))
+                                {
+                                    dr[cid] = kot;
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrWhiteSpace(cv)) cv = "null";
+                                    throw new ArgumentException(string.Format(ResString.ExMsg_EnumInvalid, $"KnxObjectType = {cv}", $"Table={sheet.Name}, Row={rid}"));
+                                }
+                            }
+                            else if (colName == "TargetType") //定时表里的目标类型
+                            {
+
+                            }
+                        }
+                        else //非枚举类型的情况
+                        {
+                            switch (Type.GetTypeCode(colType)) //判断数据类型
+                            {
+                                case TypeCode.String: //字符串
+                                    dr[cid] = cv;
+                                    break;
+                                case TypeCode.Boolean: //布尔型
+                                    dr[cid] = (cv != "0" || cv.ToLower() == "true");
+                                    break;
+                                case TypeCode.Byte:
+                                case TypeCode.SByte:
+                                case TypeCode.Int16:
+                                case TypeCode.UInt16:
+                                case TypeCode.Int32:
+                                case TypeCode.UInt32:
+                                case TypeCode.Int64:
+                                case TypeCode.UInt64:
+                                case TypeCode.Single:
+                                case TypeCode.Double:
+                                case TypeCode.Decimal:
+                                    dr[cid] = cv;
+                                    break;
+                                default:
+                                    if (StaticDict.ColumnType.ContainsKey(colName)) //特殊的列数据类型
+                                    {
+                                        if (colType == typeof(GroupAddress)) //组地址
+                                        {
+                                            dr[cid] = new GroupAddress(cv);
+                                        }
+                                        else if (colType == typeof(IndividualAddress)) //物理地址
+                                        {
+                                            dr[cid] = new IndividualAddress(cv);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        dr[cid] = cv.ToString();
+                                    }
+                                    break;
+                            }
                         }
 
                     }

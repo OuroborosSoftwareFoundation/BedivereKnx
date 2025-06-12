@@ -1,5 +1,5 @@
 ﻿
-Public Enum KnxGroupType As Integer
+Public Enum KnxObjectType As Integer
     Switch = 1
     Dimming
     Curtain

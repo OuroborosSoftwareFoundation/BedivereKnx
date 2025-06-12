@@ -36,7 +36,7 @@ This sheet stores interfaces information. Left blank for default broadcast routi
 | Port             | Number                           | Integer                              | Port              |
 | Enable           | *Sequence*<sup>2</sup>           | Boolean                              | Enable            |
 
-- <sup>1</sup> KNX Interface Type, IpRouting、IpTunnel、Usb.
+- <sup>1</sup> KNX Interface Type, IpRouting、IpTunneling、Usb.
 - <sup>2</sup> FALSE/TRUE Sequence.
 
 ### Areas
@@ -64,7 +64,7 @@ This sheet stores objects information, each object has 4 groups: switch control,
 | AreaCode<sup>1</sup>              | Text                             | String                               | Area Code               |
 | InterfaceCode<sup>2</sup>         | Text                             | String                               | Interface Code          |
 | ObjectCode                        | Text                             | String                               | Object Code             |
-| ObjectType                        | *Sequence*                       | *KnxGroupType*<sup>3</sup>           | Object Type             |
+| ObjectType                        | *Sequence*                       | *KnxObjectType*<sup>3</sup>           | Object Type             |
 | ObjectName                        | Text                             | String                               | Object Name             |
 | Sw_GrpDpt                         | *Sequence*<sup>4</sup>           | <ins>*DptBase*</ins>                 | Switch Group DPT        |
 | Sw_Ctl_GrpAddr                    | Text                             | <ins>*GroupAddress*</ins>            | Switch Control Address  |
@@ -75,7 +75,7 @@ This sheet stores objects information, each object has 4 groups: switch control,
 
 - <sup>1</sup> From column `AreaCode` of sheet `Areas`.
 - <sup>2</sup> From column `InterfaceCode` of sheet `Interfaces`, left blank for default broadcast routing interface.
-- <sup>3</sup> *KnxGroupType* A is an enumeration type defined by BedivereKnx, representing the KNX object type (Switch/Dimming/Scene/...).
+- <sup>3</sup> *KnxObjectType* A is an enumeration type defined by BedivereKnx, representing the KNX object type (Switch/Dimming/Scene/...).
 - <sup>4</sup> KNX DataPointType sequence, from `Knx.Falcon.ApplicationData.DatapointTypes.DptFactory.AllDatapointTypes`.
 
 ### Scenes

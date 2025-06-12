@@ -49,6 +49,9 @@ namespace BedivereKnx_CS.test
             //int[] i = [];
             //MessageBox.Show(i.Length.ToString());
 
+            //string s = "switch";
+            //Enum.Parse<KnxObjectType>(s);
+
             Application.Run(new Form1());
         }
     }

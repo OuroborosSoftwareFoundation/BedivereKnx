@@ -135,9 +135,9 @@ Public Class KnxBusCollection
                         '    Dim cpusb As UsbConnectorParameters = UsbConnectorParameters.FromDiscovery(usb)
                         '    cp = cpusb
                         'Next
-                    Case "iptunnel"
+                    Case "iptunneling"
                         cp = New IpTunnelingConnectorParameters(dr("InterfaceAddress"), Convert.ToInt32(dr("Port")))
-                    Case "iprouter"
+                    Case "iprouting"
                         If Net.IPAddress.Parse(dr("InterfaceAddress")) = IpRoutingConnectorParameters.DefaultMulticastAddress AndAlso Convert.ToInt32(dr("Port")) = IpRoutingConnectorParameters.DefaultIpPort Then
                             Continue For '跳过默认路由接口（使用默认接口代替）
                         Else

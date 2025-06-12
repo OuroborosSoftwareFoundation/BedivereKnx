@@ -38,7 +38,7 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 | Port             | Number                           | Integer                              | 端口     |
 | Enable           | *Sequence*<sup>2</sup>           | Boolean                              | 启用     |
 
-- <sup>1</sup> KNX接口类型，IpRouting、IpTunnel、Usb。
+- <sup>1</sup> KNX接口类型，IpRouting、IpTunneling、Usb。
 - <sup>2</sup> FALSE/TRUE序列。
 
 ### 区域 Areas
@@ -66,7 +66,7 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 | AreaCode<sup>1</sup>              | Text                             | String                               | 区域编号      |
 | InterfaceCode<sup>2</sup>         | Text                             | String                               | 接口编号      |
 | ObjectCode                        | Text                             | String                               | 对象编号      |
-| ObjectType                        | *Sequence*                       | *KnxGroupType*<sup>3</sup>           | 对象类型      |
+| ObjectType                        | *Sequence*                       | *KnxObjectType*<sup>3</sup>           | 对象类型      |
 | ObjectName                        | Text                             | String                               | 对象名称      |
 | Sw_GrpDpt                         | *Sequence*<sup>4</sup>           | <ins>*DptBase*</ins>                 | 开关-地址类型 |
 | Sw_Ctl_GrpAddr                    | Text                             | <ins>*GroupAddress*</ins>            | 开关-控制地址 |
@@ -77,7 +77,7 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 
 - <sup>1</sup> 来自 `Areas`表的 `AreaCode`列。
 - <sup>2</sup> 来自 `Interfaces`表的 `InterfaceCode`列，留空即为使用KNX广播路由接口。
-- <sup>3</sup> *KnxGroupType*为BedivereKnx定义的枚举类型，表示KNX对象类型（Switch、Dimming、Scene等）。
+- <sup>3</sup> *KnxObjectType*为BedivereKnx定义的枚举类型，表示KNX对象类型（Switch、Dimming、Scene等）。
 - <sup>4</sup> KNX DataPointType的序列，来自 `Knx.Falcon.ApplicationData.DatapointTypes.DptFactory.AllDatapointTypes`。
 
 ### 场景 Scenes

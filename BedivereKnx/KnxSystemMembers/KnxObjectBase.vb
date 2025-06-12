@@ -11,7 +11,7 @@ Public MustInherit Class KnxObjectBase
 
     Private _Groups As New Dictionary(Of KnxObjectPart, KnxGroup)
 
-    Public ReadOnly Property GroupType As KnxGroupType
+    Public ReadOnly Property GroupType As KnxObjectType
 
     ''' <summary>
     ''' 对象ID
@@ -126,14 +126,14 @@ Public MustInherit Class KnxObjectBase
         End If
     End Function
 
-    Public Sub New(type As KnxGroupType, id As Integer, ifCode As String)
+    Public Sub New(type As KnxObjectType, id As Integer, ifCode As String)
         _GroupType = type
         _Id = id
         _InterfaceCode = ifCode
         _Groups = New Dictionary(Of KnxObjectPart, KnxGroup)
     End Sub
 
-    Public Sub New(type As KnxGroupType, id As Integer, code As String, name As String, ifCode As String)
+    Public Sub New(type As KnxObjectType, id As Integer, code As String, name As String, ifCode As String)
         _GroupType = type
         _Id = id
         _Code = code

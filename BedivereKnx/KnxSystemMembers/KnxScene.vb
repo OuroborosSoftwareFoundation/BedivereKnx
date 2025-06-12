@@ -133,7 +133,7 @@ Public Class KnxScene : Inherits KnxObjectBase
     ''' <param name="ga">场景组地址</param>
     ''' <param name="ifCode">接口编号</param>
     Public Sub New(id As Integer, ga As GroupAddress, ifCode As String)
-        MyBase.New(KnxGroupType.Scene, id, ifCode)
+        MyBase.New(KnxObjectType.Scene, id, ifCode)
         Me.Groups(KnxObjectPart.SceneControl) = New KnxGroup(ga, 18, 1) '新建DPST18.001对象
         ReDim Me.Names(63) '重置场景名数组
     End Sub

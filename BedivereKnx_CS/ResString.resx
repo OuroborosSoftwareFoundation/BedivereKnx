@@ -174,4 +174,7 @@
   <data name="ExMsg_KnxPortInvalid" xml:space="preserve">
     <value>Invalid KnxInterface port:{0} (code={1}).</value>
   </data>
+  <data name="ExMsg_EnumInvalid" xml:space="preserve">
+    <value>Invalid enum value '{0}'. ({1})</value>
+  </data>
 </root>

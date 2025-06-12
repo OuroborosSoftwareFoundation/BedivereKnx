@@ -115,6 +115,15 @@ namespace BedivereKnx {
         }
         
         /// <summary>
+        ///   查找类似 Invalid enum value &apos;{0}&apos;. ({1}) 的本地化字符串。
+        /// </summary>
+        internal static string ExMsg_EnumInvalid {
+            get {
+                return ResourceManager.GetString("ExMsg_EnumInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Invalid {0} file format. 的本地化字符串。
         /// </summary>
         internal static string ExMsg_FileFormatInvalid {
