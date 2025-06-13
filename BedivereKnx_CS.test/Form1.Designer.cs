@@ -30,12 +30,14 @@
         {
             cb = new ComboBox();
             dgv = new DataGridView();
+            tv = new TreeView();
             ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
             SuspendLayout();
             // 
             // cb
             // 
             cb.Dock = DockStyle.Top;
+            cb.DropDownStyle = ComboBoxStyle.DropDownList;
             cb.FormattingEnabled = true;
             cb.Location = new Point(0, 0);
             cb.Name = "cb";
@@ -49,12 +51,21 @@
             dgv.AllowUserToDeleteRows = false;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv.Dock = DockStyle.Fill;
-            dgv.Location = new Point(0, 28);
+            dgv.Location = new Point(159, 28);
             dgv.Name = "dgv";
             dgv.ReadOnly = true;
             dgv.RowHeadersWidth = 51;
-            dgv.Size = new Size(800, 422);
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.Size = new Size(641, 422);
             dgv.TabIndex = 1;
+            // 
+            // tv
+            // 
+            tv.Dock = DockStyle.Left;
+            tv.Location = new Point(0, 28);
+            tv.Name = "tv";
+            tv.Size = new Size(159, 422);
+            tv.TabIndex = 2;
             // 
             // Form1
             // 
@@ -62,6 +73,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(dgv);
+            Controls.Add(tv);
             Controls.Add(cb);
             Name = "Form1";
             Text = "Form1";
@@ -74,5 +86,6 @@
 
         private ComboBox cb;
         private DataGridView dgv;
+        private TreeView tv;
     }
 }

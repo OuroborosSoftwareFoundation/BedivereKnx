@@ -1,6 +1,7 @@
-using BedivereKnx.DataFile;
 using System.Globalization;
-using BedivereKnx;
+using Knx.Falcon.ApplicationData.MasterData;
+using Knx.Falcon.ApplicationData.DatapointTypes;
+using System.Diagnostics;
 namespace BedivereKnx_CS.test
 {
     internal static class Program
@@ -51,6 +52,16 @@ namespace BedivereKnx_CS.test
 
             //string s = "switch";
             //Enum.Parse<KnxObjectType>(s);
+
+            //foreach (DatapointType dpt in DptFactory.Default.AllDatapointTypes)
+            //{
+            //    Debug.WriteLine($"{dpt.MainTypeNumber}.xxx_{dpt.Name}__{dpt.GetTranslatedText("zh-cn")}");
+            //    foreach (DatapointSubtype dpst in dpt.SubTypes)
+            //    {
+            //        Debug.WriteLine($"{dpt.MainTypeNumber}.{dpst.SubTypeNumber.ToString().PadLeft(3, '0')}_{dpst.Name}__{dpst.GetTranslatedText("zh-cn")}");
+            //    }
+            //}
+
 
             Application.Run(new Form1());
         }

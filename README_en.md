@@ -4,6 +4,8 @@
 
 KNX intelligent lighting control software, based on Knx.Falcon.Sdk library.
 
+Initial development language is VB.net, currently being rewritten in C # (project BedivereKnx_CS).
+
 > [!CAUTION]
 > This software may have bugs and is not recommended for commercial use, otherwise the consequences will be borne by oneself.
 
@@ -26,6 +28,8 @@ BedivereKnx.Client uses Excel to store data. The following provides a detailed d
 ### Interfaces
 
 This sheet stores interfaces information. Left blank for default broadcast routing interface `224.0.23.12:3671`.
+
+**Note**: Only one USB interface is allowed, no need to fill InterfaceAddress for the USB interface.
 
 | Column           | Type                             | .NET Type                            | Caption           |
 | ---------------- | -------------------------------- | ------------------------------------ | ----------------- |

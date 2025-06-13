@@ -13,16 +13,22 @@ namespace BedivereKnx_CS.test
 
         public Form1()
         {
+            dtc = ExcelDataFile.FromExcel("data.xlsx", true, true);
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dtc = ExcelDataFile.FromExcel("data.xlsx", true, true);
             foreach (DataTable dt in dtc)
             {
                 cb.Items.Add(dt.TableName);
             }
+
+
+
+
+
+
         }
 
         private void cb_SelectedIndexChanged(object sender, EventArgs e)
