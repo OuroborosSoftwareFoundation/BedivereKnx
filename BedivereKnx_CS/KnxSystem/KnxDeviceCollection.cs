@@ -5,6 +5,9 @@ using System.Data;
 namespace BedivereKnx.KnxSystem
 {
 
+    /// <summary>
+    /// KNX设备集合
+    /// </summary>
     public class KnxDeviceCollection : IEnumerable<KnxDeviceInfo>
     {
 
@@ -59,7 +62,7 @@ namespace BedivereKnx.KnxSystem
                     List<KnxDeviceInfo> list = [];
                     foreach (DataRow dr in drs)
                     {
-                        list.Add(this[(int)dr["Id"]]); //根据ID列搜索对象
+                        list.Add(this[dr.Field<int>("Id")]); //根据ID列搜索对象
                     }
                     return list.ToArray();
                 }
@@ -70,26 +73,36 @@ namespace BedivereKnx.KnxSystem
             }
         }
 
+        /// <summary>
+        /// 新建KNX设备集合
+        /// </summary>
+        /// <param name="dt">数据表</param>
+        /// <exception cref="NoNullAllowedException"></exception>
         public KnxDeviceCollection(DataTable dt)
         {
             Table = dt;
-            Table.Columns.Add(new DataColumn("Reachable", typeof(KnxDeviceState)) //
-            {
-                Caption = ResString.DataCol_Reachable
-            });
+            Table.Columns.Add("Reachable", ResString.DataCol_Reachable, typeof(KnxDeviceState));
             foreach (DataRow dr in Table.Rows)
             {
                 int id = dr.Field<int>("Id");
-                IndividualAddress indAddress = dr.Field<IndividualAddress>("IndividualAddress");//new(dr.Field<string>("IndividualAddress")); //物理地址
-                string? code = dr.Field<string>("DeviceCode"); //设备编号
-                if (string.IsNullOrWhiteSpace(code)) //设备编号为空的情况
-                    throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "DeviceCode", $"Id = {id}"));
-                KnxDeviceInfo kdi = new(id, code, dr.Field<string>("DeviceName"), indAddress, dr.Field<string>("InterfaceCode"));
-                kdi.DeviceStateChanged += _DeviceStateChanged; //设备状态变化事件
-                Items.Add(id, kdi);
+                if (dr["DeviceCode"] is DBNull) //编号为空的情况报错
+                    throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "DeviceCode", $"ID={id}"));
+                IndividualAddress indAddress = dr.Field<IndividualAddress>("IndividualAddress"); //物理地址
+                string devCode = dr.Field<string>("DeviceCode")!; //设备编号
+                string? devName = dr.Field<string>("DeviceName"); //设备名称
+                string? devMod = dr.Field<string>("DeviceModel"); //设备型号
+                string? ifCode = dr.Field<string>("InterfaceCode"); //接口编号
+                KnxDeviceInfo kdi = new(id, devCode, devName, devMod, indAddress, ifCode);
+                kdi.DeviceStateChanged += _DeviceStateChanged;
+                Items.Add(id, kdi); //字典中加入KnxDeviceInfo对象
             }
         }
 
+        /// <summary>
+        /// 设备状态变化事件
+        /// </summary>
+        /// <param name="dev"></param>
+        /// <param name="state"></param>
         private void _DeviceStateChanged(KnxDeviceInfo dev, KnxDeviceState state)
         {
             Table.Rows[dev.Id]["Reachable"] = state;

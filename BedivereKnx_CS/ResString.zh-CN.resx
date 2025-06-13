@@ -175,6 +175,9 @@
     <value>无效的KNX接口端口：{0}（接口编号='{1}'）。</value>
   </data>
   <data name="ExMsg_EnumInvalid" xml:space="preserve">
-    <value>无效的枚举值{0}。（{1}）</value>
+    <value>无效的枚举值{0}（{1}）。</value>
+  </data>
+  <data name="ExMsg_TableKeyCheck" xml:space="preserve">
+    <value />
   </data>
 </root>

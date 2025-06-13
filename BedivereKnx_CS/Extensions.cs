@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using Knx.Falcon.ApplicationData.DatapointTypes;
 using System.Data;
 
 namespace BedivereKnx
@@ -27,15 +27,27 @@ namespace BedivereKnx
 
     }
 
-    public static class EnumExtensions
+    public static class DptExtensions
     {
 
-        //internal static KnxObjectType FromString(this KnxObjectType objType, string value)
-        //{
-        //    if (string.IsNullOrWhiteSpace(value))
-        //        throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "ObjectCode", $"Id={dr["Id"]}"));
-
-        //}
+        public static string ToFullText(this DptBase dpt)
+        {
+            if (dpt.DatapointSubtype is null) //DPST为空
+            {
+                if (dpt.DatapointType is null) //DPT为空
+                {
+                    return $"{dpt.SizeInBit} bit";
+                }
+                else //只有DPT的情况
+                {
+                    return $"{dpt.MainNumber}.xxx:{dpt.Text}";
+                }
+            }
+            else //有DPST的情况
+            {
+                return $"{dpt.MainNumber}.{dpt.SubNumber.ToString().PadLeft(3, '0')}:{dpt.Text}";
+            }
+        }
 
     }
 

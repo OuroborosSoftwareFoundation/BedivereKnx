@@ -12,7 +12,14 @@
 //    public static class ExcelReader
 //    {
 
+//
 //        private static readonly string[] DataSheets = { "Interfaces", "Areas", "Objects", "Scenes", "Devices", "Schedules", "Links" };
+        //private static Dictionary<string, Type> NullStringCols = new()
+        //{
+        //    { "Enable", typeof(bool) },
+        //    { "Port", typeof(int) },
+        //    //{ "IndividualAddress",typeof(IndividualAddress) },
+        //};
 
 //        /// <summary>
 //        /// 读取Excel数据文件

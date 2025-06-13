@@ -7,7 +7,6 @@ namespace BedivereKnx
 
     public class KnxGroup
     {
-        private GroupValue? _value;
 
         public event ValueChangeHandler<GroupValue>? GroupValueChanged;
 
@@ -37,6 +36,7 @@ namespace BedivereKnx
                 }
             }
         }
+        private GroupValue? _value;
 
         /// <summary>
         /// 新建KNX组
@@ -113,6 +113,15 @@ namespace BedivereKnx
                 Address = ga;
             }
         }
+
+        /// <summary>
+        /// 新建KNX组
+        /// </summary>
+        /// <param name="address">组地址</param>
+        /// <param name="dptString">DPT类型字符串</param>
+        public KnxGroup(GroupAddress address, string? dptString)
+            : this(address, DptIdFromString(dptString))
+        { }
 
         /// <summary>
         /// 新建KNX组

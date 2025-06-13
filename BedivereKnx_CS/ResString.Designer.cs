@@ -115,7 +115,7 @@ namespace BedivereKnx {
         }
         
         /// <summary>
-        ///   查找类似 Invalid enum value &apos;{0}&apos;. ({1}) 的本地化字符串。
+        ///   查找类似 Invalid enum value &apos;{0}&apos; ({1}). 的本地化字符串。
         /// </summary>
         internal static string ExMsg_EnumInvalid {
             get {
@@ -228,6 +228,15 @@ namespace BedivereKnx {
         internal static string ExMsg_NoNullAllowed {
             get {
                 return ResourceManager.GetString("ExMsg_NoNullAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似  的本地化字符串。
+        /// </summary>
+        internal static string ExMsg_TableKeyCheck {
+            get {
+                return ResourceManager.GetString("ExMsg_TableKeyCheck", resourceCulture);
             }
         }
         

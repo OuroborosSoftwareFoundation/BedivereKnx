@@ -38,8 +38,6 @@ namespace BedivereKnx.KnxSystem
     public class KnxSystem
     {
 
-        private bool isPolling;
-
         private static string? AsmName => System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
         /// <summary>
@@ -52,6 +50,9 @@ namespace BedivereKnx.KnxSystem
         /// </summary>
         public event ValueChangeHandler<bool>? PollingStatusChanged;
 
+        /// <summary>
+        /// 正在轮询
+        /// </summary>
         public bool IsPolling
         {
             get => isPolling;
@@ -64,11 +65,12 @@ namespace BedivereKnx.KnxSystem
                 }
             }
         }
+        private bool isPolling;
 
         /// <summary>
         /// KNX区域
         /// </summary>
-        public DataTable Areas { get; private set; }
+        public KnxAreaCollection Areas { get; private set; }
 
         /// <summary>
         /// KNX接口
@@ -88,17 +90,17 @@ namespace BedivereKnx.KnxSystem
         /// <summary>
         /// KNX设备
         /// </summary>
-        public KnxDeviceCollection Devices { get; private set; }
+        public KnxDeviceCollection? Devices { get; private set; }
 
         /// <summary>
         /// KNX时间表
         /// </summary>
-        public KnxSchedule Schedule { get; private set; }
+        public KnxSchedule? Schedule { get; private set; }
 
         /// <summary>
         /// 外部链接
         /// </summary>
-        public DataTable Links { get; private set; }
+        public DataTable? Links { get; private set; }
 
         /// <summary>
         /// 报文日志
@@ -114,7 +116,7 @@ namespace BedivereKnx.KnxSystem
                 //区域
                 if (dtc.Contains("Areas"))
                 {
-                    Areas = dtc["Areas"]!;
+                    Areas = new(dtc["Areas"]!);
                 }
                 else
                 {
@@ -163,7 +165,7 @@ namespace BedivereKnx.KnxSystem
                 }
                 else
                 {
-                    throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Devices"));
+                    //throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Devices"));
                 }
 
                 //定时
@@ -202,11 +204,13 @@ namespace BedivereKnx.KnxSystem
         /// </summary>
         private void ScheduleEventsInit()
         {
+            if (Schedule is null) return;
             if (Schedule.Table.Rows.Count == 0) return;
             foreach (DataRow dr in Schedule.Table.Rows)
             {
                 if (!dr.Field<bool>("Enable")) continue; //跳过禁用的定时
-                KnxObjectPart type = KnxGroupFactory.GetKnxObjectPart($"{dr.Field<string>("TargetType")}_Ctl"); //定时计划中的对象类型，后面加control确保是控制组地址
+                //KnxObjectPart type = KnxGroupFactory.GetKnxObjectPart($"{dr.Field<string>("TargetType")}_Ctl"); //定时计划中的对象类型，后面加control确保是控制组地址
+                KnxObjectPart type = dr.Field<KnxObjectPart>("TargetType"); //定时计划中的对象类型
                 string[] codes = Convertor.ToArray(dr.Field<string>("TargetCode")); //对象编号数组
 
                 //获取一条定时计划的KNX组对象
@@ -269,46 +273,56 @@ namespace BedivereKnx.KnxSystem
         private void MsgLogTableInit()
         {
             MessageLog = new DataTable();
-            MessageLog.Columns.Add(new DataColumn("DateTime", typeof(DateTime))
-            {
-                Caption = "DateTime" //报文时间
-            });
-            MessageLog.Columns.Add(new DataColumn("MessageType", typeof(KnxMessageType))
-            {
-                Caption = "MessageType" //报文类型
-            });
-            MessageLog.Columns.Add(new DataColumn("EventType", typeof(GroupEventType))
-            {
-                Caption = "EventType" //事件类型
-            });
-            MessageLog.Columns.Add(new DataColumn("SourceAddress", typeof(IndividualAddress))
-            {
-                Caption = "SourceAddress" //源地址
-            });
-            MessageLog.Columns.Add(new DataColumn("DestinationAddress", typeof(GroupAddress))
-            {
-                Caption = "DestinationAddress" //目标地址
-            });
-            MessageLog.Columns.Add(new DataColumn("MessagePriority", typeof(MessagePriority))
-            {
-                Caption = "MessagePriority" //优先级
-            });
-            MessageLog.Columns.Add(new DataColumn("Value", typeof(GroupValue))
-            {
-                Caption = "Value" //值
-            });
-            MessageLog.Columns.Add(new DataColumn("HopCount", typeof(byte))
-            {
-                Caption = "HopCount" //路由计数
-            });
-            MessageLog.Columns.Add(new DataColumn("IsSecure", typeof(bool))
-            {
-                Caption = "IsSecure" //安全性
-            });
-            MessageLog.Columns.Add(new DataColumn("Log", typeof(string))
-            {
-                Caption = "Log" //日志
-            });
+            MessageLog.Columns.Add("DateTime", "DateTime", typeof(DateTime)); //报文时间
+            MessageLog.Columns.Add("MessageType", "MessageType", typeof(KnxMessageType)); //报文类型
+            MessageLog.Columns.Add("EventType", "EventType", typeof(GroupEventType)); //事件类型
+            MessageLog.Columns.Add("SourceAddress", "SourceAddress", typeof(IndividualAddress)); //源地址
+            MessageLog.Columns.Add("DestinationAddress", "DestinationAddress", typeof(GroupAddress)); //目标地址
+            MessageLog.Columns.Add("MessagePriority", "MessagePriority", typeof(MessagePriority)); //优先级
+            MessageLog.Columns.Add("Value", "Value", typeof(GroupValue)); //值
+            MessageLog.Columns.Add("HopCount", "HopCount", typeof(byte)); //路由计数
+            MessageLog.Columns.Add("IsSecure", "IsSecure", typeof(bool)); //安全性
+            MessageLog.Columns.Add("Log", "Log", typeof(string)); //日志
+            //MessageLog.Columns.Add(new DataColumn("DateTime", typeof(DateTime))
+            //{
+            //    Caption = "DateTime" //报文时间
+            //});
+            //MessageLog.Columns.Add(new DataColumn("MessageType", typeof(KnxMessageType))
+            //{
+            //    Caption = "MessageType" //报文类型
+            //});
+            //MessageLog.Columns.Add(new DataColumn("EventType", typeof(GroupEventType))
+            //{
+            //    Caption = "EventType" //事件类型
+            //});
+            //MessageLog.Columns.Add(new DataColumn("SourceAddress", typeof(IndividualAddress))
+            //{
+            //    Caption = "SourceAddress" //源地址
+            //});
+            //MessageLog.Columns.Add(new DataColumn("DestinationAddress", typeof(GroupAddress))
+            //{
+            //    Caption = "DestinationAddress" //目标地址
+            //});
+            //MessageLog.Columns.Add(new DataColumn("MessagePriority", typeof(MessagePriority))
+            //{
+            //    Caption = "MessagePriority" //优先级
+            //});
+            //MessageLog.Columns.Add(new DataColumn("Value", typeof(GroupValue))
+            //{
+            //    Caption = "Value" //值
+            //});
+            //MessageLog.Columns.Add(new DataColumn("HopCount", typeof(byte))
+            //{
+            //    Caption = "HopCount" //路由计数
+            //});
+            //MessageLog.Columns.Add(new DataColumn("IsSecure", typeof(bool))
+            //{
+            //    Caption = "IsSecure" //安全性
+            //});
+            //MessageLog.Columns.Add(new DataColumn("Log", typeof(string))
+            //{
+            //    Caption = "Log" //日志
+            //});
         }
 
         /// <summary>

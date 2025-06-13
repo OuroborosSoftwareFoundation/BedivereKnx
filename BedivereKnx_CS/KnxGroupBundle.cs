@@ -100,7 +100,7 @@ namespace BedivereKnx
         {
             if (code is null)
             {
-                throw new NoNullAllowedException();
+                throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "ObjectCode", $"ID={id}"));
             }
             else
             {

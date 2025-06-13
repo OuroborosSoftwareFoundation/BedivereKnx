@@ -11,6 +11,11 @@ namespace BedivereKnx.KnxSystem
     {
 
         /// <summary>
+        /// 主定时器
+        /// </summary>
+        private readonly Timer timer; //主定时器
+
+        /// <summary>
         /// 时间表触发事件
         /// </summary>
         public event ScheduleEventHandler? ScheduleEventTriggered;
@@ -50,15 +55,17 @@ namespace BedivereKnx.KnxSystem
                 }
             }
         }
-
-        private readonly Timer timer; //主定时器
         private KnxScheduleTimerState timerState;
 
+        /// <summary>
+        /// 新建KNX时间表
+        /// </summary>
+        /// <param name="dt">数据表</param>
         public KnxSchedule(DataTable dt)
         {
             Table = dt;
             Sequence = new ScheduleSequence();
-            timer = new Timer(_timer_Callback, null, Timeout.Infinite, Timeout.Infinite);
+            timer = new Timer(timer_Callback, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         /// <summary>
@@ -88,7 +95,7 @@ namespace BedivereKnx.KnxSystem
         /// 主定时器回调方法
         /// </summary>
         /// <param name="state"></param>
-        private void _timer_Callback(object? state)
+        private void timer_Callback(object? state)
         {
             if (Sequence.Count == 0)
             {
@@ -128,7 +135,7 @@ namespace BedivereKnx.KnxSystem
                         string? ifCode = dr.Field<string>("InterfaceCode"); //接口编号
                         GroupAddress ga = dr.Field<GroupAddress>("GroupAddress"); //组地址
                         KnxGroupEventArgs wea = new(ifCode, ga);
-                        string logCode = $"{dr["ScheduleCode"]}_{dr["Time"]}";
+                        string logCode = $"{dr.Field<string>("ScheduleCode")}_{trgTime}";
                         ScheduleEventTriggered?.Invoke(logCode, wea, val); //触发事件
                         dr["Triggered"] = true; //本次事件设置为已触发
                     }
@@ -152,8 +159,6 @@ namespace BedivereKnx.KnxSystem
     public class ScheduleSequence
     {
 
-        private int nextId;
-
         /// <summary>
         /// 序列表
         /// </summary>
@@ -175,6 +180,7 @@ namespace BedivereKnx.KnxSystem
                 nextId = Math.Max(Math.Min(value, Count - 1), 0); //限制ID范围
             }
         }
+        private int nextId;
 
         /// <summary>
         /// 下个事件的触发时间
@@ -184,54 +190,66 @@ namespace BedivereKnx.KnxSystem
         public ScheduleSequence()
         {
             Table = new DataTable();
-            Table.Columns.Add(new DataColumn("Id", typeof(int)) //ID
-            {
-                Caption = "ID"
-            });
-            Table.Columns.Add(new DataColumn("Enable", typeof(bool)) //使能
-            {
-                Caption = "Enable"
-            });
-            Table.Columns.Add(new DataColumn("ScheduleCode", typeof(string)) //定时组编号
-            {
-                Caption = "Schedule Code"
-            });
-            Table.Columns.Add(new DataColumn("ScheduleName", typeof(string)) //定时组名称
-            {
-                Caption = "Schedule Name"
-            });
-            Table.Columns.Add(new DataColumn("TriggerTime", typeof(TimeOnlyHM)) //触发时间
-            {
-                Caption = "Trigger Time"
-            });
-            Table.Columns.Add(new DataColumn("TargetType", typeof(KnxObjectPart)) //目标类型
-            {
-                Caption = "Target Type"
-            });
-            Table.Columns.Add(new DataColumn("TargetValue", typeof(object)) //目标值
-            {
-                Caption = "Target Value"
-            });
-            Table.Columns.Add(new DataColumn("InterfaceCode", typeof(string)) //接口编号
-            {
-                Caption = "Interface"
-            });
-            Table.Columns.Add(new DataColumn("GroupAddress", typeof(GroupAddress)) //组地址
-            {
-                Caption = "Group Address"
-            });
-            Table.Columns.Add(new DataColumn("GroupDpt", typeof(string)) //DPT
-            {
-                Caption = "DPT"
-            });
-            Table.Columns.Add(new DataColumn("Value", typeof(GroupValue)) //KNX值
-            {
-                Caption = "Group Value"
-            });
-            Table.Columns.Add(new DataColumn("Triggered", typeof(bool)) //已触发
-            {
-                Caption = "Triggered"
-            });
+            Table.Columns.Add("Id", "ID", typeof(int)); //ID
+            Table.Columns.Add("Enable", "Enable", typeof(bool)); //使能
+            Table.Columns.Add("ScheduleCode", "Schedule Code", typeof(string)); //定时组编号
+            Table.Columns.Add("ScheduleName", "Schedule Name", typeof(string)); //定时组名称
+            Table.Columns.Add("TriggerTime", "Trigger Time", typeof(TimeOnlyHM)); //触发时间
+            Table.Columns.Add("TargetType", "Target Type", typeof(KnxObjectPart)); //目标类型
+            Table.Columns.Add("TargetValue", "Target Value", typeof(object)); //目标值
+            Table.Columns.Add("InterfaceCode", "Interface", typeof(string)); //接口编号
+            Table.Columns.Add("GroupAddress", "Group Address", typeof(GroupAddress)); //组地址
+            Table.Columns.Add("GroupDpt", "DPT", typeof(string)); //DPT
+            Table.Columns.Add("Value", "Group Value", typeof(GroupValue)); //KNX值
+            Table.Columns.Add("Triggered", "Triggered", typeof(bool)); //已触发
+            //Table.Columns.Add(new DataColumn("Id", typeof(int)) //ID
+            //{
+            //    Caption = "ID"
+            //});
+            //Table.Columns.Add(new DataColumn("Enable", typeof(bool)) //使能
+            //{
+            //    Caption = "Enable"
+            //});
+            //Table.Columns.Add(new DataColumn("ScheduleCode", typeof(string)) //定时组编号
+            //{
+            //    Caption = "Schedule Code"
+            //});
+            //Table.Columns.Add(new DataColumn("ScheduleName", typeof(string)) //定时组名称
+            //{
+            //    Caption = "Schedule Name"
+            //});
+            //Table.Columns.Add(new DataColumn("TriggerTime", typeof(TimeOnlyHM)) //触发时间
+            //{
+            //    Caption = "Trigger Time"
+            //});
+            //Table.Columns.Add(new DataColumn("TargetType", typeof(KnxObjectPart)) //目标类型
+            //{
+            //    Caption = "Target Type"
+            //});
+            //Table.Columns.Add(new DataColumn("TargetValue", typeof(object)) //目标值
+            //{
+            //    Caption = "Target Value"
+            //});
+            //Table.Columns.Add(new DataColumn("InterfaceCode", typeof(string)) //接口编号
+            //{
+            //    Caption = "Interface"
+            //});
+            //Table.Columns.Add(new DataColumn("GroupAddress", typeof(GroupAddress)) //组地址
+            //{
+            //    Caption = "Group Address"
+            //});
+            //Table.Columns.Add(new DataColumn("GroupDpt", typeof(string)) //DPT
+            //{
+            //    Caption = "DPT"
+            //});
+            //Table.Columns.Add(new DataColumn("Value", typeof(GroupValue)) //KNX值
+            //{
+            //    Caption = "Group Value"
+            //});
+            //Table.Columns.Add(new DataColumn("Triggered", typeof(bool)) //已触发
+            //{
+            //    Caption = "Triggered"
+            //});
             //初始化部分在KnxSystem类里完成
         }
 

@@ -1,9 +1,10 @@
-﻿using System.Data;
-using System.Text.RegularExpressions;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Knx.Falcon;
 using Knx.Falcon.Configuration;
+using System.Data;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace BedivereKnx.DataFile
 {
@@ -15,6 +16,28 @@ namespace BedivereKnx.DataFile
         /// 需要读取的工作表名
         /// </summary>
         private static readonly string[] DataSheets = { "Interfaces", "Areas", "Objects", "Scenes", "Devices", "Schedules", "Links" };
+
+        /// <summary>
+        /// 数据表中列的类型
+        /// </summary>
+        private static readonly Dictionary<string, Type> dicColType = new()
+        {
+            { "Enable", typeof(bool) },
+            { "Port", typeof(int) },
+
+            //{ "InterfaceAddress", typeof(IPAddress)},
+
+            { "IndividualAddress", typeof(IndividualAddress) },
+            { "GroupAddress", typeof(GroupAddress) },
+            { "Sw_Ctl_GrpAddr", typeof(GroupAddress) },
+            { "Sw_Fdb_GrpAddr", typeof(GroupAddress) },
+            { "Val_Ctl_GrpAddr", typeof(GroupAddress) },
+            { "Val_Fdb_GrpAddr", typeof(GroupAddress) },
+
+            { "InterfaceType", typeof(ConnectorType) },
+            { "ObjectType", typeof(KnxObjectType) },
+            { "TargetType", typeof(KnxObjectType) },
+        };
 
         /// <summary>
         /// 读取Excel数据文件
@@ -96,15 +119,14 @@ namespace BedivereKnx.DataFile
             foreach (Cell cell in rows.First().Elements<Cell>()) //遍历第一行的单元格
             {
                 string colName = GetCellValue(cell, wbp);
-                if (StaticDict.ColumnType.ContainsKey(colName))
+                if (dicColType.TryGetValue(colName, out Type? typ))
                 {
-                    dt.Columns.Add(colName, StaticDict.ColumnType[colName]); //列格式全部设置为string
+                    dt.Columns.Add(colName, typ); //列格式全部设置为string
                 }
                 else
                 {
                     dt.Columns.Add(colName, typeof(string)); //列格式全部设置为string
                 }
-
             }
             if (addIdColumn) dt.Columns.Add("Id", typeof(int)); //额外添加Id列
 
@@ -126,45 +148,36 @@ namespace BedivereKnx.DataFile
                     bool isAllEmpty = true; //行是否全空
                     foreach (Cell cell in row.Elements<Cell>())
                     {
+                        if ((cell is null) || (cell.CellValue is null))
+                        {
+                            continue; //跳过空白单元格
+                        }
+                        else
+                        {
+                            isAllEmpty = false; //单元格非空的情况
+                        }
                         int[] ci = GetCellIndex(cell); //{行ID, 列ID}
                         int rid = ci[0]; //单元格的行ID
                         int cid = ci[1]; //单元格的列ID
                         if (cid >= dt.Columns.Count) continue; //确保单元格列ID不超过DataTable列ID
                         //无视超出标题列宽的数据
                         string cv = GetCellValue(cell, wbp); //单元格内容
-                        if (!string.IsNullOrWhiteSpace(cv)) isAllEmpty = false; //判断行是否全空
-
+                        if (string.IsNullOrWhiteSpace(cv)) continue; //跳过空白内容的单元格
                         string colName = dt.Columns[cid].ColumnName; //列名
                         Type colType = dt.Columns[cid].DataType; //列的数据类型
                         if (colType.IsEnum) //枚举类型的情况
                         {
-                            if (colType == typeof(ConnectorType))
+                            if (colType == typeof(ConnectorType)) //接口类型
                             {
-                                if (Enum.TryParse(cv, true, out ConnectorType ct))
-                                {
-                                    dr[cid] = ct;
-                                }
-                                else
-                                {
-                                    if (string.IsNullOrWhiteSpace(cv)) cv = "null";
-                                    throw new ArgumentException(string.Format(ResString.ExMsg_EnumInvalid, $"ConnectorType = {cv}", $"Table={sheet.Name}, Row={rid}"));
-                                }
+                                dr[cid] = GetEnumCellValue<ConnectorType>(cv, sheet.Name, rid, colName);
                             }
-                            else if (colType == typeof(KnxObjectType))
+                            else if (colType == typeof(KnxObjectType)) //KNX对象类型
                             {
-                                if (Enum.TryParse(cv, true, out KnxObjectType kot))
-                                {
-                                    dr[cid] = kot;
-                                }
-                                else
-                                {
-                                    if (string.IsNullOrWhiteSpace(cv)) cv = "null";
-                                    throw new ArgumentException(string.Format(ResString.ExMsg_EnumInvalid, $"KnxObjectType = {cv}", $"Table={sheet.Name}, Row={rid}"));
-                                }
+                                dr[cid] = GetEnumCellValue<KnxObjectType>(cv, sheet.Name, rid, colName);
                             }
                             else if (colName == "TargetType") //定时表里的目标类型
                             {
-
+                                dr[cid] = GetEnumCellValue<KnxObjectPart>($"{cv}Control", sheet.Name, rid, colName);
                             }
                         }
                         else //非枚举类型的情况
@@ -191,7 +204,7 @@ namespace BedivereKnx.DataFile
                                     dr[cid] = cv;
                                     break;
                                 default:
-                                    if (StaticDict.ColumnType.ContainsKey(colName)) //特殊的列数据类型
+                                    if (dicColType.ContainsKey(colName)) //特殊的列数据类型
                                     {
                                         if (colType == typeof(GroupAddress)) //组地址
                                         {
@@ -201,6 +214,10 @@ namespace BedivereKnx.DataFile
                                         {
                                             dr[cid] = new IndividualAddress(cv);
                                         }
+                                        //else if (colType == typeof(IPAddress)) //IP地址
+                                        //{
+                                        //    dr[cid] = IPAddress.Parse(cv);
+                                        //}
                                     }
                                     else
                                     {
@@ -245,7 +262,7 @@ namespace BedivereKnx.DataFile
                         .ElementAtOrDefault(int.Parse(value))?.InnerText ?? string.Empty;
                 }
             }
-            return value;
+            return value.Trim();
         }
 
         /// <summary>
@@ -268,6 +285,38 @@ namespace BedivereKnx.DataFile
                 colIdx += (((int)colLbl[i] - 64) * ((int)Math.Pow(26, (colLbl.Length - i - 1)))) - 1; //列id（从0开始）
             }
             return [rowIdx, colIdx];
+        }
+
+        /// <summary>
+        /// 字符串转枚举
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="tableName"></param>
+        /// <param name="rowId"></param>
+        /// <param name="colName"></param>
+        /// <returns></returns>
+        /// <exception cref="NoNullAllowedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        private static T GetEnumCellValue<T>(string value, string? tableName, int rowId, string colName)
+            where T : struct, Enum
+        {
+            value = value.Trim(); //去除空格
+            if (string.IsNullOrEmpty(value)) //字符串为空的情况
+            {
+                throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, colName, $"Table={tableName}, Row={rowId}"));
+            }
+            else
+            {
+                if (Enum.TryParse<T>(value, true, out T e)) //忽略大小写
+                {
+                    return e;
+                }
+                else //枚举值不存在的情况
+                {
+                    throw new ArgumentException(string.Format(ResString.ExMsg_EnumInvalid, $"{typeof(T).Name}={value}", $"Table={tableName}, Row={rowId}"));
+                }
+            }
         }
 
     }

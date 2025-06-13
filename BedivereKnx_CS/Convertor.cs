@@ -14,7 +14,7 @@
         {
             if (string.IsNullOrWhiteSpace(str)) return [];
             string[] arry0 = str.Split(separator);
-            List<string> lst = new();
+            List<string> lst = [];
             foreach (string s in arry0)
             {
                 if (string.IsNullOrWhiteSpace(s)) continue; //跳过空项
@@ -34,7 +34,7 @@
         {
             if (string.IsNullOrWhiteSpace(inputString)) return [];
             string[] arry0 = inputString.Split(separator);
-            List<T> lst = new();
+            List<T> lst = [];
             foreach (string s in arry0)
             {
                 if (string.IsNullOrWhiteSpace(s)) continue; //跳过空项

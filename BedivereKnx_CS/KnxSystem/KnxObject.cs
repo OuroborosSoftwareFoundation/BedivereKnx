@@ -9,16 +9,6 @@ namespace BedivereKnx.KnxSystem
     public class KnxObject : KnxGroupBundle
     {
 
-        ///// <summary>
-        ///// 新建KNX对象
-        ///// </summary>
-        ///// <param name="type">对象类型</param>
-        ///// <param name="id">对象ID</param>
-        ///// <param name="ifCode">接口编号</param>
-        //public KnxObject(KnxObjectType type, int id, string code, string ifCode)
-        //    : base(type, id, code, ifCode)
-        //{ }
-
         /// <summary>
         /// 新建KNX对象
         /// </summary>

@@ -5,9 +5,15 @@ using Knx.Falcon;
 namespace BedivereKnx.KnxSystem
 {
 
+    /// <summary>
+    /// KNX对象集合
+    /// </summary>
     public class KnxObjectCollection : IEnumerable<KnxObject>
     {
 
+        /// <summary>
+        /// 组地址类型的列名
+        /// </summary>
         private readonly string[] AddressColumns = ["Sw_Ctl_GrpAddr", "Sw_Fdb_GrpAddr", "Val_Ctl_GrpAddr", "Val_Fdb_GrpAddr"];
 
         /// <summary>
@@ -91,7 +97,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                List<KnxObject> list = new();
+                List<KnxObject> list = [];
                 foreach (string code in codes)
                 {
                     list.AddRange(this[code]);
@@ -114,10 +120,10 @@ namespace BedivereKnx.KnxSystem
                 DataRow[] drs = Table.Select($"{partString}_GrpAddr = '{address}'");
                 if (drs.Length > 0)
                 {
-                    List<KnxObject> list = new();
+                    List<KnxObject> list = [];
                     foreach (DataRow dr in drs)
                     {
-                        list.Add(this[(int)dr["Id"]]);
+                        list.Add(this[dr.Field<int>("Id")]);
                     }
                     return list.ToArray();
                 }
@@ -134,14 +140,16 @@ namespace BedivereKnx.KnxSystem
         public KnxObjectCollection()
         {
             Table = new DataTable();
-            Table.Columns.Add(new DataColumn("Sw_Fdb_Value", typeof(byte)) //开关反馈值
-            {
-                Caption = ResString.DataCol_SwCtlValue
-            });
-            Table.Columns.Add(new DataColumn("Val_Fdb_Value", typeof(decimal)) //数值反馈值
-            {
-                Caption = ResString.DataCol_ValFdbValue
-            });
+            Table.Columns.Add("Sw_Fdb_Value", ResString.DataCol_SwCtlValue, typeof(byte)); //附加开关反馈状态列
+            Table.Columns.Add("Val_Fdb_Value", ResString.DataCol_ValFdbValue, typeof(decimal)); //附加数值反馈状态列
+            //Table.Columns.Add(new DataColumn("Sw_Fdb_Value", typeof(byte)) //开关反馈值
+            //{
+            //    Caption = ResString.DataCol_SwCtlValue
+            //});
+            //Table.Columns.Add(new DataColumn("Val_Fdb_Value", typeof(decimal)) //数值反馈值
+            //{
+            //    Caption = ResString.DataCol_ValFdbValue
+            //});
         }
 
         /// <summary>
@@ -151,63 +159,44 @@ namespace BedivereKnx.KnxSystem
         public KnxObjectCollection(DataTable dt)
         {
             Table = dt;
-            Table.Columns.Add(new DataColumn("Sw_Fdb_Value", typeof(byte)) //附加反馈状态列
-            {
-                Caption = ResString.DataCol_SwCtlValue
-            });
-            Table.Columns.Add(new DataColumn("Val_Fdb_Value", typeof(decimal))//附加反馈状态列
-            {
-                Caption = ResString.DataCol_ValFdbValue
-            });
+            Table.Columns.Add("Sw_Fdb_Value", ResString.DataCol_SwCtlValue, typeof(byte)); //附加开关反馈状态列
+            Table.Columns.Add("Val_Fdb_Value", ResString.DataCol_ValFdbValue, typeof(decimal)); //附加数值反馈状态列
             foreach (DataRow dr in Table.Rows)
             {
-                KnxObject obj;
-                //组对象类型
-                if (Enum.TryParse(dr["ObjectType"].ToString(), out KnxObjectType grpType))
-                {
-                    string? code = dr["ObjectCode"].ToString();
-                    if (!string.IsNullOrWhiteSpace(code))
-                    {
-                        obj = new(grpType, (int)dr["Id"], code, dr["ObjectName"].ToString(), dr["InterfaceCode"].ToString());
-                    }
-                    else //对象编号为空
-                    {
-                        throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "ObjectCode", $"Id={dr["Id"]}"));
-                    }
-                }
-                else //对象类型不存在
-                {
-                    throw new KeyNotFoundException(string.Format(ResString.ExMsg_KnxObjectTypeInvalid, dr["ObjectType"].ToString()));
-                }
-
+                int id = dr.Field<int>("Id"); //ID
+                if (dr["ObjectCode"] is DBNull) //编号为空的情况报错
+                    throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "ObjectCode", $"ID={id}"));
+                KnxObjectType objType = dr.Field<KnxObjectType>("ObjectType"); //对象类型
+                string objCode = dr.Field<string>("ObjectCode")!; //对象编号
+                string? objName = dr.Field<string>("ObjectName"); //对象名称
+                string? ifCode = dr.Field<string>("InterfaceCode"); //接口编号
+                KnxObject obj = new(objType, id, objCode, objName, ifCode);
                 //组地址
-                string? addrSwCtl = dr["Sw_Ctl_GrpAddr"].ToString();
-                if (!string.IsNullOrWhiteSpace(addrSwCtl))
+                string? swDpt = dr.Field<string>("Sw_GrpDpt"); //开关DPT
+                //开关控制
+                if (dr["Sw_Ctl_GrpAddr"] is not DBNull)
                 {
-                    //开关控制
-                    obj[KnxObjectPart.SwitchControl] = new KnxGroup(addrSwCtl, dr["Sw_GrpDpt"].ToString());
+                    obj[KnxObjectPart.SwitchControl] = new(dr.Field<GroupAddress>("Sw_Ctl_GrpAddr"), swDpt);
                 }
-                string? addrSwFdb =  dr["Sw_Fdb_GrpAddr"].ToString();
-                if (!string.IsNullOrWhiteSpace(addrSwFdb))
+                //开关反馈
+                if (dr["Sw_Fdb_GrpAddr"] is not DBNull)
                 {
-                    //开关反馈
-                    obj[KnxObjectPart.SwitchFeedback] = new KnxGroup(addrSwFdb, dr["Sw_GrpDpt"].ToString());
+                    obj[KnxObjectPart.SwitchFeedback] = new(dr.Field<GroupAddress>("Sw_Fdb_GrpAddr"), swDpt);
                 }
-                string? addrValCtl = dr["Val_Ctl_GrpAddr"].ToString();
-                if (!string.IsNullOrWhiteSpace(addrValCtl))
+                string? valDpt = dr.Field<string>("Val_GrpDpt"); //数值DPT
+                //数值控制
+                if (dr["Val_Ctl_GrpAddr"] is not DBNull)
                 {
-                    //数值控制
-                    obj[KnxObjectPart.ValueControl] = new KnxGroup(addrValCtl, dr["Val_GrpDpt"].ToString());
+                    obj[KnxObjectPart.ValueControl] = new(dr.Field<GroupAddress>("Val_Ctl_GrpAddr"), valDpt);
                 }
-                string? addrValFdb = dr["Val_Fdb_GrpAddr"].ToString();
-                if (!string.IsNullOrWhiteSpace(addrValFdb))
+                //数值反馈
+                if (dr["Val_Fdb_GrpAddr"] is not DBNull)
                 {
-                    //数值反馈
-                    obj[KnxObjectPart.ValueFeedback] = new KnxGroup(addrValFdb, dr["Val_GrpDpt"].ToString());
+                    obj[KnxObjectPart.ValueFeedback] = new(dr.Field<GroupAddress>("Val_Fdb_GrpAddr"), valDpt);
                 }
-                Items.Add(obj.Id, obj); //添加KnxObject对象
                 obj.ReadRequest += _GroupReadRequest;
                 obj.WriteRequest += _GroupWriteRequest;
+                Items.Add(obj.Id, obj); //字典内添加KnxObject对象
             }
         }
 

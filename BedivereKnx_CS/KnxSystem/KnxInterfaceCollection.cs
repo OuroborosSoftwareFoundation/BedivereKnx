@@ -9,6 +9,9 @@ using Knx.Falcon.Configuration;
 namespace BedivereKnx.KnxSystem
 {
 
+    /// <summary>
+    /// KNX接口集合
+    /// </summary>
     public class KnxInterfaceCollection : IEnumerable<KnxInterface>
     {
 
@@ -41,7 +44,6 @@ namespace BedivereKnx.KnxSystem
         /// 默认接口
         /// </summary>
         public KnxInterface Default { get; }
-
 
         /// <summary>
         /// 数据表
@@ -91,7 +93,7 @@ namespace BedivereKnx.KnxSystem
                 DataRow[] drs = Table.Select($"InterfaceCode='{code}'"); //在表中按照InterfaceCode查询
                 if (drs.Length > 0)
                 {
-                    return this[(int)drs[0]["Id"]];
+                    return this[drs[0].Field<int>("Id")]; //返回第一个接口
                 }
                 else
                 {
@@ -100,18 +102,23 @@ namespace BedivereKnx.KnxSystem
             }
         }
 
+        /// <summary>
+        /// 新建KNX接口集合
+        /// </summary>
+        /// <param name="localIp">本地IP（用于IP路由接口）</param>
         public KnxInterfaceCollection(IPAddress localIp)
         {
             Table = new DataTable();
-            Table.Columns.Add(new DataColumn("NetStatus", typeof(IPStatus)) //网络状态
-            {
-                Caption = ResString.DataCol_NetStatus
-            });
-            Table.Columns.Add(new DataColumn("CnState", typeof(BusConnectionState)) //接口连接状态
-            {
-                Caption = ResString.DataCol_ConnState
-            });
-
+            Table.Columns.Add("NetStatus", ResString.DataCol_NetStatus, typeof(IPStatus)); //网络状态
+            Table.Columns.Add("CnState", ResString.DataCol_ConnState, typeof(BusConnectionState)); //接口连接状态
+            //Table.Columns.Add(new DataColumn("NetStatus", typeof(IPStatus)) //网络状态
+            //{
+            //    Caption = ResString.DataCol_NetStatus
+            //});
+            //Table.Columns.Add(new DataColumn("CnState", typeof(BusConnectionState)) //接口连接状态
+            //{
+            //    Caption = ResString.DataCol_ConnState
+            //});
             //添加默认接口
             Default = new KnxInterface($"Type=IpRouting;LocalIPAddress={localIp}")
             {
@@ -127,17 +134,19 @@ namespace BedivereKnx.KnxSystem
             Default.Bus.GroupMessageReceived += _GroupMessageReceived;
         }
 
+        /// <summary>
+        /// 新建KNX接口集合
+        /// </summary>
+        /// <param name="dt">数据表</param>
+        /// <param name="localIp">本地IP（用于IP路由接口）</param>
+        /// <exception cref="NoNullAllowedException"></exception>
+        /// <exception cref="FormatException"></exception>
+        /// <exception cref="InvalidEnumArgumentException"></exception>
         public KnxInterfaceCollection(DataTable dt, IPAddress localIp)
         {
             Table = dt;
-            Table.Columns.Add(new DataColumn("NetStatus", typeof(IPStatus)) //网络状态
-            {
-                Caption = ResString.DataCol_NetStatus
-            });
-            Table.Columns.Add(new DataColumn("CnState", typeof(BusConnectionState)) //接口连接状态
-            {
-                Caption = ResString.DataCol_ConnState
-            });
+            Table.Columns.Add("NetStatus", ResString.DataCol_NetStatus, typeof(IPStatus)); //网络状态
+            Table.Columns.Add("CnState", ResString.DataCol_ConnState, typeof(BusConnectionState)); //接口连接状态
 
             //表格中的接口
             foreach (DataRow dr in dt.Rows)
@@ -148,9 +157,10 @@ namespace BedivereKnx.KnxSystem
                 string? ifCode = dr.Field<string>("InterfaceCode"); //接口编号
                 if (string.IsNullOrWhiteSpace(ifCode)) //接口编号为空的情况
                     throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "InterfaceCode", $"Id = {id}"));
-                string? ifType = dr.Field<string>("InterfaceType"); //接口类型
-                if (string.IsNullOrEmpty(ifType)) //接口类型为空的情况
-                    throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "InterfaceType", $"Id = {id}"));
+                //string? ifType = dr.Field<string>("InterfaceType"); //接口类型
+                //if (string.IsNullOrEmpty(ifType)) //接口类型为空的情况
+                //    throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "InterfaceType", $"Id = {id}"));
+                ConnectorType ifType = dr.Field<ConnectorType>("InterfaceType"); //接口类型
                 string? ifAddress = dr.Field<string>("InterfaceAddress"); //接口地址
                 IPAddress? ipAddress = null; //接口IP地址
                 //string? ifPortText = dr.Field<string>("Port");
@@ -158,15 +168,15 @@ namespace BedivereKnx.KnxSystem
                 //    throw new FormatException(string.Format(ResString.ExMsg_KnxPortInvalid, ifPortText, ifCode));
                 int ifPort = dr.Field<int>("Port"); //端口
                 ConnectorParameters cp; //连接参数的基类
-                switch (ifType.ToLower())
+                switch (ifType)
                 {
-                    case "usb": //USB接口
+                    case ConnectorType.Usb: //USB接口
                         cp = new UsbConnectorParameters(); //自动获取目前USB接口
                         break;
-                    case "iptunnel": //IP隧道
+                    case ConnectorType.IpTunneling: //IP隧道
                         cp = new IpTunnelingConnectorParameters(ifAddress, ifPort);
                         break;
-                    case "iprouter": //IP路由
+                    case ConnectorType.IpRouting: //IP路由
                         if (IPAddress.TryParse(ifAddress, out ipAddress))
                         {
                             if ((ipAddress == IpRoutingConnectorParameters.DefaultMulticastAddress) && (ifPort == IpRoutingConnectorParameters.DefaultIpPort))
@@ -278,6 +288,11 @@ namespace BedivereKnx.KnxSystem
             }
         }
 
+        /// <summary>
+        /// 连接状态变化事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _ConnectionChanged(object? sender, EventArgs e)
         {
             foreach (DataRow dr in Table.Rows) //遍历接口
@@ -288,6 +303,11 @@ namespace BedivereKnx.KnxSystem
             ConnectionChanged?.Invoke();
         }
 
+        /// <summary>
+        /// 报文接受事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _GroupMessageReceived(object? sender, GroupEventArgs e)
         {
             GroupMessageReceived?.Invoke(new KnxMsgEventArgs(KnxMessageType.FromBus, e), null);
