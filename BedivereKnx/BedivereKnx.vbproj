@@ -5,11 +5,12 @@
     <SccProvider>SAK</SccProvider>
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>0.6.1</Version>
+    <Version>0.6.2</Version>
     <Authors>BHC666</Authors>
     <Company>Ouroboros Software Foundation</Company>
     <Copyright>© 2024 $(Company)</Copyright>

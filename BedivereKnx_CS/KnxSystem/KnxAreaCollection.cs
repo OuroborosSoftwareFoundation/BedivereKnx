@@ -110,13 +110,23 @@ namespace BedivereKnx.KnxSystem
                     };
                 }
                 Items.Add(id, area); //字典中加入对象
-                foreach (AreaNode a in this)
-                {
-                    if (a.Level == 1) continue; //跳过主区域
-                    string pc = a.FullCode.Substring(0, a.FullCode.LastIndexOf('.')); //上级区域编号
-                    a.SetParent(this[pc]); //设置上级区域
-                }
             }
+            foreach (AreaNode a in this) //遍历全部区域，准备设置上级区域
+            {
+                if (a.Level == 1) continue; //跳过主区域
+                string pc = a.FullCode[0..a.FullCode.LastIndexOf('.')]; //上级区域编号
+                a.SetParent(this[pc]); //设置上级区域
+            }
+        }
+
+        /// <summary>
+        /// 获取一级下的全部对象
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public AreaNode[] AreaAtLevel(int level)
+        {
+            return Items.Values.Where(a => a.Level == level).ToArray();
         }
 
         public IEnumerator<AreaNode> GetEnumerator()

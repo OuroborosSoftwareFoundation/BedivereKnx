@@ -362,6 +362,20 @@ Public Class frmMainTable
         KS.DeviceCheck(DevId)
     End Sub
 
+    ''' <summary>
+    ''' 检测全部设备是否在线
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub btnDevicePoll_Click(sender As Object, e As EventArgs) Handles btnDevicePoll.Click
+        KS.DevicePoll("")
+        'For Each r As DataGridViewRow In dgvDevice.Rows
+        '    Dim DevId As Integer = Convert.ToInt32(r.Cells("Id").Value)
+        '    KS.DeviceCheck(DevId)
+        '    Threading.Thread.Sleep(100)
+        'Next
+    End Sub
+
     Private Sub dgvLink_CellClick(sender As DataGridView, e As DataGridViewCellEventArgs) Handles dgvLink.CellClick
         If e.ColumnIndex = sender.Columns("btnPwd").Index Then '点击按钮的情况
             Dim r As DataGridViewRow = sender.Rows(e.RowIndex)

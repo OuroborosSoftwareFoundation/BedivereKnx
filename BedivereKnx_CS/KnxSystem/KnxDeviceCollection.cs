@@ -52,10 +52,14 @@ namespace BedivereKnx.KnxSystem
         /// </summary>
         /// <param name="ifCode">接口编号</param>
         /// <returns></returns>
-        public KnxDeviceInfo[] this[string ifCode]
+        public KnxDeviceInfo[] this[string? ifCode]
         {
             get
             {
+                if (string.IsNullOrWhiteSpace(ifCode))
+                {
+                    return Items.Values.ToArray(); //接口编号为空时返回全部设备
+                }
                 DataRow[] drs = Table.Select($"InterfaceCode = '{ifCode}'"); //在表中按照ObjectCode查询
                 if (drs.Length > 0)
                 {

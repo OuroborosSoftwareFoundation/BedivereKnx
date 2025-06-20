@@ -67,6 +67,7 @@ Partial Class frmMainTable
         slblScdState = New ToolStripStatusLabel()
         slblSpring = New ToolStripStatusLabel()
         slblGithub = New ToolStripStatusLabel()
+        btnDevicePoll = New Button()
         CType(dgvObject, ComponentModel.ISupportInitialize).BeginInit()
         tlpMain.SuspendLayout()
         tlpTool.SuspendLayout()
@@ -349,6 +350,7 @@ Partial Class frmMainTable
         ' tpDevice
         ' 
         tpDevice.Controls.Add(dgvDevice)
+        tpDevice.Controls.Add(btnDevicePoll)
         tpDevice.Location = New Point(4, 29)
         tpDevice.Name = "tpDevice"
         tpDevice.Size = New Size(936, 461)
@@ -377,7 +379,7 @@ Partial Class frmMainTable
         dgvDevice.ShowCellToolTips = False
         dgvDevice.ShowEditingIcon = False
         dgvDevice.ShowRowErrors = False
-        dgvDevice.Size = New Size(936, 461)
+        dgvDevice.Size = New Size(936, 421)
         dgvDevice.TabIndex = 2
         dgvDevice.Tag = "Objects"
         dgvDevice.VirtualMode = True
@@ -624,6 +626,16 @@ Partial Class frmMainTable
         slblGithub.Size = New Size(478, 20)
         slblGithub.Text = "https://github.com/OuroborosSoftwareFoundation/BedivereKnx"
         ' 
+        ' btnDevicePoll
+        ' 
+        btnDevicePoll.Dock = DockStyle.Bottom
+        btnDevicePoll.Location = New Point(0, 421)
+        btnDevicePoll.Name = "btnDevicePoll"
+        btnDevicePoll.Size = New Size(936, 40)
+        btnDevicePoll.TabIndex = 3
+        btnDevicePoll.Text = "检测全部设备"
+        btnDevicePoll.UseVisualStyleBackColor = True
+        ' 
         ' frmMainTable
         ' 
         AutoScaleDimensions = New SizeF(9F, 20F)
@@ -709,4 +721,5 @@ Partial Class frmMainTable
     Friend WithEvents tpLink As TabPage
     Friend WithEvents dgvLink As DataGridView
     Friend WithEvents btnToggle As Button
+    Friend WithEvents btnDevicePoll As Button
 End Class

@@ -44,6 +44,9 @@ Public Class KnxDeviceCollection
     ''' <returns></returns>
     Default Public ReadOnly Property Item(IfCode As String) As KnxDeviceInfo()
         Get
+            If String.IsNullOrWhiteSpace(IfCode) Then
+                Return _Item.Values.ToArray
+            End If
             Dim drs As DataRow() = _Table.Select($"InterfaceCode = '{IfCode}'")
             If drs.Length > 0 Then
                 Dim l As New List(Of KnxDeviceInfo)

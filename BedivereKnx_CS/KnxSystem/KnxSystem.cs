@@ -90,12 +90,12 @@ namespace BedivereKnx.KnxSystem
         /// <summary>
         /// KNX设备
         /// </summary>
-        public KnxDeviceCollection? Devices { get; private set; }
+        public KnxDeviceCollection Devices { get; private set; }
 
         /// <summary>
         /// KNX时间表
         /// </summary>
-        public KnxSchedule? Schedule { get; private set; }
+        public KnxSchedule Schedule { get; private set; }
 
         /// <summary>
         /// 外部链接
@@ -165,7 +165,7 @@ namespace BedivereKnx.KnxSystem
                 }
                 else
                 {
-                    //throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Devices"));
+                    throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Devices"));
                 }
 
                 //定时
@@ -177,7 +177,7 @@ namespace BedivereKnx.KnxSystem
                 }
                 else
                 {
-                    //throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Schedules"));
+                    throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Schedules"));
                 }
 
                 //连接
@@ -495,8 +495,9 @@ namespace BedivereKnx.KnxSystem
             if (isPolling) return; //上次轮询未完成，不执行任何操作
             if (Interfaces.Ready)
             {
-                Thread thread = new(_PollAllObjects); //新建线程执行轮询防止卡顿
-                thread.Start();
+                Task.Run(_PollAllObjects);
+                //Thread thread = new(_PollAllObjects); //新建线程执行轮询防止卡顿
+                //thread.Start();
             }
         }
 
@@ -519,13 +520,129 @@ namespace BedivereKnx.KnxSystem
             IsPolling = false;
         }
 
+        /// <summary>
+        /// 读取列表中的全部组地址
+        /// </summary>
+        /// <param name="addresses"></param>
+        public void PollAddresses(List<GroupAddress> addresses)
+        {
+            if (isPolling) return;
+            Dictionary<string, List<GroupAddress>> dicGa = []; //接口编号-组地址
+            foreach (GroupAddress ga in addresses)
+            {
+                var matchesObj = from DataRow row in Objects.Table.AsEnumerable()
+                                 from col in new[] { "Sw_Ctl_GrpAddr", "Val_Ctl_GrpAddr" }
+                                 where row.Field<string>(col) == ga.ToString()
+                                 select new
+                                 {
+                                     ifCode = row.Field<string>("InterfaceCode")
+                                 }; //在各地址列中查找收到的组地址
+                if (matchesObj.Any()) //匹配结果不为空，即Objects表找到的情况
+                {
 
+                    foreach (var matchO in matchesObj) //遍历全部包含组地址的结果
+                    {
+                        if (!dicGa.ContainsKey(matchO.ifCode))
+                        {
+                            dicGa[matchO.ifCode].Add(ga); //组地址加入字典的列表
+                        }
+                    }
+                }
+                else //Objects表没找到，在Scenes表里查找
+                {
+                    var matchesScn = from DataRow row in Scenes.Table.AsEnumerable()
+                                     from col in new[] { "GroupAddress" }
+                                     where row.Field<string>(col) == ga.ToString()
+                                     select new
+                                     {
+                                         ifCode = row.Field<string>("InterfaceCode")
+                                     }; //在各地址列中查找收到的组地址
+                    if (matchesScn.Any())
+                    {
+                        foreach (var matchS in matchesScn)
+                        {
+                            if (!dicGa.ContainsKey(matchS.ifCode))
+                            {
+                                dicGa[matchS.ifCode].Add(ga); //组地址加入字典的列表
+                            }
+                        }
+                    }
+                    else //Scenes表里也没找到的情况
+                    {
+                        if (!dicGa.ContainsKey(string.Empty))
+                        {
+                            dicGa[string.Empty].Add(ga); //组地址加入字典的列表
+                        }
+                    }
+                }
+            }
+            Task.Run(() => _PollAddresses(dicGa));
+            //Thread thread = new(() => _PollAddresses(dicGa)); //新建线程执行轮询防止卡顿
+            //thread.Start(); //启动新线程
+        }
 
+        private void _PollAddresses(Dictionary<string, List<GroupAddress>> addresses)
+        {
+            IsPolling = true;
+            foreach (string ifCode in addresses.Keys)
+            {
+                KnxBus bus = Interfaces[ifCode];
+                foreach (GroupAddress ga in addresses[ifCode])
+                {
+                    ReadGroupAddress(bus, ga);
+                    Thread.Sleep(100);
+                }
+            }
+            IsPolling = false;
+        }
 
+        /// <summary>
+        /// 检查设备通讯
+        /// </summary>
+        /// <param name="deviceId"></param>
+        public async void DeviceCheck(int deviceId)
+        {
+            if (isPolling) return;
+            KnxDeviceInfo kdi = Devices[deviceId];
+            KnxBus bus = Interfaces[kdi.InterfaceCode];
+            if (bus.ConnectionState == BusConnectionState.Connected)
+            {
+                bool result = await bus.GetNetwork().PingIndividualAddressAsync(kdi.IndividualAddress);
+                kdi.State = result ? KnxDeviceState.Online : KnxDeviceState.Offline;
+            }
+            else //接口连接故障的情况
+            {
+                kdi.State = KnxDeviceState.BusError;
+            }
+        }
 
+        /// <summary>
+        /// 检查接口下全部设备通讯
+        /// </summary>
+        /// <param name="ifCode"></param>
+        public void DevicePoll(string ifCode)
+        {
+            if (IsPolling) return;
+            KnxBus bus = Interfaces[ifCode];
+            if (bus.ConnectionState == BusConnectionState.Connected)
+            {
+                Task.Run(async () => await _DevicePoll(ifCode));
+                //Thread thread = new(async () => await _DevicePoll(ifCode)); //新建线程执行轮询防止卡顿
+                //thread.Start(); //启动新线程
+            }
+        }
 
-
-
+        private async Task _DevicePoll(string ifCode)
+        {
+            KnxNetwork knw = Interfaces[ifCode].Bus.GetNetwork();
+            KnxDeviceInfo[] kdi = Devices[ifCode];
+            foreach (KnxDeviceInfo d in kdi)
+            {
+                bool result = await knw.PingIndividualAddressAsync(d.IndividualAddress);
+                d.State = result ? KnxDeviceState.Online : KnxDeviceState.Offline;
+                Thread.Sleep(100);
+            }
+        }
 
     }
 

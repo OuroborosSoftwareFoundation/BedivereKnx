@@ -24,11 +24,27 @@ namespace BedivereKnx_CS.test
                 cb.Items.Add(dt.TableName);
             }
 
-
-
-
-
-
+            tv.Nodes.Clear();
+            foreach (AreaNode areaMain in KS.Areas.AreaAtLevel(1))
+            {
+                tv.Nodes.Add(areaMain.FullCode, areaMain.Name);
+                if (areaMain.HasChildren)
+                {
+                    TreeNode nodeMain = tv.Nodes[areaMain.FullCode]!;
+                    foreach (AreaNode areaMdl in areaMain.ChildrenAreas)
+                    {
+                        nodeMain.Nodes.Add(areaMdl.FullCode, areaMdl.Name);
+                        if (areaMdl.HasChildren)
+                        {
+                            TreeNode nodeMdl = nodeMain.Nodes[areaMdl.FullCode]!;
+                            foreach (AreaNode areaSub in areaMdl.ChildrenAreas)
+                            {
+                                nodeMdl.Nodes.Add(areaSub.FullCode, areaSub.Name);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void cb_SelectedIndexChanged(object sender, EventArgs e)

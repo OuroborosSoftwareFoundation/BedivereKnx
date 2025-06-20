@@ -74,16 +74,16 @@ namespace BedivereKnx.KnxSystem
         }
 
 
-        public async void Read(GroupAddress ga, MessagePriority priority = MessagePriority.Low)
-        {
-            await Bus.ReadGroupValueAsync(ga, priority);
-        }
+        //public async void Read(GroupAddress ga, MessagePriority priority = MessagePriority.Low)
+        //{
+        //    await Bus.ReadGroupValueAsync(ga, priority);
+        //}
 
 
 
 
 
-        //隐式转换
+        //隐式转换为KnxBus对象
         public static implicit operator KnxBus(KnxInterface iface) => iface.Bus;
 
     }

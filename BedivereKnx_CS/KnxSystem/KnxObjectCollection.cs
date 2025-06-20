@@ -113,7 +113,7 @@ namespace BedivereKnx.KnxSystem
         /// <param name="partString">Sw_Ctl,Sw_Fdb,Val_Ctl,Val_Fdb</param>
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public KnxObject[] this[KnxGroup address, string partString]
+        public KnxObject[] this[GroupAddress address, string partString]
         {
             get
             {
