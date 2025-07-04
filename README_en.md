@@ -47,17 +47,17 @@ This sheet stores interfaces information. Left blank for default broadcast routi
 
 This sheet stores KNX area information.
 
-| Column     | Type                        | .NET Type | Caption          |
-| ---------- | --------------------------- | --------- | ---------------- |
-| MainCode   | Text                        | String    | Main Area Code   |
-| MainArea   | Text                        | String    | Main Area Name   |
-| MiddleCode | Text                        | String    | Middle Area Code |
-| MiddleArea | Text                        | String    | Middle Area Name |
-| SubCode    | Text                        | String    | Sub Area Code    |
-| SubArea    | Text                        | String    | Sub Area Name    |
-| AreaCode   | General<sup>1</sup>         | String    | Area Code        |
+| Column         | Type                | .NET Type | Caption          |
+| -------------- | ------------------- | --------- | ---------------- |
+| MainAreaCode   | Text                | String    | Main Area Code   |
+| MainAreaName   | Text                | String    | Main Area Name   |
+| MiddleAreaCode | Text                | String    | Middle Area Code |
+| MiddleAreaName | Text                | String    | Middle Area Name |
+| SubAreaCode    | Text                | String    | Sub Area Code    |
+| SubAreaName    | Text                | String    | Sub Area Name    |
+| AreaCode       | General<sup>1</sup> | String    | Area Code        |
 
-- <sup>1</sup> AreaCode column is filled with formula, its format is `MainCode.MiddleCode.SubCode`.
+- <sup>1</sup> AreaCode column is filled with formula, its format is `MainAreaCode.MiddleAreaCode.SubAreaCode`.
 
 ### Objects
 
@@ -68,14 +68,14 @@ This sheet stores objects information, each object has 4 groups: switch control,
 | AreaCode<sup>1</sup>              | Text                             | String                               | Area Code               |
 | InterfaceCode<sup>2</sup>         | Text                             | String                               | Interface Code          |
 | ObjectCode                        | Text                             | String                               | Object Code             |
-| ObjectType                        | *Sequence*                       | *KnxObjectType*<sup>3</sup>           | Object Type             |
+| ObjectType                        | *Sequence*                       | *KnxObjectType*<sup>3</sup>          | Object Type             |
 | ObjectName                        | Text                             | String                               | Object Name             |
-| Sw_GrpDpt                         | *Sequence*<sup>4</sup>           | <ins>*DptBase*</ins>                 | Switch Group DPT        |
-| Sw_Ctl_GrpAddr                    | Text                             | <ins>*GroupAddress*</ins>            | Switch Control Address  |
-| Sw_Fdb_GrpAddr                    | Text                             | <ins>*GroupAddress*</ins>            | Switch Feedback Address |
-| Val_GrpDpt                        | *Sequence*<sup>4</sup>           | *DptBase*                            | Value Group DPT         |
-| Val_Ctl_GrpAddr                   | Text                             | <ins>*GroupAddress*</ins>            | Value Control Address   |
-| Val_Fdb_GrpAddr                   | Text                             | <ins>*GroupAddress*</ins>            | Value Feedback Address  |
+| SwitchDpt                         | *Sequence*<sup>4</sup>           | <ins>*DptBase*</ins>                 | Switch Group DPT        |
+| SwitchCtlAddr                     | Text                             | <ins>*GroupAddress*</ins>            | Switch Control Address  |
+| SwitchFdbAddr                     | Text                             | <ins>*GroupAddress*</ins>            | Switch Feedback Address |
+| ValueDpt                          | *Sequence*<sup>4</sup>           | *DptBase*                            | Value Group DPT         |
+| ValueCtlAddr                      | Text                             | <ins>*GroupAddress*</ins>            | Value Control Address   |
+| ValueFdbAddr                      | Text                             | <ins>*GroupAddress*</ins>            | Value Feedback Address  |
 
 - <sup>1</sup> From column `AreaCode` of sheet `Areas`.
 - <sup>2</sup> From column `InterfaceCode` of sheet `Interfaces`, left blank for default broadcast routing interface.

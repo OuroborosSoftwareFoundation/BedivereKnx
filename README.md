@@ -49,17 +49,17 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 
 此表存储KNX区域信息。
 
-| 列         | 类型                         | .NET类型  | 说明      |
-| ---------- | --------------------------- | -------- | ---------- |
-| MainCode   | Text                        | String   | 主区域编号 |
-| MainArea   | Text                        | String   | 主区域名称 |
-| MiddleCode | Text                        | String   | 中区域编号 |
-| MiddleArea | Text                        | String   | 中区域名称 |
-| SubCode    | Text                        | String   | 子区域编号 |
-| SubArea    | Text                        | String   | 子区域名称 |
-| AreaCode   | General<sup>1</sup>         | String   | 区域编号   |
+| 列	             | 类型                | .NET类型  | 说明      |
+| -------------- | ------------------- | -------- | --------- |
+| MainAreaCode	 | Text                | String   | 主区域编号 |
+| MainAreaName   | Text                | String   | 主区域名称 |
+| MiddleAreaCode | Text                | String   | 中区域编号 |
+| MiddleAreaName | Text                | String   | 中区域名称 |
+| SubAreaCode    | Text                | String   | 子区域编号 |
+| SubAreaName    | Text                | String   | 子区域名称 |
+| AreaCode       | General<sup>1</sup> | String   | 区域编号   |
 
-- <sup>1</sup> AreaCode列通过公式自动填充，格式为`MainCode.MiddleCode.SubCode`。
+- <sup>1</sup> AreaCode列通过公式自动填充，格式为`MainAreaCode.MiddleAreaCode.SubAreaCode`。
 
 ### 对象 Objects
 
@@ -72,12 +72,12 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 | ObjectCode                        | Text                             | String                               | 对象编号      |
 | ObjectType                        | *Sequence*                       | *KnxObjectType*<sup>3</sup>           | 对象类型      |
 | ObjectName                        | Text                             | String                               | 对象名称      |
-| Sw_GrpDpt                         | *Sequence*<sup>4</sup>           | <ins>*DptBase*</ins>                 | 开关-地址类型 |
-| Sw_Ctl_GrpAddr                    | Text                             | <ins>*GroupAddress*</ins>            | 开关-控制地址 |
-| Sw_Fdb_GrpAddr                    | Text                             | <ins>*GroupAddress*</ins>            | 开关-反馈地址 |
-| Val_GrpDpt                        | *Sequence*<sup>4</sup>           | *DptBase*                            | 数值-地址类型 |
-| Val_Ctl_GrpAddr                   | Text                             | <ins>*GroupAddress*</ins>            | 数值-控制地址 |
-| Val_Fdb_GrpAddr                   | Text                             | <ins>*GroupAddress*</ins>            | 数值-反馈地址 |
+| SwitchDpt                         | *Sequence*<sup>4</sup>           | <ins>*DptBase*</ins>                 | 开关-地址类型 |
+| SwitchCtlAddr                     | Text                             | <ins>*GroupAddress*</ins>            | 开关-控制地址 |
+| SwitchFdbAddr                     | Text                             | <ins>*GroupAddress*</ins>            | 开关-反馈地址 |
+| ValueDpt                          | *Sequence*<sup>4</sup>           | *DptBase*                            | 数值-地址类型 |
+| ValueCtlAddr                      | Text                             | <ins>*GroupAddress*</ins>            | 数值-控制地址 |
+| ValueFdbAddr                      | Text                             | <ins>*GroupAddress*</ins>            | 数值-反馈地址 |
 
 - <sup>1</sup> 来自 `Areas`表的 `AreaCode`列。
 - <sup>2</sup> 来自 `Interfaces`表的 `InterfaceCode`列，留空即为使用KNX广播路由接口。
