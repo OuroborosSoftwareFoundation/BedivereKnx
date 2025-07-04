@@ -4,7 +4,7 @@
 
 KNX intelligent lighting control software, based on Knx.Falcon.Sdk library.
 
-Initial development language is VB.net, currently being rewritten in C # (project BedivereKnx_CS).
+Initial development language is VB.net (BedwyrKnx is a reserved version of VB.NET), now the programming language has been changed to C#.
 
 > [!CAUTION]
 > This software may have bugs and is not recommended for commercial use, otherwise the consequences will be borne by oneself.

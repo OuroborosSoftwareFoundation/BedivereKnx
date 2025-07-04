@@ -4,7 +4,7 @@
 
 KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 
-初始开发语言为VB.NET，目前正在用C#重写（项目BedivereKnx_CS）。
+初始开发语言为VB.NET（BedwyrKnx为初始开发版本的保留版），目前已改为C#。
 
 > [!CAUTION]
 > 本软件可能存在bug，不建议商用，否则后果自负。
