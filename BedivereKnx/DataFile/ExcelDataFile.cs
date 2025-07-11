@@ -14,7 +14,7 @@ namespace BedivereKnx.DataFile
         /// <summary>
         /// 需要读取的工作表名
         /// </summary>
-        private static readonly string[] DataSheets = { "Interfaces", "Areas", "Objects", "Scenes", "Devices", "Schedules", "Links" };
+        private static readonly string[] DataSheets = ["Interfaces", "Areas", "Objects", "Scenes", "Devices", "Schedules", "Links"];
 
         /// <summary>
         /// 数据表中列的类型

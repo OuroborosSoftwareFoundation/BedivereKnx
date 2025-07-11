@@ -23,23 +23,26 @@
 //   你理当已收到一份GNU通用公共许可协议的副本。
 //   如果没有，请查阅 <http://www.gnu.org/licenses/> 
 
-using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 
 namespace BedivereKnx.GUI
 {
+
+    // 程序退出代码：
+    //  0   正常
+    //  1   授权到期
+    //  2   调整授权
+    // -1   授权无效
+    // -2   授权无效且非法进入主界面
+    // -3   授权时间检测异常
+    // -4   非法绕过授权调整窗体的模式选择
+    // -5   非法显示授权窗体
     internal static class Program
     {
-        // 程序退出代码：
-        //  0   正常
-        //  1   授权到期
-        //  2   调整授权
-        // -1   授权无效
-        // -2   授权无效且非法进入主界面
-        // -3   授权时间检测异常
-        // -4   非法绕过授权调整窗体的模式选择
-        // -5   非法显示授权窗体
+
+        private static readonly string assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? "BedivereKnx.GUI"; //程序集名称
+        private static readonly Mutex mutex = new(true, assemblyName); //单实例检查的互斥体
 
         /// <summary>
         ///  The main entry point for the application.
@@ -47,6 +50,15 @@ namespace BedivereKnx.GUI
         [STAThread]
         static void Main()
         {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware); //DPI适配
+
+            //单实例检查：
+            if (!mutex.WaitOne(TimeSpan.Zero, true))
+            {
+                MessageBox.Show(Resources.Strings.Ex_Singleton, assemblyName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
@@ -117,6 +129,9 @@ namespace BedivereKnx.GUI
 
             //无参数运行消息循环：
             Application.Run();
+
+            //释放互斥体：
+            mutex.ReleaseMutex();
         }
 
     }

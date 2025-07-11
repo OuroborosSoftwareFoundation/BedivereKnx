@@ -118,35 +118,110 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Menu_Auth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 26</value>
+  <data name="slblScdState.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 20</value>
+  </data>
+  <data name="slblScdState.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="slblScd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 20</value>
+  </data>
+  <data name="slblScd.Text" xml:space="preserve">
+    <value>定时器状态：</value>
   </data>
   <data name="slblPolling.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 20</value>
   </data>
-  <data name="ToolStripDropDownButton1.Text" xml:space="preserve">
-    <value>主菜单</value>
+  <data name="slblPolling.Text" xml:space="preserve">
+    <value>轮询中……</value>
+  </data>
+  <data name="slblIf.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 20</value>
+  </data>
+  <data name="slblIf.Text" xml:space="preserve">
+    <value>接口连接：</value>
   </data>
   <data name="slblSpring.Size" type="System.Drawing.Size, System.Drawing">
     <value>514, 20</value>
   </data>
+  <data name="btnHmi.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 28</value>
+  </data>
+  <data name="btnHmi.Text" xml:space="preserve">
+    <value>图形界面</value>
+  </data>
+  <data name="btnPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 28</value>
+  </data>
   <data name="btnPanel.Text" xml:space="preserve">
     <value>控件视图</value>
-  </data>
-  <data name="slblScdState.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
-  </data>
-  <data name="Menu_Close.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 26</value>
-  </data>
-  <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 6</value>
   </data>
   <data name="btnGrid.Size" type="System.Drawing.Size, System.Drawing">
     <value>93, 28</value>
   </data>
+  <data name="btnGrid.Text" xml:space="preserve">
+    <value>表格视图</value>
+  </data>
+  <data name="Menu_Exit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 26</value>
+  </data>
+  <data name="Menu_Exit.Text" xml:space="preserve">
+    <value>退出(&amp;X)</value>
+  </data>
+  <data name="ToolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>229, 6</value>
+  </data>
+  <data name="Menu_About.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 26</value>
+  </data>
+  <data name="Menu_About.Text" xml:space="preserve">
+    <value>关于(&amp;A)</value>
+  </data>
+  <data name="Menu_Auth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 26</value>
+  </data>
+  <data name="Menu_Auth.Text" xml:space="preserve">
+    <value>授权信息</value>
+  </data>
   <data name="ToolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
     <value>229, 6</value>
+  </data>
+  <data name="Menu_Config.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 26</value>
+  </data>
+  <data name="Menu_Config.Text" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="ToolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>229, 6</value>
+  </data>
+  <data name="Menu_Close.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 26</value>
+  </data>
+  <data name="Menu_Close.Text" xml:space="preserve">
+    <value>关闭项目(&amp;C)</value>
+  </data>
+  <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>229, 6</value>
+  </data>
+  <data name="Menu_Import.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 26</value>
+  </data>
+  <data name="Menu_Import.Text" xml:space="preserve">
+    <value>导入(&amp;I)</value>
+  </data>
+  <data name="Menu_Open.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 26</value>
+  </data>
+  <data name="Menu_Open.Text" xml:space="preserve">
+    <value>打开项目(&amp;O)</value>
+  </data>
+  <data name="Menu_ToolEtsImport.Text" xml:space="preserve">
+    <value>ETS组地址文件导入</value>
+  </data>
+  <data name="ToolStripDropDownButton1.Text" xml:space="preserve">
+    <value>主菜单</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -3091,77 +3166,5 @@
         uv/PA+L8GwLZ/QAB4/4MAPD/IwL//gIA0P8A4AcAAOADAACAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
 </value>
-  </data>
-  <data name="Menu_Open.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 26</value>
-  </data>
-  <data name="ToolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 6</value>
-  </data>
-  <data name="slblScd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 20</value>
-  </data>
-  <data name="Menu_Exit.Text" xml:space="preserve">
-    <value>退出(&amp;X)</value>
-  </data>
-  <data name="Menu_About.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 26</value>
-  </data>
-  <data name="Menu_Close.Text" xml:space="preserve">
-    <value>关闭项目(&amp;C)</value>
-  </data>
-  <data name="btnGrid.Text" xml:space="preserve">
-    <value>表格视图</value>
-  </data>
-  <data name="Menu_Exit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 26</value>
-  </data>
-  <data name="Menu_Auth.Text" xml:space="preserve">
-    <value>授权信息</value>
-  </data>
-  <data name="Menu_Config.Text" xml:space="preserve">
-    <value>设置</value>
-  </data>
-  <data name="slblScd.Text" xml:space="preserve">
-    <value>定时器状态：</value>
-  </data>
-  <data name="Menu_Import.Text" xml:space="preserve">
-    <value>从数据库导入(&amp;I)</value>
-  </data>
-  <data name="btnPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 28</value>
-  </data>
-  <data name="slblIf.Text" xml:space="preserve">
-    <value>接口连接：</value>
-  </data>
-  <data name="Menu_Config.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 26</value>
-  </data>
-  <data name="ToolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 6</value>
-  </data>
-  <data name="slblIf.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 20</value>
-  </data>
-  <data name="slblPolling.Text" xml:space="preserve">
-    <value>轮询中……</value>
-  </data>
-  <data name="Menu_Open.Text" xml:space="preserve">
-    <value>打开项目(&amp;O)</value>
-  </data>
-  <data name="Menu_About.Text" xml:space="preserve">
-    <value>关于(&amp;A)</value>
-  </data>
-  <data name="slblScdState.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnHmi.Text" xml:space="preserve">
-    <value>图形界面</value>
-  </data>
-  <data name="btnHmi.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 28</value>
-  </data>
-  <data name="Menu_Import.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 26</value>
   </data>
 </root>

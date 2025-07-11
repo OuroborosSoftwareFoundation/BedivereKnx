@@ -27,10 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controls\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Knx.Falcon.Sdk" Version="6.3.7959" />
   </ItemGroup>
 

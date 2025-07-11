@@ -34,7 +34,7 @@ namespace BedivereKnx.GUI.Forms
         {
             if (Globals.AuthInfo is null) Environment.Exit(-2); //位置情况绕过授权验证的情况退出
             InitializeComponent();
-            Text = $"{Globals.AssemblyInfo.ProductName} Ver{Globals.AssemblyInfo.Version}";
+            Text = $"{Globals.AssemblyInfo.ProductName} (Ver {Globals.AssemblyInfo.Version})";
             lblAuth.Text = Globals.AuthInfo.Title;
             //timerDoe.Elapsed += TimerDoe_Elapsed;
             //timerDoe.AutoReset = true;
@@ -112,10 +112,7 @@ namespace BedivereKnx.GUI.Forms
         /// <param name="path"></param>
         private static void OpenHmiFile(string path)
         {
-            FrmMainHmi frmMainHmi = new()
-            {
-                HmiPath = path,
-            };
+            FrmMainHmi frmMainHmi = new(path);
             frmMainHmi.Show();
         }
 
@@ -246,6 +243,14 @@ namespace BedivereKnx.GUI.Forms
             {
                 OpenHmiFile(ofd.FileName);
             }
+        }
+
+        /// <summary>
+        /// 导入
+        /// </summary>
+        private void Menu_ToolEtsImport_Click(object sender, EventArgs e)
+        {
+            new FrmImport().Show();
         }
 
         /// <summary>

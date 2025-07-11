@@ -88,11 +88,38 @@ namespace BedivereKnx.GUI.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Invalid {0} file format. 的本地化字符串。
+        /// </summary>
+        internal static string Ex_FileFormatInvalid {
+            get {
+                return ResourceManager.GetString("Ex_FileFormatInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 File not found. 的本地化字符串。
+        /// </summary>
+        internal static string Ex_FileNotFound {
+            get {
+                return ResourceManager.GetString("Ex_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Invalid KNX routing interface local IP &apos;{0}&apos;, modify the configuration? 的本地化字符串。
         /// </summary>
         internal static string Ex_LocalIp {
             get {
                 return ResourceManager.GetString("Ex_LocalIp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The application is already running. 的本地化字符串。
+        /// </summary>
+        internal static string Ex_Singleton {
+            get {
+                return ResourceManager.GetString("Ex_Singleton", resourceCulture);
             }
         }
         
