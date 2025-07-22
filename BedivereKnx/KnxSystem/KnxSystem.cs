@@ -34,6 +34,7 @@ namespace BedivereKnx.KnxSystem
 
     /// <summary>
     /// KNX系统对象
+    /// 【待优化】移除类里的DataTable，Collection类.ToList()绑定给dgv
     /// </summary>
     public class KnxSystem
     {
@@ -128,7 +129,7 @@ namespace BedivereKnx.KnxSystem
                 {
                     localIp ??= IPAddress.Loopback;
                     Interfaces = new(dtc["Interfaces"]!, localIp);
-                    Interfaces.GroupMessageReceived += _GroupMessageReceived;
+                    Interfaces.GroupMessageReceived += OnGroupMessageReceived;
                     Interfaces.GroupPollRequest += PollAllObjects;
                 }
                 else
@@ -140,8 +141,8 @@ namespace BedivereKnx.KnxSystem
                 if (dtc.Contains("Objects"))
                 {
                     Objects = new(dtc["Objects"]!);
-                    Objects.GroupReadRequest += _GroupReadRequest;
-                    Objects.GroupWriteRequest += _GroupWriteRequest;
+                    Objects.GroupReadRequest += OnGroupReadRequest;
+                    Objects.GroupWriteRequest += OnGroupWriteRequest;
                 }
                 else
                 {
@@ -152,7 +153,7 @@ namespace BedivereKnx.KnxSystem
                 if (dtc.Contains("Scenes"))
                 {
                     Scenes = new(dtc["Scenes"]!);
-                    Scenes.SceneControlRequest += _GroupWriteRequest;
+                    Scenes.SceneControlRequest += OnGroupWriteRequest;
                 }
                 else
                 {
@@ -198,7 +199,7 @@ namespace BedivereKnx.KnxSystem
             {
                 throw;
             }
-            MessageTransmission += _MessageTransmission;
+            MessageTransmission += OnMessageTransmission;
         }
 
         /// <summary>
@@ -333,7 +334,7 @@ namespace BedivereKnx.KnxSystem
         /// <param name="e"></param>
         /// <param name="log"></param>
         /// <exception cref="NotImplementedException"></exception>
-        private void _GroupMessageReceived(KnxMsgEventArgs e, string? log)
+        private void OnGroupMessageReceived(KnxMsgEventArgs e, string? log)
         {
             if (e.Value is null) return; //无视没有值的报文
             if ((e.EventType == GroupEventType.ValueWrite) || (e.EventType == GroupEventType.ValueResponse))
@@ -348,7 +349,7 @@ namespace BedivereKnx.KnxSystem
         /// </summary>
         /// <param name="e"></param>
         /// <param name="log"></param>
-        private void _MessageTransmission(KnxMsgEventArgs e, string? log)
+        private void OnMessageTransmission(KnxMsgEventArgs e, string? log)
         {
             DataRow dr = MessageLog.NewRow();
             dr["DateTime"] = DateTime.Now;
@@ -370,7 +371,7 @@ namespace BedivereKnx.KnxSystem
         /// <param name="e"></param>
         /// <param name="value"></param>
         /// <exception cref="NotImplementedException"></exception>
-        private void _GroupWriteRequest(KnxGroupEventArgs e, GroupValue value)
+        private void OnGroupWriteRequest(KnxGroupEventArgs e, GroupValue value)
         {
             WriteGroupAddress(e.InterfaceCode, e.GroupAddress, value, e.Priority);
         }
@@ -403,7 +404,7 @@ namespace BedivereKnx.KnxSystem
         /// </summary>
         /// <param name="e"></param>
         /// <exception cref="NotImplementedException"></exception>
-        private void _GroupReadRequest(KnxGroupEventArgs e)
+        private void OnGroupReadRequest(KnxGroupEventArgs e)
         {
             ReadGroupAddress(e.InterfaceCode, e.GroupAddress, e.Priority);
         }
@@ -485,7 +486,7 @@ namespace BedivereKnx.KnxSystem
         /// <exception cref="NotImplementedException"></exception>
         private void _ScheduleEventTriggered(string log, KnxGroupEventArgs e, GroupValue value)
         {
-            _GroupWriteRequest(e, value);
+            OnGroupWriteRequest(e, value);
         }
 
         /// <summary>
@@ -497,13 +498,13 @@ namespace BedivereKnx.KnxSystem
             if (isPolling) return; //上次轮询未完成，不执行任何操作
             if (Interfaces.Ready)
             {
-                Task.Run(_PollAllObjects);
-                //Thread thread = new(_PollAllObjects); //新建线程执行轮询防止卡顿
+                Task.Run(PollAllObjects_Internal);
+                //Thread thread = new(PollAllObjects_Internal); //新建线程执行轮询防止卡顿
                 //thread.Start();
             }
         }
 
-        private void _PollAllObjects()
+        private void PollAllObjects_Internal()
         {
             isPolling = true;
             List<string> listIC
@@ -578,12 +579,12 @@ namespace BedivereKnx.KnxSystem
                     }
                 }
             }
-            Task.Run(() => _PollAddresses(dicGa));
-            //Thread thread = new(() => _PollAddresses(dicGa)); //新建线程执行轮询防止卡顿
+            Task.Run(() => PollAddresses_Internal(dicGa));
+            //Thread thread = new(() => PollAddresses_Internal(dicGa)); //新建线程执行轮询防止卡顿
             //thread.Start(); //启动新线程
         }
 
-        private void _PollAddresses(Dictionary<string, List<GroupAddress>> addresses)
+        private void PollAddresses_Internal(Dictionary<string, List<GroupAddress>> addresses)
         {
             IsPolling = true;
             foreach (string ifCode in addresses.Keys)
@@ -628,13 +629,13 @@ namespace BedivereKnx.KnxSystem
             KnxBus bus = Interfaces[ifCode];
             if (bus.ConnectionState == BusConnectionState.Connected)
             {
-                Task.Run(async () => await _DevicePoll(ifCode));
-                //Thread thread = new(async () => await _DevicePoll(ifCode)); //新建线程执行轮询防止卡顿
+                Task.Run(async () => await DevicePoll_Internal(ifCode));
+                //Thread thread = new(async () => await DevicePoll_Internal(ifCode)); //新建线程执行轮询防止卡顿
                 //thread.Start(); //启动新线程
             }
         }
 
-        private async Task _DevicePoll(string ifCode)
+        private async Task DevicePoll_Internal(string ifCode)
         {
             KnxNetwork knw = Interfaces[ifCode].Bus.GetNetwork();
             KnxDeviceInfo[] kdi = Devices[ifCode];

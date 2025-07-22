@@ -153,6 +153,26 @@ namespace BedivereKnx.GUI.Resources {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Img_BulbOff {
+            get {
+                object obj = ResourceManager.GetObject("Img_BulbOff", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Img_BulbOn {
+            get {
+                object obj = ResourceManager.GetObject("Img_BulbOn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap Img_StartUp {
             get {
                 object obj = ResourceManager.GetObject("Img_StartUp", resourceCulture);

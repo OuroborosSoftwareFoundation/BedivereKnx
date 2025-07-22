@@ -18,25 +18,12 @@ namespace BedivereKnx.KnxSystem
         /// 新建KNX场景组对象
         /// </summary>
         /// <param name="id">场景组ID</param>
-        /// <param name="address">场景组地址</param>
-        /// <param name="ifCode">接口编号</param>
-        //public KnxScene(int id, GroupAddress address, string? ifCode)
-        //    : base(KnxObjectType.Scene, id, ifCode)
-        //{
-        //    this[KnxObjectPart.SceneControl] = new KnxGroup(address, 18, 1); //新建DPST18.001的KNX组对象
-        //    Names = new string[64];
-        //}
-
-        /// <summary>
-        /// 新建KNX场景组对象
-        /// </summary>
-        /// <param name="id">场景组ID</param>
         /// <param name="code">场景组编号</param>
         /// <param name="name">场景组名称</param>
         /// <param name="address">场景组地址</param>
         /// <param name="ifCode">接口编号</param>
-        public KnxScene(int id, string code, string? name, GroupAddress address, string? ifCode)
-            : base(KnxObjectType.Scene, id, code, name, ifCode)
+        public KnxScene(int id, string code, string? name, GroupAddress address, string? ifCode, string? areaCode)
+            : base(KnxObjectType.Scene, id, code, name, ifCode, areaCode)
         {
             this[KnxObjectPart.SceneControl] = new KnxGroup(address, 18, 1); //新建DPST18.001的KNX组对象
             Names = new string[64]; //重置场景名数组

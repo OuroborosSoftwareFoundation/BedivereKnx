@@ -97,6 +97,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="BedwyrKnx.GUI.eos">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="data.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

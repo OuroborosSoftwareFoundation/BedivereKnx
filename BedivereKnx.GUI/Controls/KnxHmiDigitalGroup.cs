@@ -1,6 +1,6 @@
-﻿using BedivereKnx.KnxSystem;
+﻿using System.ComponentModel;
 using Knx.Falcon;
-using System.ComponentModel;
+using BedivereKnx.KnxSystem;
 
 namespace BedivereKnx.GUI.Controls
 {
@@ -21,6 +21,7 @@ namespace BedivereKnx.GUI.Controls
             set
             {
                 feedbackWidth = Math.Max(0, value);
+                Invalidate();
             }
         }
         private int feedbackWidth = 15;
@@ -35,6 +36,7 @@ namespace BedivereKnx.GUI.Controls
             set
             {
                 feedbackColor = value;
+                Invalidate();
             }
         }
         private Color feedbackColor = Color.Purple;
@@ -54,7 +56,6 @@ namespace BedivereKnx.GUI.Controls
             }
         }
         private KnxObject? knxObject;
-
 
         internal KnxHmiDigitalGroup(KnxHmiComponent comp)
         {

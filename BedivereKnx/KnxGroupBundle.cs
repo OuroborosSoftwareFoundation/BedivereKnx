@@ -39,6 +39,11 @@ namespace BedivereKnx
         public string? InterfaceCode { get; set; }
 
         /// <summary>
+        /// 区域编号
+        /// </summary>
+        public string? AreaCode { get; set; }
+
+        /// <summary>
         /// 索引器内部字典
         /// </summary>
         private readonly Dictionary<KnxObjectPart, KnxGroup> Groups = [];
@@ -96,7 +101,7 @@ namespace BedivereKnx
         //    InterfaceCode = ifCode;
         //}
 
-        public KnxGroupBundle(KnxObjectType type, int id, string code, string? name, string? ifCode)
+        public KnxGroupBundle(KnxObjectType type, int id, string code, string? name, string? ifCode, string? areaCode)
         {
             if (code is null)
             {
@@ -109,6 +114,7 @@ namespace BedivereKnx
                 Code = code;
                 Name = name;
                 InterfaceCode = ifCode;
+                AreaCode = areaCode;
             }
         }
 

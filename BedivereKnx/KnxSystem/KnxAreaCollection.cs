@@ -26,48 +26,6 @@ namespace BedivereKnx.KnxSystem
         private readonly Dictionary<int, AreaNode> Items = [];
 
         /// <summary>
-        /// 索引器（根据ID）
-        /// </summary>
-        /// <param name="index">对象ID</param>
-        /// <returns></returns>
-        /// <exception cref="KeyNotFoundException"></exception>
-        public AreaNode this[int index]
-        {
-            get
-            {
-                if (Items.TryGetValue(index, out AreaNode? area))
-                {
-                    return area;
-                }
-                else
-                {
-                    throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "Area", $"ID = {index}"));
-                }
-            }
-        }
-
-        /// <summary>
-        /// 索引器（按编号）
-        /// </summary>
-        /// <param name="code">区域编号</param>
-        /// <returns></returns>
-        public AreaNode this[string code]
-        {
-            get
-            {
-                List<AreaNode> list = Items.Values.Where(a => a.FullCode == code).ToList(); //在字典中按照编号查询
-                if (list.Count > 0)
-                {
-                    return list[0]; //返回第一项（正常情况只能找到一项）
-                }
-                else
-                {
-                    throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "Area", $"Code = {code}"));
-                }
-            }
-        }
-
-        /// <summary>
         /// 主区域
         /// </summary>
         public AreaNode[] MainAreas
@@ -131,6 +89,48 @@ namespace BedivereKnx.KnxSystem
         }
 
         /// <summary>
+        /// 索引器（根据ID）
+        /// </summary>
+        /// <param name="index">对象ID</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public AreaNode this[int index]
+        {
+            get
+            {
+                if (Items.TryGetValue(index, out AreaNode? area))
+                {
+                    return area;
+                }
+                else
+                {
+                    throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "Area", $"ID = {index}"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 索引器（按编号）
+        /// </summary>
+        /// <param name="code">区域编号</param>
+        /// <returns></returns>
+        public AreaNode this[string code]
+        {
+            get
+            {
+                List<AreaNode> list = Items.Values.Where(a => a.FullCode == code).ToList(); //在字典中按照编号查询
+                if (list.Count > 0)
+                {
+                    return list[0]; //返回第一项（正常情况只能找到一项）
+                }
+                else
+                {
+                    throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "Area", $"Code = {code}"));
+                }
+            }
+        }
+
+        /// <summary>
         /// 获取一级下的全部对象
         /// </summary>
         /// <param name="level"></param>
@@ -140,11 +140,19 @@ namespace BedivereKnx.KnxSystem
             return Items.Values.Where(a => a.Level == level).ToArray();
         }
 
+        /// <summary>
+        /// 枚举器
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<AreaNode> GetEnumerator()
         {
             return Items.Values.GetEnumerator();
         }
 
+        /// <summary>
+        /// 泛型枚举器
+        /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

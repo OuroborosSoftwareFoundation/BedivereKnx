@@ -1,4 +1,6 @@
-﻿using BedivereKnx.KnxSystem;
+﻿using System.Net;
+using System.Net.NetworkInformation;
+using BedivereKnx.KnxSystem;
 
 namespace BedivereKnx.GUI.Forms
 {
@@ -48,7 +50,6 @@ namespace BedivereKnx.GUI.Forms
 
         private void FrmMain_Shown(object sender, EventArgs e)
         {
-#if !DEBUG
             //测试KNX路由本地IP：
             bool lclIpErr = true; //KNX路由本地IP故障
             IPAddress? lclIp = Globals.AppConfig.LocalIP;
@@ -62,6 +63,7 @@ namespace BedivereKnx.GUI.Forms
                 PingReply reply = ping.Send(lclIp, 500); //测试通讯
                 lclIpErr = (reply.Status != IPStatus.Success);
             }
+#if !DEBUG
             if (lclIpErr) //KNX路由本地IP有故障的情况
             {
                 DialogResult result = MessageBox.Show(string.Format(Resources.Strings.Ex_LocalIp, Globals.AppConfig.LocalIP), "Info", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
@@ -225,6 +227,16 @@ namespace BedivereKnx.GUI.Forms
             {
                 OpenProject(ofd.FileName);
             }
+        }
+
+        /// <summary>
+        /// 打开面板界面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnPanel_Click(object sender, EventArgs e)
+        {
+            new FrmMainPanel().Show();
         }
 
         /// <summary>

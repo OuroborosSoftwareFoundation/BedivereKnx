@@ -83,7 +83,6 @@ namespace BedivereKnx.GUI
             //Thread.CurrentThread.CurrentCulture = CultureInfo.InstalledUICulture;
             //Thread.CurrentThread.CurrentUICulture = CultureInfo.InstalledUICulture;
 
-
             //==============================测试内容================================
 
             //检测授权：

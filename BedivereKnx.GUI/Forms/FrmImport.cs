@@ -1,4 +1,5 @@
-﻿using Knx.Falcon;
+﻿using BedivereKnx.DataFile;
+using Knx.Falcon;
 using Knx.Falcon.ApplicationData.DatapointTypes;
 using System.Data;
 
@@ -20,7 +21,8 @@ namespace BedivereKnx.GUI.Forms
             };
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                DataTable dt = DataFileImporter.FromEts5GaCsv(ofd.FileName, 1, 1);
+                EtsFileReader reader = new(ofd.FileName, EtsGaFileType.CSV);
+                DataTable dt = reader.ToMiddleTable();
                 dgvMain.DataSource = TransfromGaTable(dt);
             }
         }

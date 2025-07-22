@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ouroboros.AuthManager", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BedivereKnx", "BedivereKnx\BedivereKnx.csproj", "{D6A67066-5F1A-4E3E-AFC6-26D0697C56E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BedivereKnx.test", "BedivereKnx.test\BedivereKnx.test.csproj", "{EA72AC64-C972-4BEB-8B2F-AA59284F6D9D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BedivereKnx.GUI", "BedivereKnx.GUI\BedivereKnx.GUI.csproj", "{4051949E-D1A5-484B-A5E9-BCA9BE11B29E}"
 EndProject
 Global
@@ -71,14 +69,6 @@ Global
 		{D6A67066-5F1A-4E3E-AFC6-26D0697C56E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6A67066-5F1A-4E3E-AFC6-26D0697C56E7}.Release|x86.ActiveCfg = Release|Any CPU
 		{D6A67066-5F1A-4E3E-AFC6-26D0697C56E7}.Release|x86.Build.0 = Release|Any CPU
-		{EA72AC64-C972-4BEB-8B2F-AA59284F6D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA72AC64-C972-4BEB-8B2F-AA59284F6D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA72AC64-C972-4BEB-8B2F-AA59284F6D9D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EA72AC64-C972-4BEB-8B2F-AA59284F6D9D}.Debug|x86.Build.0 = Debug|Any CPU
-		{EA72AC64-C972-4BEB-8B2F-AA59284F6D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA72AC64-C972-4BEB-8B2F-AA59284F6D9D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA72AC64-C972-4BEB-8B2F-AA59284F6D9D}.Release|x86.ActiveCfg = Release|Any CPU
-		{EA72AC64-C972-4BEB-8B2F-AA59284F6D9D}.Release|x86.Build.0 = Release|Any CPU
 		{4051949E-D1A5-484B-A5E9-BCA9BE11B29E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4051949E-D1A5-484B-A5E9-BCA9BE11B29E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4051949E-D1A5-484B-A5E9-BCA9BE11B29E}.Debug|x86.ActiveCfg = Debug|Any CPU

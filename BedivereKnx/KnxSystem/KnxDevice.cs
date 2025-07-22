@@ -7,11 +7,6 @@ namespace BedivereKnx.KnxSystem
     {
 
         /// <summary>
-        /// 设备状态变化事件
-        /// </summary>
-        protected internal KnxDeviceStateHandler? DeviceStateChanged;
-
-        /// <summary>
         /// 接口ID
         /// </summary>
         public int Id { get; internal set; }
@@ -42,6 +37,11 @@ namespace BedivereKnx.KnxSystem
         public string? InterfaceCode { get; internal set; }
 
         /// <summary>
+        /// 区域编号
+        /// </summary>
+        public string? AreaCode { get; internal set; }
+
+        /// <summary>
         /// 设备状态
         /// </summary>
         public KnxDeviceState State
@@ -58,7 +58,7 @@ namespace BedivereKnx.KnxSystem
         }
         private KnxDeviceState state;
 
-        public KnxDeviceInfo(int id, string code, string? name, string? model, IndividualAddress individualAddress, string? ifCode)
+        public KnxDeviceInfo(int id, string code, string? name, string? model, IndividualAddress individualAddress, string? ifCode, string? areaCode)
         {
             Id = id;
             Code = code;
@@ -66,7 +66,13 @@ namespace BedivereKnx.KnxSystem
             Model = model;
             IndividualAddress = individualAddress;
             InterfaceCode = ifCode;
+            AreaCode = areaCode;
         }
+
+        /// <summary>
+        /// 设备状态变化事件
+        /// </summary>
+        protected internal KnxDeviceStateHandler? DeviceStateChanged;
 
     }
 

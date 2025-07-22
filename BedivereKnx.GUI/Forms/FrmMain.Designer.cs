@@ -60,9 +60,9 @@
             Menu_Import = new ToolStripMenuItem();
             Menu_Open = new ToolStripMenuItem();
             ToolStripDropDownButton1 = new ToolStripDropDownButton();
-            Menu = new ToolStrip();
             Menu_ToolEtsImport = new ToolStripMenuItem();
             toolStripSeparator5 = new ToolStripSeparator();
+            Menu = new ToolStrip();
             stsBottom.SuspendLayout();
             Menu.SuspendLayout();
             SuspendLayout();
@@ -170,6 +170,7 @@
             resources.ApplyResources(btnPanel, "btnPanel");
             btnPanel.Image = Resources.Images.Icon_Panel;
             btnPanel.Name = "btnPanel";
+            btnPanel.Click += btnPanel_Click;
             // 
             // btnGrid
             // 
@@ -248,15 +249,6 @@
             ToolStripDropDownButton1.Name = "ToolStripDropDownButton1";
             ToolStripDropDownButton1.Padding = new Padding(10, 0, 0, 0);
             // 
-            // Menu
-            // 
-            Menu.GripStyle = ToolStripGripStyle.Hidden;
-            Menu.ImageScalingSize = new Size(20, 20);
-            Menu.Items.AddRange(new ToolStripItem[] { ToolStripDropDownButton1, btnGrid, btnPanel, btnHmi, lblDateTime, lblCtDn, lblAuth });
-            resources.ApplyResources(Menu, "Menu");
-            Menu.Name = "Menu";
-            Menu.RenderMode = ToolStripRenderMode.System;
-            // 
             // Menu_ToolEtsImport
             // 
             Menu_ToolEtsImport.Name = "Menu_ToolEtsImport";
@@ -267,6 +259,15 @@
             // 
             toolStripSeparator5.Name = "toolStripSeparator5";
             resources.ApplyResources(toolStripSeparator5, "toolStripSeparator5");
+            // 
+            // Menu
+            // 
+            Menu.GripStyle = ToolStripGripStyle.Hidden;
+            Menu.ImageScalingSize = new Size(20, 20);
+            Menu.Items.AddRange(new ToolStripItem[] { ToolStripDropDownButton1, btnGrid, btnPanel, btnHmi, lblDateTime, lblCtDn, lblAuth });
+            resources.ApplyResources(Menu, "Menu");
+            Menu.Name = "Menu";
+            Menu.RenderMode = ToolStripRenderMode.System;
             // 
             // FrmMain
             // 

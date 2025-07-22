@@ -1,10 +1,10 @@
-﻿using System.Collections;
+﻿using Knx.Falcon;
+using Knx.Falcon.Configuration;
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Net;
 using System.Net.NetworkInformation;
-using Knx.Falcon;
-using Knx.Falcon.Configuration;
 
 namespace BedivereKnx.KnxSystem
 {
@@ -80,48 +80,6 @@ namespace BedivereKnx.KnxSystem
         private readonly Dictionary<int, KnxInterface> Items = [];
 
         /// <summary>
-        /// 索引器（根据ID）
-        /// </summary>
-        /// <param name="index">接口ID</param>
-        /// <returns></returns>
-        /// <exception cref="KeyNotFoundException"></exception>
-        public KnxInterface this[int index]
-        {
-            get
-            {
-                if (Items.TryGetValue(index, out KnxInterface? bus))
-                {
-                    return bus;
-                }
-                else
-                {
-                    return Default; //找不到接口编号的情况下直接引用默认接口
-                }
-            }
-        }
-
-        /// <summary>
-        /// 索引器（根据编号）
-        /// </summary>
-        /// <param name="code">接口编号</param>
-        /// <returns></returns>
-        public KnxInterface this[string? code]
-        {
-            get
-            {
-                DataRow[] drs = Table.Select($"InterfaceCode='{code}'"); //在表中按照InterfaceCode查询
-                if (drs.Length > 0)
-                {
-                    return this[drs[0].Field<int>("Id")]; //返回第一个接口
-                }
-                else
-                {
-                    return Default; //找不到接口编号的情况下直接引用默认接口
-                }
-            }
-        }
-
-        /// <summary>
         /// 新建KNX接口集合
         /// </summary>
         /// <param name="localIp">本地IP（用于IP路由接口）</param>
@@ -149,8 +107,8 @@ namespace BedivereKnx.KnxSystem
                 Port = 3671,
                 Enable = true
             }; //默认接口
-            Default.Bus.ConnectionStateChanged += _ConnectionChanged;
-            Default.Bus.GroupMessageReceived += _GroupMessageReceived;
+            Default.Bus.ConnectionStateChanged += OnConnectionChanged;
+            Default.Bus.GroupMessageReceived += OnGroupMessageReceived;
         }
 
         /// <summary>
@@ -237,8 +195,8 @@ namespace BedivereKnx.KnxSystem
                     Port = ifPort,
                     Enable = enable
                 };
-                inf.Bus.ConnectionStateChanged += _ConnectionChanged;
-                inf.Bus.GroupMessageReceived += _GroupMessageReceived;
+                inf.Bus.ConnectionStateChanged += OnConnectionChanged;
+                inf.Bus.GroupMessageReceived += OnGroupMessageReceived;
                 dr["NetStatus"] = IPStatus.Unknown;
                 dr["ConnState"] = inf.ConnectionState; //初始化连接状态
                 Items.Add(id, inf); //索引器字典加入一项
@@ -255,8 +213,59 @@ namespace BedivereKnx.KnxSystem
                 Port = 3671,
                 Enable = true
             }; //默认接口
-            Default.Bus.ConnectionStateChanged += _ConnectionChanged;
-            Default.Bus.GroupMessageReceived += _GroupMessageReceived;
+            Default.Bus.ConnectionStateChanged += OnConnectionChanged;
+            Default.Bus.GroupMessageReceived += OnGroupMessageReceived;
+        }
+
+        /// <summary>
+        /// 索引器（根据ID）
+        /// </summary>
+        /// <param name="index">接口ID</param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public KnxInterface this[int index]
+        {
+            get
+            {
+                if (Items.TryGetValue(index, out KnxInterface? bus))
+                {
+                    return bus;
+                }
+                else
+                {
+                    return Default; //找不到接口编号的情况下直接引用默认接口
+                }
+            }
+        }
+
+        /// <summary>
+        /// 索引器（根据编号）
+        /// </summary>
+        /// <param name="code">接口编号</param>
+        /// <returns></returns>
+        public KnxInterface this[string? code]
+        {
+            get
+            {
+                var result = Items.Values.Where(inf => inf.Code == code);
+                if (result.Any())
+                {
+                    return result.First(); //正常情况只会找到一个接口
+                }
+                else
+                {
+                    return Default; //找不到接口编号的情况下直接引用默认接口
+                }
+            }
+            //DataRow[] drs = Table.Select($"InterfaceCode='{code}'"); //在表中按照InterfaceCode查询
+            //if (drs.Length > 0)
+            //{
+            //    return this[drs[0].Field<int>("Id")]; //返回第一个接口
+            //}
+            //else
+            //{
+            //    return Default; //找不到接口编号的情况下直接引用默认接口
+            //}
         }
 
         /// <summary>
@@ -265,11 +274,11 @@ namespace BedivereKnx.KnxSystem
         /// <param name="poll">打开后轮询全部组地址</param>
         public void AllConnect(bool poll = false)
         {
-            Thread thread = new(() => _AllConnect(poll));
+            Thread thread = new(() => AllConnect_Internal(poll));
             thread.Start();
         }
 
-        private async void _AllConnect(bool poll = false)
+        private async void AllConnect_Internal(bool poll = false)
         {
             try
             {
@@ -319,7 +328,7 @@ namespace BedivereKnx.KnxSystem
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _ConnectionChanged(object? sender, EventArgs e)
+        private void OnConnectionChanged(object? sender, EventArgs e)
         {
             foreach (DataRow dr in Table.Rows) //遍历接口
             {
@@ -334,16 +343,24 @@ namespace BedivereKnx.KnxSystem
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _GroupMessageReceived(object? sender, GroupEventArgs e)
+        private void OnGroupMessageReceived(object? sender, GroupEventArgs e)
         {
             GroupMessageReceived?.Invoke(new KnxMsgEventArgs(KnxMessageType.FromBus, e), null);
         }
 
+        /// <summary>
+        /// 枚举器
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<KnxInterface> GetEnumerator()
         {
             return Items.Values.GetEnumerator();
         }
 
+        /// <summary>
+        /// 泛型枚举器
+        /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
