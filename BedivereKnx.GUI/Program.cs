@@ -86,8 +86,8 @@ namespace BedivereKnx.GUI
             //string a = "abc";
             //MessageBox.Show(a.StartsWith(string.Empty).ToString());
             //ResourceManager resource = new("BedivereKnx.GUI.Resources.Strings", Assembly.GetExecutingAssembly());
-            string p=Environment.GetFolderPath( Environment.SpecialFolder.CommonApplicationData);
-            MessageBox.Show(p);
+            //string p=Environment.GetFolderPath( Environment.SpecialFolder.CommonApplicationData);
+            //MessageBox.Show(p);
 
             //==============================测试内容================================
 
