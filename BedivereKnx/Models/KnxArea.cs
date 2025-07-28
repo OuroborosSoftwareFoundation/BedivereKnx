@@ -1,4 +1,4 @@
-﻿namespace BedivereKnx.KnxSystem
+﻿namespace BedivereKnx.Models
 {
 
     /// <summary>
@@ -10,22 +10,22 @@
         /// <summary>
         /// 区域ID
         /// </summary>
-        public int Id { get; private set; }
+        public int Id { get; }
 
         /// <summary>
         /// 区域编号
         /// </summary>
-        public string Code { get; set; }
+        public string PartCode { get; internal set; }
 
         /// <summary>
         /// 区域名称
         /// </summary>
-        public string? Name { get; set; }
+        public string? Name { get; internal set; }
 
         /// <summary>
         /// 完整编号（主区域.中区域.子区域）
         /// </summary>
-        public string FullCode { get; private set; }
+        public string FullCode { get; internal set; }
 
         /// <summary>
         /// 上级区域
@@ -58,7 +58,7 @@
         public AreaNode(int id, string code, string? name, string fullCode)
         {
             Id = id;
-            Code = code;
+            PartCode = code;
             Name = name;
             if (fullCode.EndsWith(code)) //判断完整编号末尾是否为区域编号
             {
@@ -74,7 +74,7 @@
         /// 设置上级节点
         /// </summary>
         /// <param name="parent"></param>
-        public void SetParent(AreaNode parent)
+        internal void SetParent(AreaNode parent)
         {
             parent.AddChildren(this);
         }
@@ -84,7 +84,7 @@
         /// </summary>
         /// <param name="child"></param>
         /// <returns></returns>
-        public AreaNode AddChildren(AreaNode child)
+        private AreaNode AddChildren(AreaNode child)
         {
             child.ParentArea = this;
             ChildrenAreas.Add(child);
@@ -97,7 +97,7 @@
         /// <param name="code">区域编号</param>
         /// <param name="name">区域名称</param>
         /// <returns></returns>
-        public AreaNode AddChildren(int id, string code, string name)
+        private AreaNode AddChildren(int id, string code, string name)
         {
             AreaNode child = new(id, code, name, $"{FullCode}.{code}");
             return AddChildren(child);
@@ -107,9 +107,9 @@
         /// 移除下级区域
         /// </summary>
         /// <param name="child"></param>
-        public void RemoveChild(AreaNode child)
+        private void RemoveChild(AreaNode child)
         {
-            if ((child is not null) && ChildrenAreas.Contains(child))
+            if (child is not null && ChildrenAreas.Contains(child))
             {
                 ChildrenAreas.Remove(child);
             }
@@ -118,14 +118,9 @@
         /// <summary>
         /// 清空下级区域
         /// </summary>
-        public void ClearChildren()
+        private void ClearChildren()
         {
             ChildrenAreas.Clear();
-        }
-
-        public override string ToString()
-        {
-            return Name!;
         }
 
     }

@@ -205,6 +205,15 @@ namespace BedivereKnx {
         }
         
         /// <summary>
+        ///   查找类似 Code 的本地化字符串。
+        /// </summary>
+        internal static string Hdr_Code {
+            get {
+                return ResourceManager.GetString("Hdr_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Knx Connection State 的本地化字符串。
         /// </summary>
         internal static string Hdr_ConnState {
@@ -255,6 +264,15 @@ namespace BedivereKnx {
         internal static string Hdr_GroupAddress {
             get {
                 return ResourceManager.GetString("Hdr_GroupAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ID 的本地化字符串。
+        /// </summary>
+        internal static string Hdr_Id {
+            get {
+                return ResourceManager.GetString("Hdr_Id", resourceCulture);
             }
         }
         
@@ -354,6 +372,15 @@ namespace BedivereKnx {
         internal static string Hdr_MiddleAreaName {
             get {
                 return ResourceManager.GetString("Hdr_MiddleAreaName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Name 的本地化字符串。
+        /// </summary>
+        internal static string Hdr_Name {
+            get {
+                return ResourceManager.GetString("Hdr_Name", resourceCulture);
             }
         }
         
@@ -511,6 +538,15 @@ namespace BedivereKnx {
         }
         
         /// <summary>
+        ///   查找类似 Switch Feedback 的本地化字符串。
+        /// </summary>
+        internal static string Hdr_SwFdb {
+            get {
+                return ResourceManager.GetString("Hdr_SwFdb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Switch Feedback Address 的本地化字符串。
         /// </summary>
         internal static string Hdr_SwFdbGrpAddr {
@@ -547,6 +583,15 @@ namespace BedivereKnx {
         }
         
         /// <summary>
+        ///   查找类似 Type 的本地化字符串。
+        /// </summary>
+        internal static string Hdr_Type {
+            get {
+                return ResourceManager.GetString("Hdr_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Value Control Address 的本地化字符串。
         /// </summary>
         internal static string Hdr_ValCtlGrpAddr {
@@ -561,6 +606,15 @@ namespace BedivereKnx {
         internal static string Hdr_ValDpt {
             get {
                 return ResourceManager.GetString("Hdr_ValDpt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Value Feedback 的本地化字符串。
+        /// </summary>
+        internal static string Hdr_ValFdb {
+            get {
+                return ResourceManager.GetString("Hdr_ValFdb", resourceCulture);
             }
         }
         

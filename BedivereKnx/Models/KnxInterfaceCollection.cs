@@ -1,12 +1,12 @@
-﻿using Knx.Falcon;
-using Knx.Falcon.Configuration;
-using System.Collections;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Net;
 using System.Net.NetworkInformation;
+using Knx.Falcon;
+using Knx.Falcon.Configuration;
 
-namespace BedivereKnx.KnxSystem
+namespace BedivereKnx.Models
 {
 
     /// <summary>
@@ -14,6 +14,11 @@ namespace BedivereKnx.KnxSystem
     /// </summary>
     public class KnxInterfaceCollection : IEnumerable<KnxInterface>
     {
+
+        /// <summary>
+        /// 索引器内部字典
+        /// </summary>
+        private readonly Dictionary<int, KnxInterface> items = [];
 
         /// <summary>
         /// 组地址轮询事件
@@ -53,7 +58,7 @@ namespace BedivereKnx.KnxSystem
         /// <summary>
         /// 对象数量
         /// </summary>
-        public int Count => Items.Count;
+        public int Count => items.Count;
 
         /// <summary>
         /// 已连接数量
@@ -62,22 +67,18 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                int count = 0;
-                foreach (KnxInterface inf in Items.Values)
-                {
-                    if (inf.ConnectionState == BusConnectionState.Connected)
-                    {
-                        count += 1;
-                    }
-                }
-                return count;
+                return items.Values.Count(inf => inf.ConnectionState == BusConnectionState.Connected);
+                //int count = 0;
+                //foreach (KnxInterface inf in items.Values)
+                //{
+                //    if (inf.ConnectionState == BusConnectionState.Connected)
+                //    {
+                //        count += 1;
+                //    }
+                //}
+                //return count;
             }
         }
-
-        /// <summary>
-        /// 索引器内部字典
-        /// </summary>
-        private readonly Dictionary<int, KnxInterface> Items = [];
 
         /// <summary>
         /// 新建KNX接口集合
@@ -163,7 +164,7 @@ namespace BedivereKnx.KnxSystem
                     case ConnectorType.IpRouting: //IP路由
                         if (IPAddress.TryParse(ifAddress, out ipAddress))
                         {
-                            if ((ipAddress == IpRoutingConnectorParameters.DefaultMulticastAddress) && (ifPort == IpRoutingConnectorParameters.DefaultIpPort))
+                            if (ipAddress == IpRoutingConnectorParameters.DefaultMulticastAddress && ifPort == IpRoutingConnectorParameters.DefaultIpPort)
                             {
                                 continue; //表中有默认路由接口的情况，跳过，用默认接口代替
                             }
@@ -199,7 +200,7 @@ namespace BedivereKnx.KnxSystem
                 inf.Bus.GroupMessageReceived += OnGroupMessageReceived;
                 dr["NetStatus"] = IPStatus.Unknown;
                 dr["ConnState"] = inf.ConnectionState; //初始化连接状态
-                Items.Add(id, inf); //索引器字典加入一项
+                items.Add(id, inf); //索引器字典加入一项
             }
 
             //添加默认接口
@@ -227,7 +228,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                if (Items.TryGetValue(index, out KnxInterface? bus))
+                if (items.TryGetValue(index, out KnxInterface? bus))
                 {
                     return bus;
                 }
@@ -247,7 +248,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                var result = Items.Values.Where(inf => inf.Code == code);
+                var result = items.Values.Where(inf => inf.Code == code);
                 if (result.Any())
                 {
                     return result.First(); //正常情况只会找到一个接口
@@ -333,7 +334,7 @@ namespace BedivereKnx.KnxSystem
             foreach (DataRow dr in Table.Rows) //遍历接口
             {
                 int id = dr.Field<int>("Id");
-                dr["ConnState"] = Items[id].ConnectionState;
+                dr["ConnState"] = items[id].ConnectionState;
             }
             ConnectionChanged?.Invoke();
         }
@@ -354,7 +355,7 @@ namespace BedivereKnx.KnxSystem
         /// <returns></returns>
         public IEnumerator<KnxInterface> GetEnumerator()
         {
-            return Items.Values.GetEnumerator();
+            return items.Values.GetEnumerator();
         }
 
         /// <summary>

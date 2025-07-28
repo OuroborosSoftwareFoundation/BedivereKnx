@@ -1,9 +1,9 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using System.Data;
+using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Knx.Falcon;
 using Knx.Falcon.Configuration;
-using System.Data;
-using System.Text.RegularExpressions;
 
 namespace BedivereKnx.DataFile
 {
@@ -228,7 +228,7 @@ namespace BedivereKnx.DataFile
                     }
                     if (!isAllEmpty) //行不为空的情况
                     {
-                        if (addIdColumn) dr["Id"] = dt.Rows.Count; //额外添加ID列的情况
+                        if (addIdColumn) dr["Id"] = dt.Rows.Count+1; //额外添加ID列的情况
                         dt.Rows.Add(dr);
                     }
                 }

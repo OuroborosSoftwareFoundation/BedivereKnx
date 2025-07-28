@@ -1,0 +1,1228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="menuTelLog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>124, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="menuTelLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 58</value>
+  </data>
+  <data name="&gt;&gt;menuTelLog.Name" xml:space="preserve">
+    <value>menuTelLog</value>
+  </data>
+  <data name="&gt;&gt;menuTelLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lstTelLog.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="lstTelLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>253, 456</value>
+  </data>
+  <data name="lstTelLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>926, 94</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lstTelLog.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;lstTelLog.Name" xml:space="preserve">
+    <value>lstTelLog</value>
+  </data>
+  <data name="&gt;&gt;lstTelLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lstTelLog.Parent" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;lstTelLog.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="btnTelLogClear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 24</value>
+  </data>
+  <data name="btnTelLogClear.Text" xml:space="preserve">
+    <value>Clear Log</value>
+  </data>
+  <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 6</value>
+  </data>
+  <data name="btnTelLogExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 24</value>
+  </data>
+  <data name="btnTelLogExport.Text" xml:space="preserve">
+    <value>Export Log</value>
+  </data>
+  <metadata name="tmPoll.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="tlpMain.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tlpTool.Name" xml:space="preserve">
+    <value>tlpTool</value>
+  </data>
+  <data name="&gt;&gt;tlpTool.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpTool.Parent" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;tlpTool.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tlpTool.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnInterface" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnLink" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;tvArea.Name" xml:space="preserve">
+    <value>tvArea</value>
+  </data>
+  <data name="&gt;&gt;tvArea.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tvArea.Parent" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;tvArea.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tabMain.Name" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tabMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabMain.Parent" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;tabMain.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tlpMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tlpMain.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tlpMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1182, 553</value>
+  </data>
+  <data name="tlpMain.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tlpMain.Name" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;tlpMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tlpMain.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tlpTool" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tvArea" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tabMain" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lstTelLog" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,250,Percent,100" /&gt;&lt;Rows Styles="Percent,100,Absolute,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tlpTool.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;btnInterface.Name" xml:space="preserve">
+    <value>btnInterface</value>
+  </data>
+  <data name="&gt;&gt;btnInterface.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnInterface.Parent" xml:space="preserve">
+    <value>tlpTool</value>
+  </data>
+  <data name="&gt;&gt;btnInterface.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnLink.Name" xml:space="preserve">
+    <value>btnLink</value>
+  </data>
+  <data name="&gt;&gt;btnLink.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnLink.Parent" xml:space="preserve">
+    <value>tlpTool</value>
+  </data>
+  <data name="&gt;&gt;btnLink.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tlpTool.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tlpTool.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 456</value>
+  </data>
+  <data name="tlpTool.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tlpTool.Size" type="System.Drawing.Size, System.Drawing">
+    <value>244, 94</value>
+  </data>
+  <data name="tlpTool.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;tlpTool.Name" xml:space="preserve">
+    <value>tlpTool</value>
+  </data>
+  <data name="&gt;&gt;tlpTool.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpTool.Parent" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;tlpTool.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tlpTool.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnInterface" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnLink" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="btnInterface.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="btnInterface.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="btnInterface.Size" type="System.Drawing.Size, System.Drawing">
+    <value>238, 41</value>
+  </data>
+  <data name="btnInterface.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="btnInterface.Text" xml:space="preserve">
+    <value>KNX Interfaces</value>
+  </data>
+  <data name="&gt;&gt;btnInterface.Name" xml:space="preserve">
+    <value>btnInterface</value>
+  </data>
+  <data name="&gt;&gt;btnInterface.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnInterface.Parent" xml:space="preserve">
+    <value>tlpTool</value>
+  </data>
+  <data name="&gt;&gt;btnInterface.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnLink.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="btnLink.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 50</value>
+  </data>
+  <data name="btnLink.Size" type="System.Drawing.Size, System.Drawing">
+    <value>238, 41</value>
+  </data>
+  <data name="btnLink.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="btnLink.Text" xml:space="preserve">
+    <value>Extra Link</value>
+  </data>
+  <data name="&gt;&gt;btnLink.Name" xml:space="preserve">
+    <value>btnLink</value>
+  </data>
+  <data name="&gt;&gt;btnLink.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnLink.Parent" xml:space="preserve">
+    <value>tlpTool</value>
+  </data>
+  <data name="&gt;&gt;btnLink.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tvArea.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tvArea.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="tvArea.Size" type="System.Drawing.Size, System.Drawing">
+    <value>244, 447</value>
+  </data>
+  <data name="tvArea.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;tvArea.Name" xml:space="preserve">
+    <value>tvArea</value>
+  </data>
+  <data name="&gt;&gt;tvArea.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tvArea.Parent" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;tvArea.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tpObject.Name" xml:space="preserve">
+    <value>tpObject</value>
+  </data>
+  <data name="&gt;&gt;tpObject.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpObject.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tpObject.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tpScene.Name" xml:space="preserve">
+    <value>tpScene</value>
+  </data>
+  <data name="&gt;&gt;tpScene.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpScene.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tpScene.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tpDevice.Name" xml:space="preserve">
+    <value>tpDevice</value>
+  </data>
+  <data name="&gt;&gt;tpDevice.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpDevice.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tpDevice.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tpSchedule.Name" xml:space="preserve">
+    <value>tpSchedule</value>
+  </data>
+  <data name="&gt;&gt;tpSchedule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpSchedule.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tpSchedule.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tabMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tabMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>253, 3</value>
+  </data>
+  <data name="tabMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>926, 447</value>
+  </data>
+  <data name="tabMain.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tabMain.Name" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tabMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabMain.Parent" xml:space="preserve">
+    <value>tlpMain</value>
+  </data>
+  <data name="&gt;&gt;tabMain.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;dgvObject.Name" xml:space="preserve">
+    <value>dgvObject</value>
+  </data>
+  <data name="&gt;&gt;dgvObject.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvObject.Parent" xml:space="preserve">
+    <value>tpObject</value>
+  </data>
+  <data name="&gt;&gt;dgvObject.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tlpObject.Name" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;tlpObject.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpObject.Parent" xml:space="preserve">
+    <value>tpObject</value>
+  </data>
+  <data name="&gt;&gt;tlpObject.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tlpObject.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnObjOff" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnObjOn" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="numObjVal" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="Label1" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="lblObjVal" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="btnObjToggle" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Absolute,100,Percent,25,Absolute,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tpObject.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 29</value>
+  </data>
+  <data name="tpObject.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 414</value>
+  </data>
+  <data name="tpObject.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tpObject.Text" xml:space="preserve">
+    <value>Objects</value>
+  </data>
+  <data name="&gt;&gt;tpObject.Name" xml:space="preserve">
+    <value>tpObject</value>
+  </data>
+  <data name="&gt;&gt;tpObject.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpObject.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tpObject.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="dgvObject.ColumnHeadersHeight" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <metadata name="menuColFilter.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>275, 17</value>
+  </metadata>
+  <data name="menuColFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 4</value>
+  </data>
+  <data name="&gt;&gt;menuColFilter.Name" xml:space="preserve">
+    <value>menuColFilter</value>
+  </data>
+  <data name="&gt;&gt;menuColFilter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="dgvObject.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="dgvObject.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="dgvObject.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="dgvObject.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 364</value>
+  </data>
+  <data name="dgvObject.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;dgvObject.Name" xml:space="preserve">
+    <value>dgvObject</value>
+  </data>
+  <data name="&gt;&gt;dgvObject.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvObject.Parent" xml:space="preserve">
+    <value>tpObject</value>
+  </data>
+  <data name="&gt;&gt;dgvObject.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tlpObject.ColumnCount" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;btnObjOff.Name" xml:space="preserve">
+    <value>btnObjOff</value>
+  </data>
+  <data name="&gt;&gt;btnObjOff.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnObjOff.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;btnObjOff.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnObjOn.Name" xml:space="preserve">
+    <value>btnObjOn</value>
+  </data>
+  <data name="&gt;&gt;btnObjOn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnObjOn.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;btnObjOn.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;numObjVal.Name" xml:space="preserve">
+    <value>numObjVal</value>
+  </data>
+  <data name="&gt;&gt;numObjVal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numObjVal.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;numObjVal.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;lblObjVal.Name" xml:space="preserve">
+    <value>lblObjVal</value>
+  </data>
+  <data name="&gt;&gt;lblObjVal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblObjVal.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;lblObjVal.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;btnObjToggle.Name" xml:space="preserve">
+    <value>btnObjToggle</value>
+  </data>
+  <data name="&gt;&gt;btnObjToggle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnObjToggle.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;btnObjToggle.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tlpObject.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="tlpObject.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 364</value>
+  </data>
+  <data name="tlpObject.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tlpObject.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 50</value>
+  </data>
+  <data name="tlpObject.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tlpObject.Name" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;tlpObject.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpObject.Parent" xml:space="preserve">
+    <value>tpObject</value>
+  </data>
+  <data name="&gt;&gt;tlpObject.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tlpObject.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnObjOff" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnObjOn" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="numObjVal" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="Label1" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="lblObjVal" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="btnObjToggle" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Absolute,100,Percent,25,Absolute,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="btnObjOff.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="btnObjOff.Location" type="System.Drawing.Point, System.Drawing">
+    <value>387, 3</value>
+  </data>
+  <data name="btnObjOff.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 44</value>
+  </data>
+  <data name="btnObjOff.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="btnObjOff.Text" xml:space="preserve">
+    <value>Switch Off</value>
+  </data>
+  <data name="&gt;&gt;btnObjOff.Name" xml:space="preserve">
+    <value>btnObjOff</value>
+  </data>
+  <data name="&gt;&gt;btnObjOff.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnObjOff.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;btnObjOff.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnObjOn.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="btnObjOn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 3</value>
+  </data>
+  <data name="btnObjOn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 44</value>
+  </data>
+  <data name="btnObjOn.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="btnObjOn.Text" xml:space="preserve">
+    <value>Switch On</value>
+  </data>
+  <data name="&gt;&gt;btnObjOn.Name" xml:space="preserve">
+    <value>btnObjOn</value>
+  </data>
+  <data name="&gt;&gt;btnObjOn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnObjOn.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;btnObjOn.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="numObjVal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="numObjVal.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="numObjVal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>679, 3</value>
+  </data>
+  <data name="numObjVal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 44</value>
+  </data>
+  <data name="numObjVal.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;numObjVal.Name" xml:space="preserve">
+    <value>numObjVal</value>
+  </data>
+  <data name="&gt;&gt;numObjVal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numObjVal.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;numObjVal.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="Label1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>579, 0</value>
+  </data>
+  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 50</value>
+  </data>
+  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Brightness</value>
+  </data>
+  <data name="Label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="lblObjVal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="lblObjVal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>871, 0</value>
+  </data>
+  <data name="lblObjVal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 50</value>
+  </data>
+  <data name="lblObjVal.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="lblObjVal.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;lblObjVal.Name" xml:space="preserve">
+    <value>lblObjVal</value>
+  </data>
+  <data name="&gt;&gt;lblObjVal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblObjVal.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;lblObjVal.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="btnObjToggle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="btnObjToggle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="btnObjToggle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 44</value>
+  </data>
+  <data name="btnObjToggle.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="btnObjToggle.Text" xml:space="preserve">
+    <value>Toggle</value>
+  </data>
+  <data name="&gt;&gt;btnObjToggle.Name" xml:space="preserve">
+    <value>btnObjToggle</value>
+  </data>
+  <data name="&gt;&gt;btnObjToggle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnObjToggle.Parent" xml:space="preserve">
+    <value>tlpObject</value>
+  </data>
+  <data name="&gt;&gt;btnObjToggle.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;dgvScene.Name" xml:space="preserve">
+    <value>dgvScene</value>
+  </data>
+  <data name="&gt;&gt;dgvScene.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvScene.Parent" xml:space="preserve">
+    <value>tpScene</value>
+  </data>
+  <data name="&gt;&gt;dgvScene.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tlpScene.Name" xml:space="preserve">
+    <value>tlpScene</value>
+  </data>
+  <data name="&gt;&gt;tlpScene.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpScene.Parent" xml:space="preserve">
+    <value>tpScene</value>
+  </data>
+  <data name="&gt;&gt;tlpScene.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tlpScene.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnCtlScn" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100,Absolute,20,Absolute,20,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tpScene.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 29</value>
+  </data>
+  <data name="tpScene.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 414</value>
+  </data>
+  <data name="tpScene.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tpScene.Text" xml:space="preserve">
+    <value>Scenes</value>
+  </data>
+  <data name="&gt;&gt;tpScene.Name" xml:space="preserve">
+    <value>tpScene</value>
+  </data>
+  <data name="&gt;&gt;tpScene.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpScene.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tpScene.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="dgvScene.ColumnHeadersHeight" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="dgvScene.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="dgvScene.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="dgvScene.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="dgvScene.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 364</value>
+  </data>
+  <data name="dgvScene.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;dgvScene.Name" xml:space="preserve">
+    <value>dgvScene</value>
+  </data>
+  <data name="&gt;&gt;dgvScene.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvScene.Parent" xml:space="preserve">
+    <value>tpScene</value>
+  </data>
+  <data name="&gt;&gt;dgvScene.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tlpScene.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;btnCtlScn.Name" xml:space="preserve">
+    <value>btnCtlScn</value>
+  </data>
+  <data name="&gt;&gt;btnCtlScn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnCtlScn.Parent" xml:space="preserve">
+    <value>tlpScene</value>
+  </data>
+  <data name="&gt;&gt;btnCtlScn.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tlpScene.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="tlpScene.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 364</value>
+  </data>
+  <data name="tlpScene.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tlpScene.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 50</value>
+  </data>
+  <data name="tlpScene.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tlpScene.Name" xml:space="preserve">
+    <value>tlpScene</value>
+  </data>
+  <data name="&gt;&gt;tlpScene.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpScene.Parent" xml:space="preserve">
+    <value>tpScene</value>
+  </data>
+  <data name="&gt;&gt;tlpScene.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tlpScene.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnCtlScn" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100,Absolute,20,Absolute,20,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="btnCtlScn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom</value>
+  </data>
+  <data name="btnCtlScn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>387, 3</value>
+  </data>
+  <data name="btnCtlScn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 44</value>
+  </data>
+  <data name="btnCtlScn.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="btnCtlScn.Text" xml:space="preserve">
+    <value>Scene Control</value>
+  </data>
+  <data name="&gt;&gt;btnCtlScn.Name" xml:space="preserve">
+    <value>btnCtlScn</value>
+  </data>
+  <data name="&gt;&gt;btnCtlScn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnCtlScn.Parent" xml:space="preserve">
+    <value>tlpScene</value>
+  </data>
+  <data name="&gt;&gt;btnCtlScn.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;dgvDevice.Name" xml:space="preserve">
+    <value>dgvDevice</value>
+  </data>
+  <data name="&gt;&gt;dgvDevice.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvDevice.Parent" xml:space="preserve">
+    <value>tpDevice</value>
+  </data>
+  <data name="&gt;&gt;dgvDevice.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnDevicePoll.Name" xml:space="preserve">
+    <value>btnDevicePoll</value>
+  </data>
+  <data name="&gt;&gt;btnDevicePoll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnDevicePoll.Parent" xml:space="preserve">
+    <value>tpDevice</value>
+  </data>
+  <data name="&gt;&gt;btnDevicePoll.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tpDevice.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 29</value>
+  </data>
+  <data name="tpDevice.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 414</value>
+  </data>
+  <data name="tpDevice.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="tpDevice.Text" xml:space="preserve">
+    <value>Devices</value>
+  </data>
+  <data name="&gt;&gt;tpDevice.Name" xml:space="preserve">
+    <value>tpDevice</value>
+  </data>
+  <data name="&gt;&gt;tpDevice.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpDevice.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tpDevice.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="dgvDevice.ColumnHeadersHeight" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="dgvDevice.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="dgvDevice.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="dgvDevice.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="dgvDevice.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 374</value>
+  </data>
+  <data name="dgvDevice.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;dgvDevice.Name" xml:space="preserve">
+    <value>dgvDevice</value>
+  </data>
+  <data name="&gt;&gt;dgvDevice.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvDevice.Parent" xml:space="preserve">
+    <value>tpDevice</value>
+  </data>
+  <data name="&gt;&gt;dgvDevice.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnDevicePoll.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="btnDevicePoll.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 374</value>
+  </data>
+  <data name="btnDevicePoll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 40</value>
+  </data>
+  <data name="btnDevicePoll.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="btnDevicePoll.Text" xml:space="preserve">
+    <value>Ping All Devices</value>
+  </data>
+  <data name="&gt;&gt;btnDevicePoll.Name" xml:space="preserve">
+    <value>btnDevicePoll</value>
+  </data>
+  <data name="&gt;&gt;btnDevicePoll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnDevicePoll.Parent" xml:space="preserve">
+    <value>tpDevice</value>
+  </data>
+  <data name="&gt;&gt;btnDevicePoll.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;dgvSchedule.Name" xml:space="preserve">
+    <value>dgvSchedule</value>
+  </data>
+  <data name="&gt;&gt;dgvSchedule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvSchedule.Parent" xml:space="preserve">
+    <value>tpSchedule</value>
+  </data>
+  <data name="&gt;&gt;dgvSchedule.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnSchedule.Name" xml:space="preserve">
+    <value>btnSchedule</value>
+  </data>
+  <data name="&gt;&gt;btnSchedule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSchedule.Parent" xml:space="preserve">
+    <value>tpSchedule</value>
+  </data>
+  <data name="&gt;&gt;btnSchedule.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tpSchedule.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 29</value>
+  </data>
+  <data name="tpSchedule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 414</value>
+  </data>
+  <data name="tpSchedule.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tpSchedule.Text" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="&gt;&gt;tpSchedule.Name" xml:space="preserve">
+    <value>tpSchedule</value>
+  </data>
+  <data name="&gt;&gt;tpSchedule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpSchedule.Parent" xml:space="preserve">
+    <value>tabMain</value>
+  </data>
+  <data name="&gt;&gt;tpSchedule.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="dgvSchedule.ColumnHeadersHeight" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="dgvSchedule.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="dgvSchedule.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="dgvSchedule.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="dgvSchedule.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="dgvSchedule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 373</value>
+  </data>
+  <data name="dgvSchedule.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;dgvSchedule.Name" xml:space="preserve">
+    <value>dgvSchedule</value>
+  </data>
+  <data name="&gt;&gt;dgvSchedule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvSchedule.Parent" xml:space="preserve">
+    <value>tpSchedule</value>
+  </data>
+  <data name="&gt;&gt;dgvSchedule.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnSchedule.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="btnSchedule.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 373</value>
+  </data>
+  <data name="btnSchedule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 41</value>
+  </data>
+  <data name="btnSchedule.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="btnSchedule.Text" xml:space="preserve">
+    <value>Schedule Sequence</value>
+  </data>
+  <data name="&gt;&gt;btnSchedule.Name" xml:space="preserve">
+    <value>btnSchedule</value>
+  </data>
+  <data name="&gt;&gt;btnSchedule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSchedule.Parent" xml:space="preserve">
+    <value>tpSchedule</value>
+  </data>
+  <data name="&gt;&gt;btnSchedule.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>9, 20</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>1182, 553</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
+  </data>
+  <data name="&gt;&gt;btnTelLogClear.Name" xml:space="preserve">
+    <value>btnTelLogClear</value>
+  </data>
+  <data name="&gt;&gt;btnTelLogClear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
+    <value>ToolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnTelLogExport.Name" xml:space="preserve">
+    <value>btnTelLogExport</value>
+  </data>
+  <data name="&gt;&gt;btnTelLogExport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tmPoll.Name" xml:space="preserve">
+    <value>tmPoll</value>
+  </data>
+  <data name="&gt;&gt;tmPoll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>FrmMainTable_old</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

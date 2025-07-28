@@ -7,12 +7,18 @@
     public enum KnxObjectType
     {
         None = 0,
-        Switch = 1,
-        Dimming,
+        Light = 1,
         Curtain,
         Value,
-        EnableCtl,
+        Enablement,
         Scene
+    }
+
+    public enum KnxEnablementType
+    {
+        General=0,
+        Enable,
+        Lock
     }
 
     public enum KnxObjectPart

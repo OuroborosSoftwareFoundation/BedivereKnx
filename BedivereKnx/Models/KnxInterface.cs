@@ -4,7 +4,7 @@ using Knx.Falcon;
 using Knx.Falcon.Configuration;
 using Knx.Falcon.Sdk;
 
-namespace BedivereKnx.KnxSystem
+namespace BedivereKnx.Models
 {
 
     public class KnxInterface
@@ -55,19 +55,31 @@ namespace BedivereKnx.KnxSystem
         /// <summary>
         /// 连接状态
         /// </summary>
-        public BusConnectionState ConnectionState { get => Bus.ConnectionState; }
+        public BusConnectionState ConnectionState => Bus.ConnectionState;
 
+        /// <summary>
+        /// 新建KNX接口
+        /// </summary>
+        /// <param name="bus">KnxBus对象</param>
         public KnxInterface(KnxBus bus)
         {
             Bus = bus;
         }
 
+        /// <summary>
+        /// 新建KNX接口
+        /// </summary>
+        /// <param name="cp">接口参数</param>
         public KnxInterface(ConnectorParameters cp)
         {
             Bus = new KnxBus(cp);
             Name = cp.Name;
         }
 
+        /// <summary>
+        /// 新建KNX接口
+        /// </summary>
+        /// <param name="connString">接口字符串</param>
         public KnxInterface(string connString)
         {
             Bus = new KnxBus(connString);

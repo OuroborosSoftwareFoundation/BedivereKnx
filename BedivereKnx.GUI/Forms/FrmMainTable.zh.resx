@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Label1.Text" xml:space="preserve">
-    <value>亮度</value>
+  <data name="btnEnFalse.Text" xml:space="preserve">
+    <value>禁用</value>
+  </data>
+  <data name="btnObjToggle.Text" xml:space="preserve">
+    <value>切换</value>
   </data>
   <data name="tpDevice.Text" xml:space="preserve">
     <value>设备</value>
@@ -126,40 +129,46 @@
   <data name="btnObjOn.Text" xml:space="preserve">
     <value>开</value>
   </data>
-  <data name="btnSchedule.Text" xml:space="preserve">
-    <value>定时队列</value>
-  </data>
-  <data name="btnLink.Text" xml:space="preserve">
-    <value>链接</value>
+  <data name="btnTelLogExport.Text" xml:space="preserve">
+    <value>导出日志</value>
   </data>
   <data name="btnObjOff.Text" xml:space="preserve">
     <value>关</value>
   </data>
-  <data name="tpObject.Text" xml:space="preserve">
-    <value>对象</value>
-  </data>
-  <data name="btnInterface.Text" xml:space="preserve">
-    <value>KNX接口</value>
-  </data>
-  <data name="btnTelLogClear.Text" xml:space="preserve">
-    <value>清空日志</value>
-  </data>
-  <data name="btnObjToggle.Text" xml:space="preserve">
-    <value>切换</value>
-  </data>
-  <data name="btnTelLogExport.Text" xml:space="preserve">
-    <value>导出日志</value>
-  </data>
-  <data name="btnCtlScn.Text" xml:space="preserve">
-    <value>场景控制</value>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>亮度</value>
   </data>
   <data name="tpSchedule.Text" xml:space="preserve">
     <value>定时</value>
   </data>
-  <data name="tpScene.Text" xml:space="preserve">
-    <value>场景</value>
+  <data name="btnSchedule.Text" xml:space="preserve">
+    <value>定时队列</value>
+  </data>
+  <data name="btnTelLogClear.Text" xml:space="preserve">
+    <value>清空日志</value>
+  </data>
+  <data name="tpEnable.Text" xml:space="preserve">
+    <value>使能</value>
+  </data>
+  <data name="btnEnTrue.Text" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="tpLight.Text" xml:space="preserve">
+    <value>灯光</value>
+  </data>
+  <data name="btnCtlScn.Text" xml:space="preserve">
+    <value>场景控制</value>
   </data>
   <data name="btnDevicePoll.Text" xml:space="preserve">
     <value>检测全部设备状态</value>
+  </data>
+  <data name="btnInterface.Text" xml:space="preserve">
+    <value>KNX接口</value>
+  </data>
+  <data name="tpScene.Text" xml:space="preserve">
+    <value>场景</value>
+  </data>
+  <data name="btnLink.Text" xml:space="preserve">
+    <value>额外链接</value>
   </data>
 </root>

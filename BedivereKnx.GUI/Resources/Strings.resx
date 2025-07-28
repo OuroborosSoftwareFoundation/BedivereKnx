@@ -172,4 +172,49 @@
   <data name="Ex_Singleton" xml:space="preserve">
     <value>The application is already running.</value>
   </data>
+  <data name="Hdr_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Hdr_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Hdr_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Hdr_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Hdr_InterfaceCode" xml:space="preserve">
+    <value>Interface Code</value>
+  </data>
+  <data name="Hdr_AreaCode" xml:space="preserve">
+    <value>Area Code</value>
+  </data>
+  <data name="Hdr_SwitchFeedback" xml:space="preserve">
+    <value>Switch Feedback</value>
+  </data>
+  <data name="Hdr_BrightnessFeedback" xml:space="preserve">
+    <value>Brightness Feedback</value>
+  </data>
+  <data name="Hdr_EnablementType" xml:space="preserve">
+    <value>Enablement Type</value>
+  </data>
+  <data name="Hdr_IndividualAddress" xml:space="preserve">
+    <value>Individual Address</value>
+  </data>
+  <data name="Hdr_Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="Hdr_State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="Hdr_Dimmable" xml:space="preserve">
+    <value>Dimmable</value>
+  </data>
+  <data name="Hdr_SwFdb" xml:space="preserve">
+    <value>Switch Feedback</value>
+  </data>
+  <data name="Hdr_ValFdb" xml:space="preserve">
+    <value>Value Feedback</value>
+  </data>
 </root>

@@ -144,7 +144,7 @@ namespace BedivereKnx
         { }
 
         /// <summary>
-        /// 变量值转GroupValue
+        /// 获取变量值的GroupValue
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -202,7 +202,7 @@ namespace BedivereKnx
         /// </summary>
         /// <param name="dptString">DPT字符串</param>
         /// <returns></returns>
-        internal static int[] DptIdFromString(string? dptString)
+        private static int[] DptIdFromString(string? dptString)
         {
             if (string.IsNullOrWhiteSpace(dptString)) return [1, -1]; //空白字符串返回1.xxx
             string[] dptArry = dptString.Split(':')[0].Split('.'); //DPT数字
@@ -218,6 +218,11 @@ namespace BedivereKnx
                 dptSub = Math.Abs(dptSub); //去除负号
             }
             return [dptMain, dptSub];
+        }
+
+        public override string ToString()
+        {
+            return Value is null ? string.Empty : Value.ToString();
         }
 
     }

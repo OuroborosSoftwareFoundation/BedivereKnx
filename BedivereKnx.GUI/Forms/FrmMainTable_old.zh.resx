@@ -117,104 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Hdr_IpAddress" xml:space="preserve">
-    <value>IP地址</value>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>亮度</value>
   </data>
-  <data name="Hdr_IpFamily" xml:space="preserve">
-    <value>IP类型</value>
+  <data name="tpDevice.Text" xml:space="preserve">
+    <value>设备</value>
   </data>
-  <data name="Ex_LocalIp" xml:space="preserve">
-    <value>无效的KNX路由接口本地IP'{0}'，是否修改配置？</value>
+  <data name="btnObjOn.Text" xml:space="preserve">
+    <value>开</value>
   </data>
-  <data name="Info_AuthSuccess" xml:space="preserve">
-    <value>授权成功，请重启程序</value>
+  <data name="btnSchedule.Text" xml:space="preserve">
+    <value>定时队列</value>
   </data>
-  <data name="NetInterface_Up" xml:space="preserve">
-    <value>已连接</value>
+  <data name="btnLink.Text" xml:space="preserve">
+    <value>链接</value>
   </data>
-  <data name="NetInterface_Down" xml:space="preserve">
-    <value>未连接</value>
+  <data name="btnObjOff.Text" xml:space="preserve">
+    <value>关</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Text_GPLv3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\gpl-3.0_zh-CN.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="tpObject.Text" xml:space="preserve">
+    <value>对象</value>
   </data>
-  <data name="Hdr_Account" xml:space="preserve">
-    <value>账号信息</value>
+  <data name="btnInterface.Text" xml:space="preserve">
+    <value>KNX接口</value>
   </data>
-  <data name="Ui_BtnShow" xml:space="preserve">
-    <value>查看</value>
+  <data name="btnTelLogClear.Text" xml:space="preserve">
+    <value>清空日志</value>
   </data>
-  <data name="Ui_RootNode" xml:space="preserve">
-    <value>全部</value>
+  <data name="btnObjToggle.Text" xml:space="preserve">
+    <value>切换</value>
   </data>
-  <data name="Dlg_OpenDataFile" xml:space="preserve">
-    <value>打开数据文件</value>
+  <data name="btnTelLogExport.Text" xml:space="preserve">
+    <value>导出日志</value>
   </data>
-  <data name="Dlg_OpenHmiFile" xml:space="preserve">
-    <value>打开图形界面文件</value>
+  <data name="btnCtlScn.Text" xml:space="preserve">
+    <value>场景控制</value>
   </data>
-  <data name="Dlg_SaveMsgLog" xml:space="preserve">
-    <value>保存报文日志</value>
+  <data name="tpSchedule.Text" xml:space="preserve">
+    <value>定时</value>
   </data>
-  <data name="Hdr_ScnAddress" xml:space="preserve">
-    <value>场景地址</value>
+  <data name="tpScene.Text" xml:space="preserve">
+    <value>场景</value>
   </data>
-  <data name="Hdr_ScnName" xml:space="preserve">
-    <value>场景名称</value>
-  </data>
-  <data name="Ex_FileNotFound" xml:space="preserve">
-    <value>文件未找到。</value>
-  </data>
-  <data name="Ex_FileFormatInvalid" xml:space="preserve">
-    <value>无效的{0}文件类型。</value>
-  </data>
-  <data name="Ex_Singleton" xml:space="preserve">
-    <value>程序已在运行中，请勿重复启动。</value>
-  </data>
-  <data name="Hdr_Id" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="Hdr_Code" xml:space="preserve">
-    <value>编号</value>
-  </data>
-  <data name="Hdr_Type" xml:space="preserve">
-    <value>类型</value>
-  </data>
-  <data name="Hdr_Name" xml:space="preserve">
-    <value>名称</value>
-  </data>
-  <data name="Hdr_InterfaceCode" xml:space="preserve">
-    <value>接口编号</value>
-  </data>
-  <data name="Hdr_AreaCode" xml:space="preserve">
-    <value>区域编号</value>
-  </data>
-  <data name="Hdr_SwitchFeedback" xml:space="preserve">
-    <value>开关反馈</value>
-  </data>
-  <data name="Hdr_BrightnessFeedback" xml:space="preserve">
-    <value>亮度反馈</value>
-  </data>
-  <data name="Hdr_EnablementType" xml:space="preserve">
-    <value>使能类型</value>
-  </data>
-  <data name="Hdr_IndividualAddress" xml:space="preserve">
-    <value>物理地址</value>
-  </data>
-  <data name="Hdr_Model" xml:space="preserve">
-    <value>型号</value>
-  </data>
-  <data name="Hdr_State" xml:space="preserve">
-    <value>状态</value>
-  </data>
-  <data name="Hdr_Dimmable" xml:space="preserve">
-    <value>可调光</value>
-  </data>
-  <data name="Hdr_SwFdb" xml:space="preserve">
-    <value>开关反馈</value>
-  </data>
-  <data name="Hdr_ValFdb" xml:space="preserve">
-    <value>数值反馈</value>
+  <data name="btnDevicePoll.Text" xml:space="preserve">
+    <value>检测全部设备状态</value>
   </data>
 </root>

@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>0.7.0</Version>
+    <Version>0.7.2</Version>
     <ApplicationIcon>Icon_BedivereKnx.ico</ApplicationIcon>
     <Title>$(AssemblyName)</Title>
     <Authors>BHC666</Authors>
@@ -17,6 +17,16 @@
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Forms\FrmMainTable_old.cs" />
+    <Compile Remove="Forms\FrmMainTable_old.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Forms\FrmMainTable_old.resx" />
+    <EmbeddedResource Remove="Forms\FrmMainTable_old.zh.resx" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="~%24data.xlsx" />

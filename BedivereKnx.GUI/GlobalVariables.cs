@@ -24,7 +24,7 @@ namespace BedivereKnx.GUI
         /// <summary>
         /// KNX系统对象
         /// </summary>
-        internal static KnxSystem.KnxSystem? KS;
+        internal static KnxSystem? KS;
 
     }
 

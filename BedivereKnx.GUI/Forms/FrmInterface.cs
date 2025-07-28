@@ -1,5 +1,5 @@
 ﻿using BedivereKnx.GUI.Extensions;
-using BedivereKnx.KnxSystem;
+using BedivereKnx.Models;
 using Knx.Falcon;
 using System.Net.NetworkInformation;
 

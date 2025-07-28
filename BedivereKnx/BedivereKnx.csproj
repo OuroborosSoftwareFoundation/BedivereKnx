@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Version>0.7.0</Version>
+    <Version>0.7.2</Version>
     <Title>$(AssemblyName)</Title>
     <Authors>BHC666</Authors>
     <Company>Ouroboros Software Foundation</Company>

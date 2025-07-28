@@ -1,5 +1,5 @@
-﻿using Knx.Falcon.ApplicationData.DatapointTypes;
-using System.Data;
+﻿using System.Data;
+using Knx.Falcon.ApplicationData.DatapointTypes;
 
 namespace BedivereKnx
 {

@@ -1,8 +1,8 @@
-﻿using Knx.Falcon;
-using System.Collections;
+﻿using System.Collections;
 using System.Data;
+using Knx.Falcon;
 
-namespace BedivereKnx.KnxSystem
+namespace BedivereKnx.Models
 {
 
     /// <summary>
@@ -12,6 +12,11 @@ namespace BedivereKnx.KnxSystem
     {
 
         /// <summary>
+        /// 索引器内部字典
+        /// </summary>
+        private readonly Dictionary<int, KnxDeviceInfo> items = [];
+
+        /// <summary>
         /// 数据表
         /// </summary>
         public readonly DataTable Table;
@@ -19,12 +24,7 @@ namespace BedivereKnx.KnxSystem
         /// <summary>
         /// 对象数量
         /// </summary>
-        public int Count => Items.Count;
-
-        /// <summary>
-        /// 索引器内部字典
-        /// </summary>
-        private readonly Dictionary<int, KnxDeviceInfo> Items = [];
+        public int Count => items.Count;
 
         /// <summary>
         /// 新建KNX设备集合
@@ -48,7 +48,7 @@ namespace BedivereKnx.KnxSystem
                 string? areaCode = dr.Field<string>("AreaCode"); //接口编号
                 KnxDeviceInfo kdi = new(id, devCode, devName, devMod, indAddress, ifCode, areaCode);
                 kdi.DeviceStateChanged += Device_DeviceStateChanged;
-                Items.Add(id, kdi); //字典中加入KnxDeviceInfo对象
+                items.Add(id, kdi); //字典中加入KnxDeviceInfo对象
             }
         }
 
@@ -62,7 +62,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                if (Items.TryGetValue(index, out KnxDeviceInfo? dev))
+                if (items.TryGetValue(index, out KnxDeviceInfo? dev))
                 {
                     return dev;
                 }
@@ -82,34 +82,23 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                var result = Items.Values.Where(dev => dev.InterfaceCode == ifCode);
-                if (result.Any())
+                if (string.IsNullOrWhiteSpace(ifCode)) //接口编号为空的情况
                 {
-                    return result.ToArray();
+                    return items.Values.ToArray(); //接口编号为空时返回全部设备
                 }
                 else
                 {
-                    throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "KnxDevice", $"InterfaceCode = {ifCode}"));
+                    var result = items.Values.Where(dev => dev.InterfaceCode == ifCode);
+                    if (result.Any())
+                    {
+                        return result.ToArray();
+                    }
+                    else
+                    {
+                        throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "KnxDevice", $"InterfaceCode = {ifCode}"));
+                    }
                 }
             }
-            //if (string.IsNullOrWhiteSpace(ifCode))
-            //{
-            //    return Items.Values.ToArray(); //接口编号为空时返回全部设备
-            //}
-            //DataRow[] drs = Table.Select($"InterfaceCode = '{ifCode}'"); //在表中按照ObjectCode查询
-            //if (drs.Length > 0)
-            //{
-            //    List<KnxDeviceInfo> list = [];
-            //    foreach (DataRow dr in drs)
-            //    {
-            //        list.Add(this[dr.Field<int>("Id")]); //根据ID列搜索对象
-            //    }
-            //    return list.ToArray();
-            //}
-            //else
-            //{
-            //    throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "KnxDevice", $"InterfaceCode = {ifCode}"));
-            //}
         }
 
         /// <summary>
@@ -128,7 +117,7 @@ namespace BedivereKnx.KnxSystem
         /// <returns></returns>
         public IEnumerator<KnxDeviceInfo> GetEnumerator()
         {
-            return Items.Values.GetEnumerator();
+            return items.Values.GetEnumerator();
         }
 
         /// <summary>

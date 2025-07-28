@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
-using BedivereKnx.KnxSystem;
+using BedivereKnx.Models;
 
 namespace BedivereKnx.GUI.Forms
 {
@@ -92,7 +92,8 @@ namespace BedivereKnx.GUI.Forms
         /// <param name="path"></param>
         private void OpenProject(string path)
         {
-            Globals.KS = new(path, Globals.AppConfig.LocalIP); //新建KNX系统对象
+            Globals.KS = KnxSystem.FromExcel(path, Globals.AppConfig.LocalIP); //新建KNX系统对象
+            
             Globals.KS.PollingStatusChanged += Knx_PollingStatusChanged;
             Globals.KS.Interfaces.ConnectionChanged += Knx_ConnectionChanged;
             Globals.KS.Interfaces.ConnectionExceptionOccurred += Knx_ConnectionExceptionOccurred;

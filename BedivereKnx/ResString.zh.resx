@@ -291,4 +291,22 @@
   <data name="Hdr_ValDpt" xml:space="preserve">
     <value>数值数据类型</value>
   </data>
+  <data name="Hdr_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Hdr_Code" xml:space="preserve">
+    <value>编号</value>
+  </data>
+  <data name="Hdr_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="Hdr_Type" xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="Hdr_SwFdb" xml:space="preserve">
+    <value>开关反馈</value>
+  </data>
+  <data name="Hdr_ValFdb" xml:space="preserve">
+    <value>数值反馈</value>
+  </data>
 </root>

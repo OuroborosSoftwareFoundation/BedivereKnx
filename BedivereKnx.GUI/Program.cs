@@ -25,6 +25,7 @@
 
 using System.Globalization;
 using System.Reflection;
+using System.Resources;
 
 namespace BedivereKnx.GUI
 {
@@ -78,10 +79,15 @@ namespace BedivereKnx.GUI
             //}
             //MessageBox.Show(System.Net.IPAddress.Broadcast.ToString());
 
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-Hant");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-Hant");
+            //Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
             //Thread.CurrentThread.CurrentCulture = CultureInfo.InstalledUICulture;
             //Thread.CurrentThread.CurrentUICulture = CultureInfo.InstalledUICulture;
+            //string a = "abc";
+            //MessageBox.Show(a.StartsWith(string.Empty).ToString());
+            //ResourceManager resource = new("BedivereKnx.GUI.Resources.Strings", Assembly.GetExecutingAssembly());
+            string p=Environment.GetFolderPath( Environment.SpecialFolder.CommonApplicationData);
+            MessageBox.Show(p);
 
             //==============================测试内容================================
 

@@ -1,8 +1,8 @@
-﻿using Knx.Falcon;
-using System.Collections;
+﻿using System.Collections;
 using System.Data;
+using Knx.Falcon;
 
-namespace BedivereKnx.KnxSystem
+namespace BedivereKnx.Models
 {
 
     /// <summary>
@@ -17,6 +17,11 @@ namespace BedivereKnx.KnxSystem
         protected internal event GroupWriteHandler? SceneControlRequest;
 
         /// <summary>
+        /// 索引器内部字典
+        /// </summary>
+        private readonly Dictionary<int, KnxScene> items = [];
+
+        /// <summary>
         /// 数据表
         /// </summary>
         public readonly DataTable Table;
@@ -24,20 +29,15 @@ namespace BedivereKnx.KnxSystem
         /// <summary>
         /// 对象数量
         /// </summary>
-        public int Count => Items.Count;
+        public int Count => items.Count;
 
-        /// <summary>
-        /// 索引器内部字典
-        /// </summary>
-        private readonly Dictionary<int, KnxScene> Items = [];
-
-        /// <summary>
-        /// 新建KNX场景集合
-        /// </summary>
-        public KnxSceneCollection()
-        {
-            Table = new DataTable();
-        }
+        ///// <summary>
+        ///// 新建KNX场景集合
+        ///// </summary>
+        //public KnxSceneCollection()
+        //{
+        //    Table = new DataTable();
+        //}
 
         /// <summary>
         /// 新建KNX场景集合
@@ -48,8 +48,10 @@ namespace BedivereKnx.KnxSystem
         /// <exception cref="FormatException"></exception>
         public KnxSceneCollection(DataTable dt)
         {
-            Table = dt;
-            foreach (DataRow dr in Table.Rows)
+            if (!dt.TableName.Equals("scenes", StringComparison.CurrentCultureIgnoreCase))
+                throw new Exception("Invalid scene datatable.");
+            Table = TableInit();
+            foreach (DataRow dr in dt.Rows)
             {
                 int id = dr.Field<int>("Id"); //ID
                 if (dr["SceneCode"] is DBNull) //编号为空的情况报错
@@ -61,7 +63,8 @@ namespace BedivereKnx.KnxSystem
                 string? ifCode = dr.Field<string>("InterfaceCode"); //接口编号
                 string? areaCode = dr.Field<string>("AreaCode"); //区域编号
                 GroupAddress ga = dr.Field<GroupAddress>("GroupAddress"); //场景组地址
-                KnxScene scn = new(id, scnCode, scnName, ga, ifCode, areaCode);
+                KnxScene scn = new(id, scnCode, scnName, ifCode, areaCode);
+                scn[KnxObjectPart.SceneControl] = new(dr.Field<GroupAddress>("GroupAddress"), 18, 1); //场景组地址
                 string[] valuePairs = Convertor.ToArray(dr.Field<string>("SceneValues"), ','); //场景值数组
                 foreach (string pairText in valuePairs) //遍历每个场景值
                 {
@@ -84,8 +87,29 @@ namespace BedivereKnx.KnxSystem
                     }
                 }
                 scn.WriteRequest += OnSceneControlRequest;
-                Items.Add(scn.Id, scn); //字典内添加KnxScene对象
+                items.Add(id, scn); //字典内添加KnxScene对象
+                //数据表：
+                DataRow row = Table.NewRow();
+                row["Type"] = scn.Type;
+                row["AreaCode"] = scn.AreaCode;
+                row["InterfaceCode"] = scn.InterfaceCode;
+                row["Id"] = scn.Id;
+                row["Code"] = scn.Code;
+                row["Name"] = scn.Name;
+                Table.Rows.Add(row);
             }
+        }
+
+        private static DataTable TableInit()
+        {
+            DataTable dt = new();
+            dt.Columns.Add("Type", ResString.Hdr_Type, typeof(KnxObjectType));
+            dt.Columns.Add("AreaCode", ResString.Hdr_AreaCode, typeof(string));
+            dt.Columns.Add("InterfaceCode", ResString.Hdr_InterfaceCode, typeof(string));
+            dt.Columns.Add("Id", ResString.Hdr_Id, typeof(int));
+            dt.Columns.Add("Code", ResString.Hdr_Code, typeof(string));
+            dt.Columns.Add("Name", ResString.Hdr_Name, typeof(string));
+            return dt;
         }
 
         /// <summary>
@@ -98,7 +122,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                if (Items.TryGetValue(index, out KnxScene? scn))
+                if (items.TryGetValue(index, out KnxScene? scn))
                 {
                     return scn;
                 }
@@ -118,7 +142,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                var result = Items.Values.Where(scn => scn.Code == code);
+                var result = items.Values.Where(scn => scn.Code == code);
                 if (result.Any())
                 {
                     return result.ToArray();
@@ -128,20 +152,6 @@ namespace BedivereKnx.KnxSystem
                     throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "KnxScene", $"SceneCode = {code}"));
                 }
             }
-            //DataRow[] drs = Table.Select($"SceneCode='{code}'"); //在表中按照SceneCode查询
-            //if (drs.Length > 0)
-            //{
-            //    List<KnxScene> list = [];
-            //    foreach (DataRow dr in drs)
-            //    {
-            //        list.Add(this[dr.Field<int>("Id")]); //根据ID列搜索对象
-            //    }
-            //    return list.ToArray();
-            //}
-            //else
-            //{
-            //    throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "KnxScene", $"SceneCode = {code}"));
-            //}
         }
 
         /// <summary>
@@ -154,7 +164,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                var result = Items.Values.Where(scn => scn[KnxObjectPart.SceneControl].Address == address);
+                var result = items.Values.Where(scn => scn[KnxObjectPart.SceneControl].Address == address);
                 if (result.Any())
                 {
                     return result.ToArray();
@@ -164,20 +174,6 @@ namespace BedivereKnx.KnxSystem
                     throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "KnxScene", $"GroupAddress = {address}"));
                 }
             }
-            //DataRow[] drs = Table.Select($"GroupAddress='{address}'"); //找出组地址所属对象，可能有多个
-            //if (drs.Length > 0)
-            //{
-            //    List<KnxScene> list = [];
-            //    foreach (DataRow dr in drs)
-            //    {
-            //        list.Add(this[dr.Field<int>("Id")]); //根据ID列搜索对象
-            //    }
-            //    return list.ToArray();
-            //}
-            //else
-            //{
-            //    throw new KeyNotFoundException(string.Format(ResString.ExMsg_KeyNotFound, "KnxScene", $"GroupAddress = {address}"));
-            //}
         }
 
         /// <summary>
@@ -196,7 +192,7 @@ namespace BedivereKnx.KnxSystem
         /// <returns></returns>
         public IEnumerator<KnxScene> GetEnumerator()
         {
-            return Items.Values.GetEnumerator();
+            return items.Values.GetEnumerator();
         }
 
         /// <summary>

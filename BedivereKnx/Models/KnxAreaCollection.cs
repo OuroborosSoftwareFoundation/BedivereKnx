@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Data;
 
-namespace BedivereKnx.KnxSystem
+namespace BedivereKnx.Models
 {
 
     /// <summary>
@@ -11,6 +11,11 @@ namespace BedivereKnx.KnxSystem
     {
 
         /// <summary>
+        /// 索引器内部字典
+        /// </summary>
+        private readonly Dictionary<int, AreaNode> items = [];
+
+        /// <summary>
         /// 数据表
         /// </summary>
         public readonly DataTable Table;
@@ -18,12 +23,7 @@ namespace BedivereKnx.KnxSystem
         /// <summary>
         /// 对象数量
         /// </summary>
-        public int Count => Items.Count;
-
-        /// <summary>
-        /// 索引器内部字典
-        /// </summary>
-        private readonly Dictionary<int, AreaNode> Items = [];
+        public int Count => items.Count;
 
         /// <summary>
         /// 主区域
@@ -32,7 +32,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                return Items.Values.Where(a => a.Level == 1).ToArray();
+                return items.Values.Where(a => a.Level == 1).ToArray();
             }
         }
 
@@ -46,7 +46,7 @@ namespace BedivereKnx.KnxSystem
             Table = dt;
             foreach (DataRow dr in Table.Rows)
             {
-                int id = dr.Field<int>("Id");
+                int id = dr.Field<int>("Id"); //区域ID
                 if (dr["AreaCode"] is DBNull) //编号为空的情况报错
                     throw new NoNullAllowedException(string.Format(ResString.ExMsg_NoNullAllowed, "AreaCode", $"ID={id}"));
                 string areaCode = dr.Field<string>("AreaCode")!; //主区域编号
@@ -78,7 +78,7 @@ namespace BedivereKnx.KnxSystem
                         Level = 1
                     };
                 }
-                Items.Add(id, area); //字典中加入对象
+                items.Add(id, area); //字典中加入对象
             }
             foreach (AreaNode a in this) //遍历全部区域，准备设置上级区域
             {
@@ -98,7 +98,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                if (Items.TryGetValue(index, out AreaNode? area))
+                if (items.TryGetValue(index, out AreaNode? area))
                 {
                     return area;
                 }
@@ -118,7 +118,7 @@ namespace BedivereKnx.KnxSystem
         {
             get
             {
-                List<AreaNode> list = Items.Values.Where(a => a.FullCode == code).ToList(); //在字典中按照编号查询
+                List<AreaNode> list = items.Values.Where(a => a.FullCode == code).ToList(); //在字典中按照编号查询
                 if (list.Count > 0)
                 {
                     return list[0]; //返回第一项（正常情况只能找到一项）
@@ -137,7 +137,7 @@ namespace BedivereKnx.KnxSystem
         /// <returns></returns>
         public AreaNode[] AreaAtLevel(int level)
         {
-            return Items.Values.Where(a => a.Level == level).ToArray();
+            return items.Values.Where(a => a.Level == level).ToArray();
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace BedivereKnx.KnxSystem
         /// <returns></returns>
         public IEnumerator<AreaNode> GetEnumerator()
         {
-            return Items.Values.GetEnumerator();
+            return items.Values.GetEnumerator();
         }
 
         /// <summary>

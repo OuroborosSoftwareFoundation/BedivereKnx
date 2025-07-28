@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Resources;
 
 namespace BedivereKnx.GUI.Extensions
 {
@@ -24,6 +25,23 @@ namespace BedivereKnx.GUI.Extensions
                 {
                     col.HeaderText = dt.Columns[colName]!.Caption; //设置列标名
                     if (hiddenCols.Contains(colName)) col.Visible = false; //隐藏不需要显示的列
+                }
+            }
+        }
+
+        /// <summary>
+        /// 从资源文件获取列的语言化名称
+        /// </summary>
+        /// <param name="dgv"></param>
+        internal static void GetLocalizableHeader(this DataGridView dgv)
+        {
+            ResourceManager resource = new(typeof(Resources.Strings)); //字符串资源管理器
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                string? hdr = resource.GetString($"Hdr_{col.Name}"); //根据列名获取本地字符串
+                if (!string.IsNullOrWhiteSpace(hdr))
+                {
+                    col.HeaderText = hdr;
                 }
             }
         }

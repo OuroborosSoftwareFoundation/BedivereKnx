@@ -1,5 +1,6 @@
 ﻿using BedivereKnx.GUI.Extensions;
-using BedivereKnx.KnxSystem;
+using BedivereKnx.Models;
+using Knx.Falcon;
 
 namespace BedivereKnx.GUI.Forms
 {
@@ -7,44 +8,25 @@ namespace BedivereKnx.GUI.Forms
     public partial class FrmMainTable : Form
     {
 
-        private readonly KnxSystem.KnxSystem knx = Globals.KS!;
+        private readonly KnxSystem knx = Globals.KS!;
         private DataGridView? curColFilterDgv; //当前进行列筛选的dgv
 
         public FrmMainTable()
         {
             InitializeComponent();
             knx.MessageTransmission += KnxMessageTransmission;
+            DgvInit(); //初始化各个DataGridView：
+            AreaTreeInit(); //初始化树形菜单
+        }
+
+        private void FrmMainTable_Load(object sender, EventArgs e)
+        {
+            //把全部标签页开启一遍，防止第一次筛选无效：
             foreach (TabPage tp in tabMain.TabPages)
             {
                 tabMain.SelectedTab = tp;
-                //if (tp.Tag == "Interface") tabMain.TabPages.Remove(tp);
             }
             tabMain.SelectedIndex = 0;
-            //初始化各个DataGridView：
-            dgvObject.BindDataTable(knx.Objects.Table,
-                ["Id", "AreaCode", "InterfaceCode", "GA_Dim"]);
-            dgvScene.BindDataTable(knx.Scenes.Table,
-                ["Id", "AreaCode", "InterfaceCode", "SceneValues"]);
-            dgvDevice.BindDataTable(knx.Devices.Table,
-                ["Id", "AreaCode", "InterfaceCode"]);
-            dgvSchedule.BindDataTable(knx.Schedule.Table,
-                ["Id"]);
-            DgvObjectsOptimize(); //优化对象显示
-            AreaTreeInit(); //初始化Area树形结构
-            //右键列筛选菜单：
-        }
-
-        /// <summary>
-        /// KNX报文传输事件
-        /// </summary>
-        private void KnxMessageTransmission(KnxMsgEventArgs e, string? log)
-        {
-            string? value = e.Value?.ToString();
-            string valueString = value is null ? string.Empty : $" = {value}";
-            this.Invoke((MethodInvoker)delegate
-            { //在UI线程上进行操作
-                lstTelLog.Items.Insert(0, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}]{e.MessageType}|{e.EventType}: {e.SourceAddress} -> {e.DestinationAddress}{valueString} ({e.MessagePriority}, Hop={e.HopCount})");
-            });
         }
 
         /// <summary>
@@ -66,67 +48,43 @@ namespace BedivereKnx.GUI.Forms
             }
         }
 
-        ///// <summary>
-        ///// 初始化DataGridView
-        ///// </summary>
-        ///// <param name="dgv">DataGridView对象</param>
-        ///// <param name="dt">DataTable对象</param>
-        ///// <param name="hiddenCols">需要隐藏的列</param>
-        //private void DgvBindingInit(DataGridView dgv, DataTable dt, string[] hiddenCols)
-        //{
-        //    if ((dt is null) || (dt.Rows.Count == 0)) return;
-        //    dgv.DataSource = dt;
-        //    dgv.ClearSelection(); //取消选定
-        //    foreach (DataGridViewColumn col in dgv.Columns)
-        //    {
-        //        string colName = col.Name;
-        //        if (dt.Columns.Contains(colName))
-        //        {
-        //            col.HeaderText = dt.Columns[colName]!.Caption; //设置列标名
-        //            if (hiddenCols.Contains(colName)) col.Visible = false; //隐藏不需要显示的列
-        //        }
-        //    }
-        //}
-
-        /// <summary>
-        /// Object表显示优化
-        /// </summary>
-        private void DgvObjectsOptimize()
-        {
-            if (dgvObject.RowCount == 0) return;
-            bool onlySw = true;
-            foreach (DataGridViewRow row in dgvObject.Rows)
-            {
-                if ((row.Cells["ValueCtlAddr"].Value is not DBNull) | (row.Cells["ValueFdbAddr"].Value is not DBNull))
-                {
-                    onlySw = false;
-                    break;
-                }
-            }
-            if (onlySw)
-            {
-                dgvObject.Columns["ValueDpt"].Visible = false;
-                dgvObject.Columns["ValueCtlAddr"].Visible = false;
-                dgvObject.Columns["ValueFdbAddr"].Visible = false;
-                dgvObject.Columns["ValueFdbValue"].Visible = false;
-            }
-        }
-
         /// <summary>
         /// 区域选择
         /// </summary>
         private void tvArea_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node is null) return;
-            DgvRowFilter(dgvObject, e.Node.Name);
+            DgvRowFilter(dgvLight, e.Node.Name);
+            DgvRowFilter(dgvEnable, e.Node.Name);
             DgvRowFilter(dgvScene, e.Node.Name);
             DgvRowFilter(dgvDevice, e.Node.Name);
         }
 
+        #region DGV
+
+        private void DgvInit()
+        {
+            //对象：
+            //BindingList<KnxLight> l = new();
+            dgvLight.DataSource = knx.Objects[KnxObjectType.Light];
+            //使能：
+            dgvEnable.DataSource = knx.Objects[KnxObjectType.Light];
+            //场景：
+            dgvScene.DataSource = knx.Scenes.ToList();
+            //设备：
+            dgvDevice.DataSource = knx.Devices.ToList();
+        }
+
+        /// <summary>
+        /// dgv排序
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgv_Sorted(object sender, EventArgs e)
         {
             DataGridView dgv = (DataGridView)sender;
             dgv.ClearSelection();
+            if (tvArea.SelectedNode is null) return;
             DgvRowFilter(dgv, tvArea.SelectedNode.Name);
         }
 
@@ -135,26 +93,33 @@ namespace BedivereKnx.GUI.Forms
         /// </summary>
         /// <param name="dgv">DataGridView对象</param>
         /// <param name="area">筛选区域，全部显示则留空</param>
-        private void DgvRowFilter(DataGridView dgv, string? area = null)
+        private void DgvRowFilter(DataGridView dgv, string? areaFilter = null)
         {
             if (dgv.Rows.Count == 0) return; //防止有表格行数为0报错
             if (!dgv.Columns.Contains("AreaCode")) return; //不包含区域编号列直接跳出
             CurrencyManager currency = (CurrencyManager)BindingContext![dgv.DataSource];
             currency.SuspendBinding(); //挂起数据绑定
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None; //禁止自动调整列宽加速显示
-            if (string.IsNullOrWhiteSpace(area))
+            if (string.IsNullOrWhiteSpace(areaFilter)) //筛选的区域为空的情况，全部显示
             {
                 foreach (DataGridViewRow row in dgv.Rows)
                 {
                     row.Visible = true;
                 }
             }
-            else
+            else //筛选区域不为空的情况
             {
                 foreach (DataGridViewRow row in dgv.Rows)
                 {
                     string? areaCode = row.Cells["AreaCode"].Value.ToString(); //区域编号
-                    row.Visible = areaCode is null ? true : areaCode.Contains(area); //根据是否包含区域调整行的可见度
+                    if (string.IsNullOrWhiteSpace(areaCode)) //dgv区域编号为空的情况
+                    {
+                        row.Visible = false;
+                    }
+                    else //dgv区域编号不为空的情况
+                    {
+                        row.Visible = areaCode.StartsWith(areaFilter);
+                    }
                 }
             }
             //dgv.ClearSelection(); //全部取消选定
@@ -181,6 +146,10 @@ namespace BedivereKnx.GUI.Forms
             currency.ResumeBinding(); //恢复数据绑定
             dgv.Refresh(); //刷新DataGridView
         }
+
+        #endregion DGV
+
+        #region 列筛选菜单
 
         /// <summary>
         /// 列筛选菜单打开事件
@@ -233,217 +202,299 @@ namespace BedivereKnx.GUI.Forms
             }
         }
 
-        #region 对象
+        #endregion
 
-        /// <summary>
-        /// 选择对象后各控制控件的处理
-        /// </summary>
-        private void dgvObject_CellClick(object sender, DataGridViewCellEventArgs e)
+        #region 灯光
+
+        private void dgvLight_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            if ((dgvObject.CurrentRow is null) || dgvObject.SelectedRows.Count == 0) return;
-            btnObjToggle.Enabled = (dgvObject.SelectedRows.Count == 1); //不允许同时反转控制多个对象开关
-            foreach (DataGridViewRow row in dgvObject.SelectedRows)
+            dgvLight.Columns["Id"].Visible = false;
+            dgvLight.Columns["Type"].Visible = false;
+            dgvLight.Columns["InterfaceCode"].Visible = false;
+            dgvLight.Columns["AreaCode"].Visible = false;
+            //dgvLight.Columns["BrightnessFeedback"].DisplayIndex = dgvLight.ColumnCount - 1;
+            //dgvLight.Columns["SwitchFeedback"].DisplayIndex = dgvLight.ColumnCount - 2;
+            //dgvLight.Columns["Dimmable"].DisplayIndex = dgvLight.ColumnCount - 3;
+            dgvLight.GetLocalizableHeader();
+        }
+
+        private void dgvLight_SelectionChanged(object sender, EventArgs e)
+        {
+            if ((dgvLight.CurrentRow is null) || dgvLight.SelectedRows.Count == 0) return;
+            btnObjToggle.Enabled = (dgvLight.SelectedRows.Count == 1); //不允许同时反转控制多个对象开关
+            foreach (DataGridViewRow row in dgvLight.SelectedRows)
             {
-                if (row.Cells["ValueCtlAddr"].Value is DBNull) //无数值控制组的情况
+                int id = (int)dgvLight.SelectedRows[0].Cells["Id"].Value;
+                KnxLight light = knx.Objects.Get<KnxLight>(id);
+                if (light.Dimmable) //可调光的情况
+                {
+                    numObjVal.Enabled = true;
+                    GroupValue? val = light[KnxObjectPart.ValueFeedback].Value;
+                    if (val is not null)
+                    {
+                        numObjVal.Value = (int)((double)val.TypedValue / 2.55); //显示亮度值
+                    }
+                }
+                else //不可调光的情况
                 {
                     numObjVal.Enabled = false;
                     numObjVal.Value = 0;
                 }
-                else
-                {
-                    numObjVal.Enabled = true;
-                    //此处应显示数值
-                }
             }
         }
 
         /// <summary>
-        /// 组地址读取
+        /// 灯光组地址读取
         /// </summary>
-        private void dgvObject_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvLight_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if ((dgvObject.CurrentRow is null) || dgvObject.SelectedRows.Count == 0) return;
-            foreach (DataGridViewRow row in dgvObject.SelectedRows)
+            if ((dgvLight.CurrentRow is null) || dgvLight.SelectedRows.Count == 0) return;
+            foreach (DataGridViewRow row in dgvLight.SelectedRows)
             {
-                int objId = (int)row.Cells["Id"].Value;
-                knx.ReadObjectFeedback(objId);
+                int id = (int)row.Cells["Id"].Value;
+                knx.ReadObjectFeedback(id);
             }
         }
 
         /// <summary>
-        /// KNX对象开关控制
+        /// 灯光开关控制
         /// </summary>
         /// <param name="value">控制参数，null-切换，true-开，false-关</param>
-        private void ObjSwitch(bool? value = null)
+        private void LightSwitch(bool? value = null)
         {
-            if ((dgvObject.CurrentRow is null) || dgvObject.SelectedRows.Count == 0) return;
-            foreach (DataGridViewRow row in dgvObject.SelectedRows)
+            if ((dgvLight.CurrentRow is null) || dgvLight.SelectedRows.Count == 0) return;
+            foreach (DataGridViewRow row in dgvLight.SelectedRows)
             {
-                int objId = (int)row.Cells["Id"].Value;
-                knx.Objects[objId].Switch(value);
+                int id = (int)row.Cells["Id"].Value;
+                KnxLight light = knx.Objects.Get<KnxLight>(id);
+                light.SwitchControl(value);
             }
         }
 
-        /// <summary>
-        /// KNX对象-开
-        /// </summary>
         private void btnObjOn_Click(object sender, EventArgs e)
         {
-            ObjSwitch(true);
+            LightSwitch(true);
         }
 
-        /// <summary>
-        /// KNX对象-关
-        /// </summary>
         private void btnObjOff_Click(object sender, EventArgs e)
         {
-            ObjSwitch(false);
+            LightSwitch(false);
         }
 
-        /// <summary>
-        /// KNX对象-开关切换
-        /// </summary>
         private void btnObjToggle_Click(object sender, EventArgs e)
         {
-            ObjSwitch();
+            LightSwitch();
+            //以下为测试用：
+            //if ((dgvLight.CurrentRow is null) || dgvLight.SelectedRows.Count == 0) return;
+            //int id = (int)dgvLight.SelectedRows[0].Cells["Id"].Value;
+            //knx.Objects.Get<KnxLight>(id)[KnxObjectPart.SwitchFeedback].Value = new(1);
+            //dgvLight.Refresh();
         }
 
         /// <summary>
-        /// 显示对象的数值
+        /// 亮度条滑动
         /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void numObjVal_Scroll(object sender, EventArgs e)
         {
             lblObjVal.Text = numObjVal.Value.ToString();
         }
 
         /// <summary>
-        /// 对象数值设置
+        /// 亮度值改变
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void numObjVal_MouseUp(object sender, MouseEventArgs e)
+        private void numObjVal_ValueChanged(object sender, EventArgs e)
         {
-            if ((dgvObject.CurrentRow is null) || dgvObject.SelectedRows.Count == 0) return;
-            int objId = (int)dgvObject.SelectedRows[0].Cells["Id"].Value;
-            knx.Objects[objId].ValueSet(numObjVal.Value * 2.55);
+            if ((dgvLight.CurrentRow is null) || dgvLight.SelectedRows.Count == 0) return;
+            int id = (int)dgvLight.SelectedRows[0].Cells["Id"].Value;
+            KnxLight light = knx.Objects.Get<KnxLight>(id);
+            light.BrightnessControl(numObjVal.Value);
         }
 
-        #endregion 对象
+        #endregion
 
-        #region 场景
+        #region 使能
 
-        /// <summary>
-        /// 场景控制按钮
-        /// </summary>
-        private void btnCtlScn_Click(object sender, EventArgs e)
+        private void dgvEnable_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            if ((dgvScene.CurrentRow is null) || dgvScene.SelectedRows.Count == 0) return;
-            foreach (DataGridViewRow row in dgvScene.SelectedRows)
+            dgvEnable.Columns["Id"].Visible = false;
+            dgvEnable.Columns["Type"].Visible = false;
+            dgvEnable.Columns["InterfaceCode"].Visible = false;
+            dgvEnable.Columns["AreaCode"].Visible = false;
+            //dgvEnable.Columns["EnablementType"].DisplayIndex = dgvEnable.ColumnCount - 1;
+            dgvEnable.GetLocalizableHeader();
+        }
+
+        private void dgvEnable_SelectionChanged(object sender, EventArgs e)
+        {
+            //if ((dgvEnable.CurrentRow is null) || dgvEnable.SelectedRows.Count == 0) return;
+            //if (dgvEnable.SelectedRows.Count == 1)
+            //{
+            //    int id = (int)dgvEnable.SelectedRows[0].Cells["Id"].Value;
+            //    KnxEnablement enable = knx.Objects.Get<KnxEnablement>(id);
+            //}
+            //else
+            //{
+
+            //}
+        }
+        private void dgvEnable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if ((dgvEnable.CurrentRow is null) || dgvEnable.SelectedRows.Count == 0) return;
+            foreach (DataGridViewRow row in dgvEnable.SelectedRows)
             {
-                int scnId = (int)row.Cells["Id"].Value; //场景ID
-                KnxScene scene = knx.Scenes[scnId];
-                FrmSceneCtl frmSceneCtl = new(scene);
-                if (frmSceneCtl.ShowDialog() == DialogResult.OK)
-                {
-                    scene.WriteScene(frmSceneCtl.SelectedAddress);
-                }
+                int id = (int)row.Cells["Id"].Value;
+                knx.ReadObjectFeedback(id);
             }
         }
 
         /// <summary>
-        /// 场景控制（dgv双击）
+        /// 使能控制
         /// </summary>
-        private void dgvScene_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        /// <param name="value"></param>
+        private void EnableControl(bool value)
         {
-            btnCtlScn.PerformClick(); //调用场景控制按钮事件
+            if ((dgvEnable.CurrentRow is null) || dgvEnable.SelectedRows.Count == 0) return;
+            foreach (DataGridViewRow row in dgvEnable.SelectedRows)
+            {
+                int id = (int)row.Cells["Id"].Value;
+                KnxEnablement en = knx.Objects.Get<KnxEnablement>(id);
+                en.EnableControl(value);
+            }
         }
 
-        #endregion 场景
+        private void btnEnTrue_Click(object sender, EventArgs e)
+        {
+            EnableControl(true);
+        }
+
+        private void btnEnFalse_Click(object sender, EventArgs e)
+        {
+            EnableControl(false);
+        }
+
+        #endregion
+
+        #region 场景
+
+        private void dgvScene_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            dgvScene.Columns["Id"].Visible = false;
+            dgvScene.Columns["Type"].Visible = false;
+            dgvScene.Columns["InterfaceCode"].Visible = false;
+            dgvScene.Columns["AreaCode"].Visible = false;
+            dgvScene.GetLocalizableHeader();
+        }
+
+        /// <summary>
+        /// 场景控制
+        /// </summary>
+        private void SceneControl()
+        {
+            if ((dgvScene.CurrentRow is null) || dgvScene.SelectedRows.Count == 0) return;
+            DataGridViewRow row = dgvScene.SelectedRows[0];
+            int id = (int)row.Cells["Id"].Value; //场景ID
+            KnxScene scene = knx.Objects.Get<KnxScene>(id);
+            FrmSceneCtl frmSceneCtl = new(scene);
+            if (frmSceneCtl.ShowDialog() == DialogResult.OK)
+            {
+                scene.SceneControl(frmSceneCtl.SelectedAddress);
+            }
+        }
+
+        private void btnCtlScn_Click(object sender, EventArgs e)
+        {
+            SceneControl();
+        }
+
+        private void dgvScene_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            SceneControl();
+        }
+
+        #endregion
 
         #region 设备
 
-        /// <summary>
-        /// 设备状态检测
-        /// </summary>
+        private void dgvDevice_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            dgvDevice.Columns["Id"].Visible = false;
+            dgvDevice.Columns["InterfaceCode"].Visible = false;
+            dgvDevice.Columns["AreaCode"].Visible = false;
+            dgvDevice.GetLocalizableHeader();
+        }
+
+        private void dgvDevice_SelectionChanged(object sender, EventArgs e)
+        {
+            if ((dgvDevice.CurrentRow is null) || dgvDevice.SelectedRows.Count == 0) return;
+            if (dgvDevice.SelectedRows.Count == 1)
+            {
+                int id = (int)dgvDevice.SelectedRows[0].Cells["Id"].Value;
+                KnxDeviceInfo dev = knx.Devices[id];
+            }
+            else
+            {
+
+            }
+        }
+
         private void dgvDevice_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if ((dgvDevice.CurrentRow is null) || dgvDevice.SelectedRows.Count == 0) return;
             foreach (DataGridViewRow row in dgvDevice.SelectedRows)
             {
-                int devId = (int)row.Cells["Id"].Value; //设备ID
-                knx.DeviceCheck(devId);
+                int id = (int)row.Cells["Id"].Value; //设备ID
+                knx.DeviceCheck(id);
             }
         }
 
-        /// <summary>
-        /// 检测全部设备状态
-        /// </summary>
         private void btnDevicePoll_Click(object sender, EventArgs e)
         {
             knx.DevicePoll(string.Empty);
         }
 
-        #endregion 设备
+        #endregion
 
         #region 日志
 
         /// <summary>
-        /// 导出日志
+        /// KNX报文传输事件
         /// </summary>
-        private void btnTelLogExport_Click(object sender, EventArgs e)
+        private void KnxMessageTransmission(KnxMsgEventArgs e, string? log)
         {
-            try
-            {
-                SaveFileDialog sfd = new()
-                {
-                    Title = Resources.Strings.Dlg_SaveMsgLog,
-                    InitialDirectory = Application.StartupPath,
-                    Filter = "CSV File(*.csv)|*.csv",
-                    FileName = $"KnxMessageLog_{DateTime.Now:yyyyMMddHHmmss}.csv",
-                };
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    LogUtility.WriteCsvLog(knx.MessageLog, sfd.FileName);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            string? value = e.Value?.ToString();
+            string valueString = value is null ? string.Empty : $" = {value}";
+            this.Invoke((MethodInvoker)delegate
+            { //在UI线程上进行操作
+                lstTelLog.Items.Insert(0, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}]{e.MessageType}|{e.EventType}: {e.SourceAddress} -> {e.DestinationAddress}{valueString} ({e.MessagePriority}, Hop={e.HopCount})");
+            });
         }
 
-        /// <summary>
-        /// 清空日志
-        /// </summary>
-        private void btnTelLogClear_Click(object sender, EventArgs e)
-        {
-            lstTelLog.Items.Clear();
-        }
+        #endregion
 
-        #endregion 日志
-
-        /// <summary>
-        /// 展示定时队列
-        /// </summary>
-        private void btnSchedule_Click(object sender, EventArgs e)
+        private void dgvLight_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            new FrmScheduleSeq().Show();
-        }
+            //    DataGridViewColumn column = dgvLight.Columns[e.ColumnIndex];
+            //    ListSortDirection direction;
 
-        /// <summary>
-        /// 打开接口窗体
-        /// </summary>
-        private void btnInterface_Click(object sender, EventArgs e)
-        {
-            new FrmInterface().Show();
-        }
+            //    if (column.HeaderCell.SortGlyphDirection == SortOrder.Ascending)
+            //    {
+            //        direction = ListSortDirection.Descending;
+            //    }
+            //    else
+            //    {
+            //        direction = ListSortDirection.Ascending;
+            //    }
 
-        /// <summary>
-        /// 打开链接窗体
-        /// </summary>
-        private void btnLink_Click(object sender, EventArgs e)
-        {
-            new FrmLink().Show();
+            //    // 清除之前的排序
+            //    dgvLight.Sort(dgvLight.Columns[e.ColumnIndex], direction);
+            //    column.HeaderCell.SortGlyphDirection = direction == ListSortDirection.Ascending ?
+            //        SortOrder.Ascending : SortOrder.Descending;
         }
 
     }

@@ -23,13 +23,14 @@
 //   你理当已收到一份GNU通用公共许可协议的副本。
 //   如果没有，请查阅 <http://www.gnu.org/licenses/> 
 
-using BedivereKnx.DataFile;
-using Knx.Falcon;
-using Knx.Falcon.Sdk;
 using System.Data;
 using System.Net;
+using Knx.Falcon;
+using Knx.Falcon.Sdk;
+using BedivereKnx.DataFile;
+using BedivereKnx.Models;
 
-namespace BedivereKnx.KnxSystem
+namespace BedivereKnx
 {
 
     /// <summary>
@@ -108,12 +109,10 @@ namespace BedivereKnx.KnxSystem
         /// </summary>
         public DataTable MessageLog { get; private set; } = new DataTable();
 
-        public KnxSystem(string dataFilePath, IPAddress? localIp)
+        private KnxSystem(DataTableCollection dtc, IPAddress? localIp)
         {
             try
             {
-                DataTableCollection dtc = ExcelDataFile.FromExcel(dataFilePath, true, true);
-
                 //区域
                 if (dtc.Contains("Areas"))
                 {
@@ -137,10 +136,14 @@ namespace BedivereKnx.KnxSystem
                     throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Interfaces"));
                 }
 
-                //对象
+                //对象&场景
                 if (dtc.Contains("Objects"))
                 {
                     Objects = new(dtc["Objects"]!);
+                    //if (dtc.Contains("Scenes"))
+                    //{
+                    //    Objects.AddSceneTable(dtc["Scenes"]!);
+                    //}
                     Objects.GroupReadRequest += OnGroupReadRequest;
                     Objects.GroupWriteRequest += OnGroupWriteRequest;
                 }
@@ -203,6 +206,18 @@ namespace BedivereKnx.KnxSystem
         }
 
         /// <summary>
+        /// 从Excel数据文件新建KnxSystem对象
+        /// </summary>
+        /// <param name="dataFilePath"></param>
+        /// <param name="localIp"></param>
+        /// <returns></returns>
+        public static KnxSystem FromExcel(string dataFilePath, IPAddress? localIp)
+        {
+            DataTableCollection dtc = ExcelDataFile.FromExcel(dataFilePath, true, true);
+            return new(dtc, localIp);
+        }
+
+        /// <summary>
         /// 初始化定时事件表
         /// </summary>
         private void ScheduleEventsInit()
@@ -223,7 +238,7 @@ namespace BedivereKnx.KnxSystem
                     switch (type)
                     {
                         case KnxObjectPart.SceneControl: //场景的情况，在Scenes对象里查找对象
-                            foreach (KnxScene scn in Scenes[code])
+                            foreach (KnxScene scn in Objects.OfType<KnxScene>())
                             {
                                 list.Add(scn[KnxObjectPart.SceneControl]);
                             }
@@ -286,46 +301,6 @@ namespace BedivereKnx.KnxSystem
             MessageLog.Columns.Add("HopCount", "HopCount", typeof(byte)); //路由计数
             MessageLog.Columns.Add("IsSecure", "IsSecure", typeof(bool)); //安全性
             MessageLog.Columns.Add("Log", "Log", typeof(string)); //日志
-            //MessageLog.Columns.Add(new DataColumn("DateTime", typeof(DateTime))
-            //{
-            //    Caption = "DateTime" //报文时间
-            //});
-            //MessageLog.Columns.Add(new DataColumn("MessageType", typeof(KnxMessageType))
-            //{
-            //    Caption = "MessageType" //报文类型
-            //});
-            //MessageLog.Columns.Add(new DataColumn("EventType", typeof(GroupEventType))
-            //{
-            //    Caption = "EventType" //事件类型
-            //});
-            //MessageLog.Columns.Add(new DataColumn("SourceAddress", typeof(IndividualAddress))
-            //{
-            //    Caption = "SourceAddress" //源地址
-            //});
-            //MessageLog.Columns.Add(new DataColumn("DestinationAddress", typeof(GroupAddress))
-            //{
-            //    Caption = "DestinationAddress" //目标地址
-            //});
-            //MessageLog.Columns.Add(new DataColumn("MessagePriority", typeof(MessagePriority))
-            //{
-            //    Caption = "MessagePriority" //优先级
-            //});
-            //MessageLog.Columns.Add(new DataColumn("Value", typeof(GroupValue))
-            //{
-            //    Caption = "Value" //值
-            //});
-            //MessageLog.Columns.Add(new DataColumn("HopCount", typeof(byte))
-            //{
-            //    Caption = "HopCount" //路由计数
-            //});
-            //MessageLog.Columns.Add(new DataColumn("IsSecure", typeof(bool))
-            //{
-            //    Caption = "IsSecure" //安全性
-            //});
-            //MessageLog.Columns.Add(new DataColumn("Log", typeof(string))
-            //{
-            //    Caption = "Log" //日志
-            //});
         }
 
         /// <summary>
@@ -337,7 +312,7 @@ namespace BedivereKnx.KnxSystem
         private void OnGroupMessageReceived(KnxMsgEventArgs e, string? log)
         {
             if (e.Value is null) return; //无视没有值的报文
-            if ((e.EventType == GroupEventType.ValueWrite) || (e.EventType == GroupEventType.ValueResponse))
+            if (e.EventType == GroupEventType.ValueWrite || e.EventType == GroupEventType.ValueResponse)
             {
                 Objects.ReceiveGroupMessage(e.DestinationAddress, e.Value);
             }
@@ -523,66 +498,161 @@ namespace BedivereKnx.KnxSystem
             IsPolling = false;
         }
 
-        /// <summary>
-        /// 读取列表中的全部组地址
-        /// </summary>
-        /// <param name="addresses"></param>
-        public void PollAddresses(List<GroupAddress> addresses)
-        {
-            if (isPolling) return;
-            Dictionary<string, List<GroupAddress>> dicGa = []; //接口编号-组地址
-            foreach (GroupAddress ga in addresses)
-            {
-                var matchesObj = from DataRow row in Objects.Table.AsEnumerable()
-                                 from col in new[] { "SwitchCtlAddr", "ValueCtlAddr" }
-                                 where row.Field<string>(col) == ga.ToString()
-                                 select new
-                                 {
-                                     ifCode = row.Field<string>("InterfaceCode")
-                                 }; //在各地址列中查找收到的组地址
-                if (matchesObj.Any()) //匹配结果不为空，即Objects表找到的情况
-                {
+        //public KnxSystem(string dataFilePath, IPAddress? localIp)
+        //{
+        //    try
+        //    {
+        //        DataTableCollection dtc = ExcelDataFile.FromExcel(dataFilePath, true, true);
 
-                    foreach (var matchO in matchesObj) //遍历全部包含组地址的结果
-                    {
-                        if (!dicGa.ContainsKey(matchO.ifCode))
-                        {
-                            dicGa[matchO.ifCode].Add(ga); //组地址加入字典的列表
-                        }
-                    }
-                }
-                else //Objects表没找到，在Scenes表里查找
-                {
-                    var matchesScn = from DataRow row in Scenes.Table.AsEnumerable()
-                                     from col in new[] { "GroupAddress" }
-                                     where row.Field<string>(col) == ga.ToString()
-                                     select new
-                                     {
-                                         ifCode = row.Field<string>("InterfaceCode")
-                                     }; //在各地址列中查找收到的组地址
-                    if (matchesScn.Any())
-                    {
-                        foreach (var matchS in matchesScn)
-                        {
-                            if (!dicGa.ContainsKey(matchS.ifCode))
-                            {
-                                dicGa[matchS.ifCode].Add(ga); //组地址加入字典的列表
-                            }
-                        }
-                    }
-                    else //Scenes表里也没找到的情况
-                    {
-                        if (!dicGa.ContainsKey(string.Empty))
-                        {
-                            dicGa[string.Empty].Add(ga); //组地址加入字典的列表
-                        }
-                    }
-                }
-            }
-            Task.Run(() => PollAddresses_Internal(dicGa));
-            //Thread thread = new(() => PollAddresses_Internal(dicGa)); //新建线程执行轮询防止卡顿
-            //thread.Start(); //启动新线程
-        }
+        //        //区域
+        //        if (dtc.Contains("Areas"))
+        //        {
+        //            Areas = new(dtc["Areas"]!);
+        //        }
+        //        else
+        //        {
+        //            throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Areas"));
+        //        }
+
+        //        //接口
+        //        if (dtc.Contains("Interfaces"))
+        //        {
+        //            localIp ??= IPAddress.Loopback;
+        //            Interfaces = new(dtc["Interfaces"]!, localIp);
+        //            Interfaces.GroupMessageReceived += OnGroupMessageReceived;
+        //            Interfaces.GroupPollRequest += PollAllObjects;
+        //        }
+        //        else
+        //        {
+        //            throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Interfaces"));
+        //        }
+
+        //        //对象
+        //        if (dtc.Contains("Objects"))
+        //        {
+        //            Objects = new(dtc["Objects"]!);
+        //            Objects.GroupReadRequest += OnGroupReadRequest;
+        //            Objects.GroupWriteRequest += OnGroupWriteRequest;
+        //        }
+        //        else
+        //        {
+        //            throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Objects"));
+        //        }
+
+        //        ////场景
+        //        //if (dtc.Contains("Scenes"))
+        //        //{
+        //        //    Scenes = new(dtc["Scenes"]!);
+        //        //    Scenes.SceneControlRequest += OnGroupWriteRequest;
+        //        //}
+        //        //else
+        //        //{
+        //        //    throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Scenes"));
+        //        //}
+
+        //        //设备
+        //        if (dtc.Contains("Devices"))
+        //        {
+        //            Devices = new(dtc["Devices"]!);
+        //        }
+        //        else
+        //        {
+        //            throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Devices"));
+        //        }
+
+        //        //定时
+        //        if (dtc.Contains("Schedules"))
+        //        {
+        //            Schedule = new(dtc["Schedules"]!);
+        //            ScheduleEventsInit(); //初始化定时事件表
+        //            Schedule.ScheduleEventTriggered += _ScheduleEventTriggered;
+        //        }
+        //        else
+        //        {
+        //            throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Schedules"));
+        //        }
+
+        //        //连接
+        //        if (dtc.Contains("Links"))
+        //        {
+        //            Links = dtc["Links"]!;
+        //        }
+        //        else
+        //        {
+        //            Links = new();
+        //            //throw new Exception(string.Format(ResString.ExMsg_TableMiss, "Links"));
+        //        }
+
+        //        MsgLogTableInit(); //初始化报文日志表
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //    MessageTransmission += OnMessageTransmission;
+        //}
+
+
+        ///// <summary>
+        ///// 读取列表中的全部组地址
+        ///// </summary>
+        ///// <param name="addresses"></param>
+        //public void PollAddresses(List<GroupAddress> addresses)
+        //{
+        //    if (isPolling) return;
+        //    Dictionary<string, List<GroupAddress>> dicGa = []; //接口编号-组地址
+        //    foreach (GroupAddress ga in addresses)
+        //    {
+        //        var matchesObj = from DataRow row in Objects.Table.AsEnumerable()
+        //                         from col in new[] { "SwitchCtlAddr", "ValueCtlAddr" }
+        //                         where row.Field<string>(col) == ga.ToString()
+        //                         select new
+        //                         {
+        //                             ifCode = row.Field<string>("InterfaceCode")
+        //                         }; //在各地址列中查找收到的组地址
+        //        if (matchesObj.Any()) //匹配结果不为空，即Objects表找到的情况
+        //        {
+
+        //            foreach (var matchO in matchesObj) //遍历全部包含组地址的结果
+        //            {
+        //                if (!dicGa.ContainsKey(matchO.ifCode))
+        //                {
+        //                    dicGa[matchO.ifCode].Add(ga); //组地址加入字典的列表
+        //                }
+        //            }
+        //        }
+        //        else //Objects表没找到，在Scenes表里查找
+        //        {
+        //            var matchesScn = from DataRow row in Scenes.Table.AsEnumerable()
+        //                             from col in new[] { "GroupAddress" }
+        //                             where row.Field<string>(col) == ga.ToString()
+        //                             select new
+        //                             {
+        //                                 ifCode = row.Field<string>("InterfaceCode")
+        //                             }; //在各地址列中查找收到的组地址
+        //            if (matchesScn.Any())
+        //            {
+        //                foreach (var matchS in matchesScn)
+        //                {
+        //                    if (!dicGa.ContainsKey(matchS.ifCode))
+        //                    {
+        //                        dicGa[matchS.ifCode].Add(ga); //组地址加入字典的列表
+        //                    }
+        //                }
+        //            }
+        //            else //Scenes表里也没找到的情况
+        //            {
+        //                if (!dicGa.ContainsKey(string.Empty))
+        //                {
+        //                    dicGa[string.Empty].Add(ga); //组地址加入字典的列表
+        //                }
+        //            }
+        //        }
+        //    }
+        //    Task.Run(() => PollAddresses_Internal(dicGa));
+        //    //Thread thread = new(() => PollAddresses_Internal(dicGa)); //新建线程执行轮询防止卡顿
+        //    //thread.Start(); //启动新线程
+        //}
 
         private void PollAddresses_Internal(Dictionary<string, List<GroupAddress>> addresses)
         {

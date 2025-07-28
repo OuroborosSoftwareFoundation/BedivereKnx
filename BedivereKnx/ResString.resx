@@ -291,4 +291,22 @@
   <data name="Hdr_ValDpt" xml:space="preserve">
     <value>Value DPT</value>
   </data>
+  <data name="Hdr_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Hdr_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Hdr_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Hdr_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Hdr_SwFdb" xml:space="preserve">
+    <value>Switch Feedback</value>
+  </data>
+  <data name="Hdr_ValFdb" xml:space="preserve">
+    <value>Value Feedback</value>
+  </data>
 </root>

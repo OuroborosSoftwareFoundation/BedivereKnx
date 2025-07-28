@@ -10,7 +10,7 @@ namespace BedivereKnx.GUI.Forms
     public partial class FrmMainHmi : Form
     {
 
-        private readonly KnxSystem.KnxSystem knx = Globals.KS!;
+        private readonly KnxSystem knx = Globals.KS!;
         private readonly Dictionary<string, HmiPage> hmi = []; //HMI文件数据字典
         private readonly Dictionary<GroupAddress, List<KnxHmiDigitalFdb>>? fdbAddresses = []; //当前页面反馈组地址对应的控件
 
@@ -30,72 +30,73 @@ namespace BedivereKnx.GUI.Forms
         private void FrmMainHmi_Load(object sender, EventArgs e)
         {
             tvHmi.SelectedNode = tvHmi.Nodes[0]; //选择第一个页面
-            //ShowPage(tvHmi.SelectedNode.Name); //显示页面
+                                                 //ShowPage(tvHmi.SelectedNode.Name); //显示页面
             WindowState = FormWindowState.Maximized;
         }
 
         private void CompMappingPlug()
         {
-            foreach (HmiPage page in hmi.Values) //遍历HMI页面
-            {
-                foreach (KnxHmiComponent comp in page.Elements.OfType<KnxHmiComponent>()) //遍历页面中的控件
-                {
-                    if (comp.MappingMode != HmiMappingMode.DataTable) continue; //只处理数据表绑定的控件
-                    if (comp.Text.Contains('*')) //绑定到对象的情况
-                    {
-                        string[] texts = comp.Text.Split('*'); //{文本}*{绑定信息}
-                        bool isSwitch = true; //是-开关，否-数值
-                        comp.Text = texts[0]; //去除绑定信息之后的字符串作为控件文本使用
-                        string mapText = texts[1]; //绑定信息
-                        if (mapText.Contains('#')) //有#代表定义了组地址类型
-                        {
-                            string[] gvArry = mapText.Split('#'); //分割数值和数据类型
-                            string[] dpt = gvArry.Last().Split('.'); //分割DPT和DPST
-                            if (Convert.ToInt32(dpt[0]) > 2) isSwitch = false;
-                            mapText = gvArry[0];
-                        }
+            //[需重写】
+            //foreach (HmiPage page in hmi.Values) //遍历HMI页面
+            //{
+            //    foreach (KnxHmiComponent comp in page.Elements.OfType<KnxHmiComponent>()) //遍历页面中的控件
+            //    {
+            //        if (comp.MappingMode != HmiMappingMode.DataTable) continue; //只处理数据表绑定的控件
+            //        if (comp.Text.Contains('*')) //绑定到对象的情况
+            //        {
+            //            string[] texts = comp.Text.Split('*'); //{文本}*{绑定信息}
+            //            bool isSwitch = true; //是-开关，否-数值
+            //            comp.Text = texts[0]; //去除绑定信息之后的字符串作为控件文本使用
+            //            string mapText = texts[1]; //绑定信息
+            //            if (mapText.Contains('#')) //有#代表定义了组地址类型
+            //            {
+            //                string[] gvArry = mapText.Split('#'); //分割数值和数据类型
+            //                string[] dpt = gvArry.Last().Split('.'); //分割DPT和DPST
+            //                if (Convert.ToInt32(dpt[0]) > 2) isSwitch = false;
+            //                mapText = gvArry[0];
+            //            }
 
-                        string objCode = mapText.Split(['=', '@'])[0]; //对象编号
-                        KnxObjectPart objPart = KnxObjectPart.None;
-                        switch (comp.Direction)
-                        {
-                            case HmiComponentDirection.Control:
-                                objPart = isSwitch ? KnxObjectPart.SwitchControl : KnxObjectPart.ValueControl;
-                                break;
-                            case HmiComponentDirection.Feedback:
-                                objPart = isSwitch ? KnxObjectPart.SwitchFeedback : KnxObjectPart.DimmingControl;
-                                break;
-                        }
-                        comp.ObjectId = knx.Objects[objCode][0].Id;
-                        comp.Group = knx.Objects[objCode][0][objPart];
-                        comp.Group.GroupValueChanged += GroupValueChanged;
+            //            string objCode = mapText.Split(['=', '@'])[0]; //对象编号
+            //            KnxObjectPart objPart = KnxObjectPart.None;
+            //            switch (comp.Direction)
+            //            {
+            //                case HmiComponentDirection.Control:
+            //                    objPart = isSwitch ? KnxObjectPart.SwitchControl : KnxObjectPart.ValueControl;
+            //                    break;
+            //                case HmiComponentDirection.Feedback:
+            //                    objPart = isSwitch ? KnxObjectPart.SwitchFeedback : KnxObjectPart.DimmingControl;
+            //                    break;
+            //            }
+            //            comp.ObjectId = knx.Objects[objCode][0].Id;
+            //            comp.Group = knx.Objects[objCode][0][objPart];
+            //            comp.Group.GroupValueChanged += GroupValueChanged;
 
-                        List<GroupValue> vals = [];
-                        foreach (string v in comp.Mapping.RawValues)
-                        {
-                            object val = isSwitch ? (v == "1") : v;
-                            vals.Add(comp.Group.DPT.ToGroupValue(val));
-                        }
-                        comp.Mapping.Values = vals.ToArray();
-                    }
-                    else if (comp.Text.Contains('$')) //绑定到场景的情况
-                    {
-                        string[] texts = comp.Text.Split('$'); //{文本}${绑定信息}
-                        comp.Text = texts[0]; //去除绑定信息之后的字符串作为控件文本使用
-                        string mapText = texts[1]; //绑定信息
-                        string scnCode = mapText.Split('=')[0]; //场景编号
-                        comp.Group = knx.Scenes[scnCode][0][KnxObjectPart.SceneControl];
-                        comp.Group.GroupValueChanged += GroupValueChanged;
+            //            List<GroupValue> vals = [];
+            //            foreach (string v in comp.Mapping.RawValues)
+            //            {
+            //                object val = isSwitch ? (v == "1") : v;
+            //                vals.Add(comp.Group.DPT.ToGroupValue(val));
+            //            }
+            //            comp.Mapping.Values = vals.ToArray();
+            //        }
+            //        else if (comp.Text.Contains('$')) //绑定到场景的情况
+            //        {
+            //            string[] texts = comp.Text.Split('$'); //{文本}${绑定信息}
+            //            comp.Text = texts[0]; //去除绑定信息之后的字符串作为控件文本使用
+            //            string mapText = texts[1]; //绑定信息
+            //            string scnCode = mapText.Split('=')[0]; //场景编号
+            //            comp.Group = knx.Objects.Scenes[scnCode][0][KnxObjectPart.SceneControl];
+            //            comp.Group.GroupValueChanged += GroupValueChanged;
 
-                        List<GroupValue> vals = [];
-                        foreach (string v in comp.Mapping.RawValues)
-                        {
-                            vals.Add(new GroupValue(Convert.ToByte(v)));
-                        }
-                        comp.Mapping.Values = vals.ToArray();
-                    }
-                }
-            }
+            //            List<GroupValue> vals = [];
+            //            foreach (string v in comp.Mapping.RawValues)
+            //            {
+            //                vals.Add(new GroupValue(Convert.ToByte(v)));
+            //            }
+            //            comp.Mapping.Values = vals.ToArray();
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -217,7 +218,7 @@ namespace BedivereKnx.GUI.Forms
         {
             if (e.Value is null) return;
             if (e.MessageType != KnxMessageType.FromBus) return; //只接收来自总线的报文
-            //GroupAddress ga = e.DestinationAddress;
+                                                                 //GroupAddress ga = e.DestinationAddress;
 
             ////List<KnxHmiDigitalFdb>? list = [];
             //if (fdbAddresses!.TryGetValue(ga, out var list)) //查找带有报文组地址的控件列表

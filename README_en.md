@@ -25,29 +25,11 @@ This software is authorized with `Ouroboros.AuthMnager.Eos`. If you don't need a
 
 BedivereKnx.Client uses Excel to store data. The following provides a detailed description of the data format (.NET Type with underline is from Knx.Falcon library):
 
-### Interfaces
-
-This sheet stores interfaces information. Left blank for default broadcast routing interface `224.0.23.12:3671`.
-
-**Note**: Only one USB interface is allowed, no need to fill InterfaceAddress for the USB interface.
-
-| Column           | Type                             | .NET Type                            | Caption           |
-| ---------------- | -------------------------------- | ------------------------------------ | ----------------- |
-| InterfaceCode    | Text                             | String                               | Interface Code    |
-| InterfaceName    | Text                             | String                               | Interface Name    |
-| InterfaceType    | *Sequence*<sup>1</sup>           | <ins>*ConnectorType*</ins>           | Interface Type    |
-| InterfaceAddress | Text                             | String                               | Interface Address |
-| Port             | Number                           | Integer                              | Port              |
-| Enable           | *Sequence*<sup>2</sup>           | Boolean                              | Enable            |
-
-- <sup>1</sup> KNX Interface Type, IpRouting、IpTunneling、Usb.
-- <sup>2</sup> FALSE/TRUE Sequence.
-
 ### Areas
 
 This sheet stores KNX area information.
 
-| Column         | Type                | .NET Type | Caption          |
+| Column         | Excel Type          | .NET Type | Caption          |
 | -------------- | ------------------- | --------- | ---------------- |
 | MainAreaCode   | Text                | String    | Main Area Code   |
 | MainAreaName   | Text                | String    | Main Area Name   |
@@ -59,11 +41,29 @@ This sheet stores KNX area information.
 
 - <sup>1</sup> AreaCode column is filled with formula, its format is `MainAreaCode.MiddleAreaCode.SubAreaCode`.
 
+### Interfaces
+
+This sheet stores interfaces information. Left blank for default broadcast routing interface `224.0.23.12:3671`.
+
+**Note**: Only one USB interface is allowed, no need to fill InterfaceAddress for the USB interface.
+
+| Column           | Excel Type                       | .NET Type                            | Caption           |
+| ---------------- | -------------------------------- | ------------------------------------ | ----------------- |
+| InterfaceCode    | Text                             | String                               | Interface Code    |
+| InterfaceName    | Text                             | String                               | Interface Name    |
+| InterfaceType    | *Sequence*<sup>1</sup>           | <ins>*ConnectorType*</ins>           | Interface Type    |
+| InterfaceAddress | Text                             | String                               | Interface Address |
+| Port             | Number                           | Integer                              | Port              |
+| Enable           | *Sequence*<sup>2</sup>           | Boolean                              | Enable            |
+
+- <sup>1</sup> KNX Interface Type, IpRouting、IpTunneling、Usb.
+- <sup>2</sup> FALSE/TRUE Sequence.
+
 ### Objects
 
 This sheet stores objects information, each object has 4 groups: switch control, switch feedback, value control, and value feedback.
 
-| Column                            | Type                             | .NET Type                            | Caption                 |
+| Column                            | Excel Type                       | .NET Type                            | Caption                 |
 | --------------------------------- | -------------------------------- | ------------------------------------ | ----------------------- |
 | AreaCode<sup>1</sup>              | Text                             | String                               | Area Code               |
 | InterfaceCode<sup>2</sup>         | Text                             | String                               | Interface Code          |
@@ -86,14 +86,14 @@ This sheet stores objects information, each object has 4 groups: switch control,
 
 This sheet stores scenes information.
 
-| Column                            | Type | .NET Type                           | Caption       |
-| --------------------------------- | ---- | ----------------------------------- | ------------- |
-| AreaCode<sup>1</sup>              | Text | String                              | Area Code     |
-| InterfaceCode<sup>2</sup>         | Text | String                              | Object Type   |
-| SceneCode                         | Text | String                              | Scene Code    |
-| SceneName                         | Text | String                              | Scene Name    |
-| GroupAddress                      | Text | <ins>*GroupAddress*</ins>           | Scene Address |
-| SceneValues<sup>3</sup>           | Text | String                              | Scene Values  |
+| Column                            | Excel Type | .NET Type                           | Caption       |
+| --------------------------------- | ---------- | ----------------------------------- | ------------- |
+| AreaCode<sup>1</sup>              | Text       | String                              | Area Code     |
+| InterfaceCode<sup>2</sup>         | Text       | String                              | Object Type   |
+| SceneCode                         | Text       | String                              | Scene Code    |
+| SceneName                         | Text       | String                              | Scene Name    |
+| GroupAddress                      | Text       | <ins>*GroupAddress*</ins>           | Scene Address |
+| SceneValues<sup>3</sup>           | Text       | String                              | Scene Values  |
 
 - <sup>1</sup> From column `AreaCode` of sheet `Areas`.
 - <sup>2</sup> From column `InterfaceCode` of sheet `Interfaces`, left blank for default broadcast routing interface.
@@ -103,14 +103,14 @@ This sheet stores scenes information.
 
 This table stores devices information in the KNX system, used to check online status of devices.
 
-| Column                            | Type | .NET Type                                | Caption            |
-| --------------------------------- | ---- | ---------------------------------------- | ------------------ |
-| AreaCode<sup>1</sup>              | Text | String                                   | Area Code          |
-| InterfaceCode<sup>2</sup>         | Text | String                                   | Object Type        |
-| DeviceCode                        | Text | String                                   | Device Code        |
-| DeviceName                        | Text | String                                   | Device Name        |
-| DeviceModel                       | Text | String                                   | Device Model       |
-| IndividualAddress                 | Text | <ins>*IndividualAddress*</ins>           | Individual Address |
+| Column                            | Excel Type | .NET Type                                | Caption            |
+| --------------------------------- | ---------- | ---------------------------------------- | ------------------ |
+| AreaCode<sup>1</sup>              | Text       | String                                   | Area Code          |
+| InterfaceCode<sup>2</sup>         | Text       | String                                   | Object Type        |
+| DeviceCode                        | Text       | String                                   | Device Code        |
+| DeviceName                        | Text       | String                                   | Device Name        |
+| DeviceModel                       | Text       | String                                   | Device Model       |
+| IndividualAddress                 | Text       | <ins>*IndividualAddress*</ins>           | Individual Address |
 
 - <sup>1</sup> From column `AreaCode` of sheet `Areas`.
 - <sup>2</sup> From column `InterfaceCode` of sheet `Interfaces`, left blank for default broadcast routing interface.
@@ -119,7 +119,7 @@ This table stores devices information in the KNX system, used to check online st
 
 This sheet is used to implement the software timing control function.
 
-| Column         | Type                             | .NET Type | Caption         |
+| Column         | Excel Type                       | .NET Type | Caption         |
 | -------------- | -------------------------------- | --------- | --------------- |
 | ScheduleCode   | Text                             | String    | Schedule Code   |
 | ScheduleName   | Text                             | String    | Schedule Name   |
@@ -134,12 +134,12 @@ This sheet is used to implement the software timing control function.
 
 This sheet is used to store links of the KNX system (such as KNX logic controllers with web login entrances).
 
-| Column   | Type | .NET Type | Caption  |
-| -------- | ---- | --------- | -------- |
-| LinkName | Text | String    | LinkName |
-| LinkUrl  | Text | String    | LinkUrl  |
-| Account  | Text | String    | Account  |
-| Password | Text | String    | Password |
+| Column   | Excel Type | .NET Type | Caption  |
+| -------- | ---------- | --------- | -------- |
+| LinkName | Text       | String    | LinkName |
+| LinkUrl  | Text       | String    | LinkUrl  |
+| Account  | Text       | String    | Account  |
+| Password | Text       | String    | Password |
 
 ## Graphics Format
 

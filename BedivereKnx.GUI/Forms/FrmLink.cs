@@ -5,7 +5,7 @@ namespace BedivereKnx.GUI.Forms
     public partial class FrmLink : Form
     {
 
-        private readonly KnxSystem.KnxSystem knx = Globals.KS!;
+        private readonly KnxSystem knx = Globals.KS!;
 
         public FrmLink()
         {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using Knx.Falcon;
-using BedivereKnx.KnxSystem;
+using BedivereKnx.Models;
 
 namespace BedivereKnx.GUI.Controls
 {
@@ -103,7 +103,10 @@ namespace BedivereKnx.GUI.Controls
 
         private void Btn_Click(object? sender, EventArgs e)
         {
-            KnxObject?.Switch(); //开关切换
+            if (KnxObject is KnxLight light)
+            {
+                light?.SwitchControl(); //开关切换
+            }
         }
 
         /// <summary>

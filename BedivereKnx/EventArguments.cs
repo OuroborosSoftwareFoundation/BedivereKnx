@@ -1,5 +1,5 @@
-﻿using BedivereKnx.KnxSystem;
-using Knx.Falcon;
+﻿using Knx.Falcon;
+using BedivereKnx.Models;
 
 namespace BedivereKnx
 {

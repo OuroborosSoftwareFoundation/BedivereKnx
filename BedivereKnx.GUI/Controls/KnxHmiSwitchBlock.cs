@@ -1,5 +1,5 @@
-﻿using BedivereKnx.KnxSystem;
-using Knx.Falcon;
+﻿using Knx.Falcon;
+using BedivereKnx.Models;
 
 namespace BedivereKnx.GUI.Controls
 {
@@ -7,24 +7,24 @@ namespace BedivereKnx.GUI.Controls
     internal partial class KnxHmiSwitchBlock : UserControl, IDefaultSize
     {
 
-        private readonly KnxObject? knxObject; //KNX对象
+        private readonly KnxLight? knxLight; //KNX对象
 
         public static int DefaultWidth => 200;
 
         public static int DefaultHeight => 200;
 
-        internal KnxHmiSwitchBlock(KnxObject obj)
+        internal KnxHmiSwitchBlock(KnxLight light)
         {
-            knxObject = obj;
-            knxObject[KnxObjectPart.SwitchFeedback].GroupValueChanged += OnGroupValueChanged;
+            knxLight = light;
+            knxLight[KnxObjectPart.SwitchFeedback].GroupValueChanged += OnGroupValueChanged;
             InitializeComponent();
-            if (string.IsNullOrWhiteSpace(knxObject?.Name))
+            if (string.IsNullOrWhiteSpace(knxLight?.Name))
             {
-                lblName.Text = knxObject?.Code;
+                lblName.Text = knxLight?.Code;
             }
             else
             {
-                lblName.Text = knxObject?.Name;
+                lblName.Text = knxLight?.Name;
             }
         }
 
@@ -41,14 +41,14 @@ namespace BedivereKnx.GUI.Controls
 
         private void BtnOn_Click(object sender, EventArgs e)
         {
-            if (knxObject is null) return;
-            knxObject.Switch(true);
+            if (knxLight is null) return;
+            knxLight.SwitchControl(true);
         }
 
         private void BtnOff_Click(object sender, EventArgs e)
         {
-            if (knxObject is null) return;
-            knxObject.Switch(false);
+            if (knxLight is null) return;
+            knxLight.SwitchControl(false);
         }
 
     }

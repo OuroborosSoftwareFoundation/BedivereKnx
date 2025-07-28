@@ -1,4 +1,4 @@
-﻿using BedivereKnx.KnxSystem;
+﻿using BedivereKnx.Models;
 
 namespace BedivereKnx.GUI.Forms
 {

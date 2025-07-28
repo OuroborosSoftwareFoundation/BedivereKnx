@@ -1,7 +1,7 @@
-﻿using Knx.Falcon;
-using System.Data;
+﻿using System.Data;
+using Knx.Falcon;
 
-namespace BedivereKnx.KnxSystem
+namespace BedivereKnx.Models
 {
 
     /// <summary>
@@ -108,7 +108,7 @@ namespace BedivereKnx.KnxSystem
             }
             TimeOnlyHM now = new(DateTime.Now); //只包含时分的当前时间
             EventTrigger(now); //触发当前时刻的事件
-            if ((now.Hour == 0) && (now.Minute == 0)) //0点整刷新整个表的“已触发”字段
+            if (now.Hour == 0 && now.Minute == 0) //0点整刷新整个表的“已触发”字段
             {
                 foreach (DataRow dr in Sequence.Table.Rows)
                 {
@@ -127,7 +127,7 @@ namespace BedivereKnx.KnxSystem
             {
                 DataRow dr = Sequence.Table.Rows[i]; //当前行
                 TimeOnlyHM trgTime = dr.Field<TimeOnlyHM>("TriggerTime"); //触发时间
-                if (dr.Field<bool>("Enable") && (time == trgTime))
+                if (dr.Field<bool>("Enable") && time == trgTime)
                 {
                     GroupValue? val = dr.Field<GroupValue>("Value");
                     if (val != null)

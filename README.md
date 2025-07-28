@@ -27,6 +27,22 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 
 本软件使用Excel表格存储数据，下面是数据格式说明(下划线的数据类型来自于Knx.Falcon库)：
 
+### 区域 Areas
+
+此表存储KNX区域信息。
+
+| 列			     | 类型                | .NET类型  | 说明      |
+| -------------- | ------------------- | -------- | --------- |
+| MainAreaCode	 | Text                | String   | 主区域编号 |
+| MainAreaName   | Text                | String   | 主区域名称 |
+| MiddleAreaCode | Text                | String   | 中区域编号 |
+| MiddleAreaName | Text                | String   | 中区域名称 |
+| SubAreaCode    | Text                | String   | 子区域编号 |
+| SubAreaName    | Text                | String   | 子区域名称 |
+| AreaCode       | General<sup>1</sup> | String   | 区域编号   |
+
+- <sup>1</sup> AreaCode列通过公式自动填充，格式为`MainAreaCode.MiddleAreaCode.SubAreaCode`。
+
 ### 接口 Interfaces
 
 此表用于存储KNX系统的接口，留空即全部使用KNX广播路由接口 `224.0.23.12:3671`。
@@ -45,22 +61,6 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 - <sup>1</sup> KNX接口类型，IpRouting、IpTunneling、Usb。
 - <sup>2</sup> FALSE/TRUE序列。
 
-### 区域 Areas
-
-此表存储KNX区域信息。
-
-| 列	             | 类型                | .NET类型  | 说明      |
-| -------------- | ------------------- | -------- | --------- |
-| MainAreaCode	 | Text                | String   | 主区域编号 |
-| MainAreaName   | Text                | String   | 主区域名称 |
-| MiddleAreaCode | Text                | String   | 中区域编号 |
-| MiddleAreaName | Text                | String   | 中区域名称 |
-| SubAreaCode    | Text                | String   | 子区域编号 |
-| SubAreaName    | Text                | String   | 子区域名称 |
-| AreaCode       | General<sup>1</sup> | String   | 区域编号   |
-
-- <sup>1</sup> AreaCode列通过公式自动填充，格式为`MainAreaCode.MiddleAreaCode.SubAreaCode`。
-
 ### 对象 Objects
 
 此表存储KNX系统中的对象信息，每个对象均有开关控制、开关反馈、数值控制、数值反馈4个组。
@@ -70,7 +70,7 @@ KNX智能照明控制软件，基于Knx.Falcon.Sdk。
 | AreaCode<sup>1</sup>              | Text                             | String                               | 区域编号      |
 | InterfaceCode<sup>2</sup>         | Text                             | String                               | 接口编号      |
 | ObjectCode                        | Text                             | String                               | 对象编号      |
-| ObjectType                        | *Sequence*                       | *KnxObjectType*<sup>3</sup>           | 对象类型      |
+| ObjectType                        | *Sequence*                       | *KnxObjectType*<sup>3</sup>          | 对象类型      |
 | ObjectName                        | Text                             | String                               | 对象名称      |
 | SwitchDpt                         | *Sequence*<sup>4</sup>           | <ins>*DptBase*</ins>                 | 开关-地址类型 |
 | SwitchCtlAddr                     | Text                             | <ins>*GroupAddress*</ins>            | 开关-控制地址 |

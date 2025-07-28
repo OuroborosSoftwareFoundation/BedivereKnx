@@ -1,13 +1,13 @@
-﻿using BedivereKnx.GUI.Controls;
-using BedivereKnx.KnxSystem;
-using System.Data;
+﻿using System.Data;
+using BedivereKnx.Models;
+using BedivereKnx.GUI.Controls;
 
 namespace BedivereKnx.GUI.Forms
 {
     public partial class FrmMainPanel : Form
     {
 
-        private readonly KnxSystem.KnxSystem knx = Globals.KS!;
+        private readonly KnxSystem knx = Globals.KS!;
 
         private readonly List<KnxHmiSwitchBlock> listSwitch = [];
 
@@ -56,16 +56,15 @@ namespace BedivereKnx.GUI.Forms
             {
                 switch (obj.Type)
                 {
-                    case KnxObjectType.Switch:
-                        listSwitch.Add(new(obj) { Dock= DockStyle.Fill});
-                        break;
-                    case KnxObjectType.Dimming:
+                    case KnxObjectType.Light:
+                        //【区分调光】
+                        //listSwitch.Add(new(obj) { Dock= DockStyle.Fill});
                         break;
                     case KnxObjectType.Curtain:
                         break;
                     case KnxObjectType.Value:
                         break;
-                    case KnxObjectType.EnableCtl:
+                    case KnxObjectType.Enablement:
                         break;
                     default:
                         continue;
