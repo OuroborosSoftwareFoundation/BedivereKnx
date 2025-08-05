@@ -1,6 +1,6 @@
 ﻿namespace BedivereKnx.GUI.Controls
 {
-    partial class KnxHmiSwitchBlock
+    partial class KnxHmiLightBlock
     {
         /// <summary> 
         /// 必需的设计器变量。
@@ -29,50 +29,44 @@
         private void InitializeComponent()
         {
             picFdb = new PictureBox();
-            lblName = new Label();
-            tableLayoutPanel1 = new TableLayoutPanel();
+            tlpButtons = new TableLayoutPanel();
             btnOn = new Button();
             brnOff = new Button();
             ((System.ComponentModel.ISupportInitialize)picFdb).BeginInit();
-            tableLayoutPanel1.SuspendLayout();
+            tlpButtons.SuspendLayout();
             SuspendLayout();
+            // 
+            // lblName
+            // 
+            lblName.Location = new Point(1, 156);
+            lblName.Size = new Size(195, 40);
             // 
             // picFdb
             // 
             picFdb.Dock = DockStyle.Fill;
-            picFdb.Image = Resources.Images.Img_BulbOn;
-            picFdb.Location = new Point(0, 0);
+            picFdb.Image = Resources.Images.Img_BulbNull;
+            picFdb.Location = new Point(1, 1);
             picFdb.Name = "picFdb";
-            picFdb.Size = new Size(136, 156);
+            picFdb.Size = new Size(135, 155);
             picFdb.SizeMode = PictureBoxSizeMode.Zoom;
             picFdb.TabIndex = 0;
             picFdb.TabStop = false;
             // 
-            // lblName
+            // tlpButtons
             // 
-            lblName.BorderStyle = BorderStyle.FixedSingle;
-            lblName.Dock = DockStyle.Bottom;
-            lblName.Location = new Point(0, 156);
-            lblName.Name = "lblName";
-            lblName.Size = new Size(196, 40);
-            lblName.TabIndex = 1;
-            lblName.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Controls.Add(btnOn, 0, 0);
-            tableLayoutPanel1.Controls.Add(brnOff, 0, 1);
-            tableLayoutPanel1.Dock = DockStyle.Right;
-            tableLayoutPanel1.Location = new Point(136, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(60, 156);
-            tableLayoutPanel1.TabIndex = 2;
+            tlpButtons.ColumnCount = 1;
+            tlpButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tlpButtons.Controls.Add(btnOn, 0, 0);
+            tlpButtons.Controls.Add(brnOff, 0, 1);
+            tlpButtons.Dock = DockStyle.Right;
+            tlpButtons.Location = new Point(136, 1);
+            tlpButtons.Name = "tlpButtons";
+            tlpButtons.RowCount = 2;
+            tlpButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlpButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlpButtons.Size = new Size(60, 155);
+            tlpButtons.TabIndex = 2;
             // 
             // btnOn
             // 
@@ -81,7 +75,7 @@
             btnOn.FlatStyle = FlatStyle.Flat;
             btnOn.Location = new Point(3, 3);
             btnOn.Name = "btnOn";
-            btnOn.Size = new Size(54, 72);
+            btnOn.Size = new Size(54, 71);
             btnOn.TabIndex = 0;
             btnOn.Text = "On";
             btnOn.UseVisualStyleBackColor = false;
@@ -92,7 +86,7 @@
             brnOff.BackColor = Color.MistyRose;
             brnOff.Dock = DockStyle.Fill;
             brnOff.FlatStyle = FlatStyle.Flat;
-            brnOff.Location = new Point(3, 81);
+            brnOff.Location = new Point(3, 80);
             brnOff.Name = "brnOff";
             brnOff.Size = new Size(54, 72);
             brnOff.TabIndex = 1;
@@ -100,27 +94,29 @@
             brnOff.UseVisualStyleBackColor = false;
             brnOff.Click += BtnOff_Click;
             // 
-            // KnxHmiSwitchBlock
+            // KnxHmiLightBlock
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Window;
             BorderStyle = BorderStyle.Fixed3D;
             Controls.Add(picFdb);
-            Controls.Add(tableLayoutPanel1);
-            Controls.Add(lblName);
+            Controls.Add(tlpButtons);
             MinimumSize = new Size(100, 100);
-            Name = "KnxHmiSwitchBlock";
+            Name = "KnxHmiLightBlock";
+            Padding = new Padding(1, 1, 0, 0);
             Size = new Size(196, 196);
+            Controls.SetChildIndex(lblName, 0);
+            Controls.SetChildIndex(tlpButtons, 0);
+            Controls.SetChildIndex(picFdb, 0);
             ((System.ComponentModel.ISupportInitialize)picFdb).EndInit();
-            tableLayoutPanel1.ResumeLayout(false);
+            tlpButtons.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
         private PictureBox picFdb;
-        private Label lblName;
-        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel tlpButtons;
         private Button btnOn;
         private Button brnOff;
     }

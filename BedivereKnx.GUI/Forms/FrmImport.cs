@@ -12,6 +12,10 @@ namespace BedivereKnx.GUI.Forms
         public FrmImport()
         {
             InitializeComponent();
+        }
+
+        private void FrmImport_Load(object sender, EventArgs e)
+        {
             OpenFileDialog ofd = new()
             {
                 Title = Resources.Strings.Dlg_OpenDataFile,
@@ -24,6 +28,10 @@ namespace BedivereKnx.GUI.Forms
                 EtsFileReader reader = new(ofd.FileName, EtsGaFileType.CSV);
                 DataTable dt = reader.ToMiddleTable();
                 dgvMain.DataSource = TransfromGaTable(dt);
+            }
+            else
+            {
+                this.Close();
             }
         }
 

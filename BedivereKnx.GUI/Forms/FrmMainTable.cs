@@ -1,6 +1,5 @@
-﻿using BedivereKnx.GUI.Extensions;
+﻿using Knx.Falcon;
 using BedivereKnx.Models;
-using Knx.Falcon;
 
 namespace BedivereKnx.GUI.Forms
 {
@@ -8,7 +7,7 @@ namespace BedivereKnx.GUI.Forms
     public partial class FrmMainTable : Form
     {
 
-        private readonly KnxSystem knx = Globals.KS!;
+        private readonly KnxSystem knx = Globals.KnxSys!;
         private DataGridView? curColFilterDgv; //当前进行列筛选的dgv
 
         public FrmMainTable()
@@ -459,6 +458,20 @@ namespace BedivereKnx.GUI.Forms
         }
 
         #endregion
+
+        #region 接口
+
+        private void btnInterface_Click(object sender, EventArgs e)
+        {
+            new FrmInterface().ShowOrFront();
+        }
+
+        #endregion
+
+        private void btnLink_Click(object sender, EventArgs e)
+        {
+            new FrmLink().ShowOrFront();
+        }
 
         #region 日志
 

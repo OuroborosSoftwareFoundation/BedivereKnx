@@ -23,9 +23,7 @@
 //   你理当已收到一份GNU通用公共许可协议的副本。
 //   如果没有，请查阅 <http://www.gnu.org/licenses/> 
 
-using System.Globalization;
 using System.Reflection;
-using System.Resources;
 
 namespace BedivereKnx.GUI
 {
@@ -34,6 +32,7 @@ namespace BedivereKnx.GUI
     //  0   正常
     //  1   授权到期
     //  2   调整授权
+    //  3   登陆密码错误
     // -1   授权无效
     // -2   授权无效且非法进入主界面
     // -3   授权时间检测异常
@@ -56,7 +55,7 @@ namespace BedivereKnx.GUI
             //单实例检查：
             if (!mutex.WaitOne(TimeSpan.Zero, true))
             {
-                MessageBox.Show(Resources.Strings.Ex_Singleton, assemblyName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.Strings.MsgEx_Singleton, assemblyName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -88,6 +87,8 @@ namespace BedivereKnx.GUI
             //ResourceManager resource = new("BedivereKnx.GUI.Resources.Strings", Assembly.GetExecutingAssembly());
             //string p=Environment.GetFolderPath( Environment.SpecialFolder.CommonApplicationData);
             //MessageBox.Show(p);
+            //List<string?> l = [null, "A", "324", "VK3E"];
+            //MessageBox.Show(string.Join(',',l.ToArray()));
 
             //==============================测试内容================================
 
@@ -124,8 +125,17 @@ namespace BedivereKnx.GUI
             {
                 frmStartup.Invoke((Action)(() =>
                 {
-                    Forms.FrmMain mainForm = new();
                     frmStartup.Close();
+                    if (Globals.AppConfig.HasLoginPwd)
+                    {
+                        Forms.FrmLogin frmLogin = new();
+                        if (frmLogin.ShowDialog() != DialogResult.Yes)
+                        {
+                            MessageBox.Show(Resources.Strings.Msg_LoginFail, "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            Environment.Exit(3);
+                        }
+                    }
+                    Forms.FrmMain mainForm = new();
                     mainForm.Show();
                 }));
             }, TaskScheduler.FromCurrentSynchronizationContext());

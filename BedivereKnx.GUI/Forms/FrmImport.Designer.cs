@@ -54,6 +54,7 @@
             Name = "FrmImport";
             ShowIcon = false;
             Text = "Import";
+            Load += FrmImport_Load;
             ((System.ComponentModel.ISupportInitialize)dgvMain).EndInit();
             ResumeLayout(false);
         }

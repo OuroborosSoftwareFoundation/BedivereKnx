@@ -22,7 +22,7 @@ namespace BedivereKnx.GUI.Forms
                     AuthInfo authInfo = new(input);
                     if (authInfo.CreateFile())
                     {
-                        MessageBox.Show(Resources.Strings.Info_AuthSuccess, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(Resources.Strings.Msg_AuthSuccess, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)
@@ -36,7 +36,7 @@ namespace BedivereKnx.GUI.Forms
                 {
                     if (Globals.AuthInfo!.Update(input))
                     {
-                        MessageBox.Show(Resources.Strings.Info_AuthSuccess, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(Resources.Strings.Msg_AuthSuccess, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)

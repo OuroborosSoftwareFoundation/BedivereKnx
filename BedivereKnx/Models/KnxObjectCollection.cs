@@ -31,36 +31,10 @@ namespace BedivereKnx.Models
         /// </summary>
         private readonly DataTable Table;
 
-        ///// <summary>
-        ///// 灯光DataView
-        ///// </summary>
-        //public DataView Lights => new(Table, $"Type={(int)KnxObjectType.Light}", null, DataViewRowState.CurrentRows);
-
-
-
         /// <summary>
         /// 对象数量
         /// </summary>
         public int Count => items.Count;
-
-        //public Dictionary<int, KnxLight> Lights =>
-        //    items.Where(kv => kv.Value is KnxLight)
-        //         .ToDictionary(kv => kv.Key, kv => (KnxLight)kv.Value);
-
-        //public Dictionary<int, KnxEnablement> Enablements =>
-        //    items.Where(kv => kv.Value is KnxEnablement)
-        //         .ToDictionary(kv => kv.Key, kv => (KnxEnablement)kv.Value);
-
-        //public Dictionary<int, KnxScene> Scenes =>
-        //    items.Where(kv => kv.Value is KnxScene)
-        //         .ToDictionary(kv => kv.Key, kv => (KnxScene)kv.Value);
-
-        //public Dictionary<Type, Dictionary<int, KnxObject>> TypedDictionary =>
-        //    items.GroupBy(kv => kv.Value.GetType())
-        //         .ToDictionary(
-        //            group => group.Key,
-        //            group => group.ToDictionary(kv => kv.Key, kv => kv.Value)
-        //         );
 
         ///// <summary>
         ///// 新建KNX对象集合
@@ -368,7 +342,27 @@ namespace BedivereKnx.Models
         }
 
         /// <summary>
-        /// 接收报文事件，由KnxSystem中的_GroupMessageReceived触发
+        /// 按T进行筛选，并按照Code进行分组生成Dictionary
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="areaCode">区域编号</param>
+        /// <param name="groupChar">分组字符，会根据Code属性最后一个分组字符进行分组</param>
+        /// <returns></returns>
+        public Dictionary<string, List<T>> GetGroupDic<T>(string areaCode, char groupChar = '_') where T : KnxObject
+        {
+            return this
+                .OfType<T>() //筛选T类型
+                .Where(obj => !string.IsNullOrWhiteSpace(obj.AreaCode) && obj.AreaCode.StartsWith(areaCode))
+                .GroupBy(obj =>
+                {
+                    int i = obj.Code.LastIndexOf(groupChar); //最后一个分组字符的位置，小于0为找不到
+                    return i < 0 ? obj.Code : obj.Code[..i]; //分组依据
+                })
+                .ToDictionary(kv => kv.Key, kv => kv.ToList()); //生成字典
+        }
+
+        /// <summary>
+        /// 接收报文事件，由KnxSystem中的OnGroupMessageReceived触发
         /// 接收报文并将其写入包含的KnxGroup对象中
         /// </summary>
         /// <param name="groupAddress"></param>
@@ -376,9 +370,12 @@ namespace BedivereKnx.Models
         public void ReceiveGroupMessage(GroupAddress groupAddress, GroupValue groupValue)
         {
             KnxObjectPart[] parts = [KnxObjectPart.SwitchFeedback, KnxObjectPart.ValueFeedback];
-            var groups = items.Values.SelectMany(obj => parts.Where(p => obj.ContainsPart(p))
-                                                    .Select(p => obj[p]))
-                            .Where(g => g.Address == groupAddress); //查出包含组地址的KnxGroup对象
+            var groups = items.Values
+                .SelectMany(obj =>
+                    parts.Where(p => obj.ContainsPart(p))
+                         .Select(p => obj[p])
+                )
+                .Where(g => g.Address == groupAddress); //查出包含组地址的KnxGroup对象
             foreach (KnxGroup group in groups)
             {
                 group.Value = groupValue; //设置KnxGroup对象中的值
@@ -450,3 +447,27 @@ namespace BedivereKnx.Models
     }
 
 }
+
+///// <summary>
+///// 灯光DataView
+///// </summary>
+//public DataView Lights => new(Table, $"Type={(int)KnxObjectType.Light}", null, DataViewRowState.CurrentRows);
+
+//public Dictionary<int, KnxLight> Lights =>
+//    items.Where(kv => kv.Value is KnxLight)
+//         .ToDictionary(kv => kv.Key, kv => (KnxLight)kv.Value);
+
+//public Dictionary<int, KnxEnablement> Enablements =>
+//    items.Where(kv => kv.Value is KnxEnablement)
+//         .ToDictionary(kv => kv.Key, kv => (KnxEnablement)kv.Value);
+
+//public Dictionary<int, KnxScene> Scenes =>
+//    items.Where(kv => kv.Value is KnxScene)
+//         .ToDictionary(kv => kv.Key, kv => (KnxScene)kv.Value);
+
+//public Dictionary<Type, Dictionary<int, KnxObject>> TypedDictionary =>
+//    items.GroupBy(kv => kv.Value.GetType())
+//         .ToDictionary(
+//            group => group.Key,
+//            group => group.ToDictionary(kv => kv.Key, kv => kv.Value)
+//         );

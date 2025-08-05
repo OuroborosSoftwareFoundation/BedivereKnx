@@ -145,11 +145,29 @@
   <data name="Img_Bedivere3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Images\Img_Bedivere3.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Img_BulbNull" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\Img_BulbNull.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Img_BulbOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Images\Img_BulbOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Img_BulbOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Images\Img_BulbOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Img_EnLock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\Img_EnLock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Img_EnNull" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\Img_EnNull.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Img_EnOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\Img_EnOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Img_EnOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\Img_EnOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Img_EnUnlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\Img_EnUnlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Img_StartUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Images\Img_StartUp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

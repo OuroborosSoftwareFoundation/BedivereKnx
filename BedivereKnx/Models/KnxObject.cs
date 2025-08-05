@@ -193,6 +193,7 @@ namespace BedivereKnx.Models
                 GroupValue? val = group.ToGroupValue(value);
                 if (val != null)
                 {
+                    groups[part].Value= val;
                     KnxGroupEventArgs gwa = new(InterfaceCode, groups[part].Address, priority);
                     WriteRequest?.Invoke(gwa, val);
                 }
@@ -205,26 +206,35 @@ namespace BedivereKnx.Models
         /// <param name="value"></param>
         protected void SwitchControl(bool? value = null)
         {
+            if (!this.ContainsPart(KnxObjectPart.SwitchControl)) return; //不包含开关控制部分，跳过
             if (this[KnxObjectPart.SwitchControl].DPT.MainNumber != 1) return;
-            bool valueCtl; //实际控制值
+            bool ctlValue; //实际控制值
             if (value is null) //控制值为空，切换开关状态
             {
-                if (this[KnxObjectPart.SwitchFeedback].DPT.MainNumber != 1) return;
-                GroupValue? fdb = this[KnxObjectPart.SwitchFeedback].Value;
-                if (fdb is null) //反馈为空，说明开关状态不确定
+                GroupValue? fdbValue;
+                if (this.ContainsPart(KnxObjectPart.SwitchFeedback)) //存在开关反馈的情况
                 {
-                    valueCtl = true; //默认为开
+                    if (this[KnxObjectPart.SwitchFeedback].DPT.MainNumber != 1) return;
+                    fdbValue = this[KnxObjectPart.SwitchFeedback].Value;
+                }
+                else //不存在开关反馈的情况，用开关控制做反馈
+                {
+                    fdbValue = this[KnxObjectPart.SwitchControl].Value;
+                }
+                if (fdbValue is null) //反馈为空，说明开关状态不确定
+                {
+                    ctlValue = true; //默认为开
                 }
                 else
                 {
-                    valueCtl = fdb.Equals(new GroupValue(false)); //翻转反馈值
+                    ctlValue = fdbValue.Equals(new GroupValue(false)); //翻转反馈值
                 }
             }
             else
             {
-                valueCtl = (bool)value;
+                ctlValue = (bool)value;
             }
-            WriteValue(KnxObjectPart.SwitchControl, valueCtl);
+            WriteValue(KnxObjectPart.SwitchControl, ctlValue);
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
-﻿using System.Data;
-using BedivereKnx.Models;
+﻿using BedivereKnx.Models;
 using BedivereKnx.GUI.Controls;
 
 namespace BedivereKnx.GUI.Forms
@@ -7,9 +6,10 @@ namespace BedivereKnx.GUI.Forms
     public partial class FrmMainPanel : Form
     {
 
-        private readonly KnxSystem knx = Globals.KS!;
-
-        private readonly List<KnxHmiSwitchBlock> listSwitch = [];
+        private readonly KnxSystem knx = Globals.KnxSys!;
+        private Dictionary<string, List<KnxObject>> currentDic = [];
+        //private readonly List<KnxHmiLightBlock> listSwitch = [];
+        private List<KnxHmiBlockBase> currentControls = [];
 
         public FrmMainPanel()
         {
@@ -17,16 +17,6 @@ namespace BedivereKnx.GUI.Forms
             AreaTreeInit();
 
         }
-
-        private void tvArea_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            if (e.Node is null) return;
-            ShowAreaPanel(e.Node.Name);
-        }
-
-
-
-
 
         /// <summary>
         /// 初始化树形结构
@@ -47,59 +37,153 @@ namespace BedivereKnx.GUI.Forms
             }
         }
 
-        private void ShowAreaPanel(string area)
+        /// <summary>
+        /// 区域选择
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tvArea_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (!area.Contains('.')) return;
-            List<KnxObject> objs = knx.Objects.Where(obj => !string.IsNullOrWhiteSpace(obj.AreaCode) && obj.AreaCode.StartsWith(area)).ToList();
-            listSwitch.Clear();
-            foreach (KnxObject obj in objs)
+            if (e.Node is null) return;
+            this.SuspendLayout();
+            if (e.Node.Level >= 2)
+            {
+                currentDic = knx.Objects.GetGroupDic<KnxObject>(e.Node.Name);
+                lstGroup.DataSource = currentDic.Keys.ToList(); //填充分组ListBox
+                List<KnxObject> list = knx.Objects
+                    .Where(obj => obj.AreaCode == e.Node.Name)
+                    .ToList();
+                currentControls = ObjToControl(list); //控件列表
+                PanelInit<KnxHmiBlockBase>(tlpSwitch, currentControls);
+            }
+            this.ResumeLayout();
+        }
+
+        /// <summary>
+        /// 编组选择
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lstGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            return;
+            //if (lstGroup.SelectedItem is null) return;
+            //string? grpName = lstGroup.SelectedItem.ToString();
+            //if (string.IsNullOrWhiteSpace(grpName)) return;
+            //List<KnxObject> list = currentDic[grpName];
+            //listSwitch.Clear();
+            //foreach (KnxObject obj in list)
+            //{
+            //    switch (obj.Type)
+            //    {
+            //        case KnxObjectType.Light:
+            //            //【区分调光】
+            //            listSwitch.Add(new((KnxLight)obj) { Dock = DockStyle.Fill });
+            //            break;
+            //        case KnxObjectType.Curtain:
+            //            break;
+            //        case KnxObjectType.Value:
+            //            break;
+            //        case KnxObjectType.Enablement:
+            //            break;
+            //        default:
+            //            continue;
+            //    }
+            //}
+            ////MessageBox.Show(listSwitch.Count.ToString());
+            ////pnlSwitch_Resize(pnlSwitch, EventArgs.Empty);
+            //PanelInit(tlpSwitch, listSwitch);
+
+        }
+
+        /// <summary>
+        /// KNX对象列表转控件列表
+        /// </summary>
+        /// <param name="objList"></param>
+        /// <returns></returns>
+        private static List<KnxHmiBlockBase> ObjToControl(List<KnxObject> objList)
+        {
+            if (objList is null) return [];
+            List<KnxHmiBlockBase> ctlList = [];
+            foreach (KnxObject obj in objList)
             {
                 switch (obj.Type)
                 {
                     case KnxObjectType.Light:
                         //【区分调光】
-                        //listSwitch.Add(new(obj) { Dock= DockStyle.Fill});
+                        KnxHmiLightBlock lgt = new((KnxLight)obj)
+                        {
+                            Dock = DockStyle.Fill,
+                        };
+                        ctlList.Add(lgt);
                         break;
                     case KnxObjectType.Curtain:
+
                         break;
                     case KnxObjectType.Value:
+
                         break;
                     case KnxObjectType.Enablement:
+                        KnxHmiEnableBlock en = new((KnxEnablement)obj)
+                        {
+                            Dock = DockStyle.Fill,
+                        };
+                        ctlList.Add(en);
                         break;
                     default:
                         continue;
                 }
             }
-            //MessageBox.Show(listSwitch.Count.ToString());
-            //pnlSwitch_Resize(pnlSwitch, EventArgs.Empty);
-            PanelInit(tlpSwitch, listSwitch);
+            return ctlList;
         }
 
+        /// <summary>
+        /// 加载控件列表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="tlp"></param>
+        /// <param name="list"></param>
         private void PanelInit<T>(TableLayoutPanel tlp, List<T> list)
-            where T : Control, IDefaultSize
+            where T : KnxHmiBlockBase, IDefaultSize
         {
-            tlp.Controls.Clear();
-            tlp.ColumnCount = (int)Math.Floor((double)tlp.Width / T.DefaultWidth); //列的数量
+            //int colCount = (int)Math.Floor((double)tlpMain.Width / T.DefaultWidth); //列的数量
+            //int rowCount = (int)Math.Ceiling((double)list.Count / tlp.ColumnCount); //行的数量
+
+            tlp.SuspendLayout(); //停止控件刷新
+            tlp.Controls.Clear(); //清除原有控件
+            tlp.ColumnCount = (int)Math.Floor((double)tlpMain.Width / T.DefaultWidth); //列的数量
+            tlp.RowStyles.Clear();
             tlp.ColumnStyles.Clear();
             for (int c = 0; c < tlp.ColumnCount; c++)
             {
                 tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100)); //设定列的样式
             }
             tlp.RowCount = (int)Math.Ceiling((double)list.Count / tlp.ColumnCount); //行的数量
-            tlp.RowStyles.Clear();
             for (int r = 0; r < tlp.RowCount; r++)
             {
                 tlp.RowStyles.Add(new RowStyle(SizeType.Absolute, T.DefaultHeight)); //设定行的样式
             }
-            foreach (T control in list)
+            tlp.RowCount += 1;
+            //tlp.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            //Debug.Print($"RowCount:{tlp.RowCount}, ColumnCount: {tlp.ColumnCount}");
+            for (int i = 0; i < list.Count; i++)
             {
-                tlp.Controls.Add(control);
+                int rId = i / tlp.ColumnCount;
+                int cId = i % tlp.ColumnCount;
+                tlp.Controls.Add(list[i], cId, rId);
+                //Debug.Print($"row={tlp.GetRow(list[i])}, col={tlp.GetColumn(list[i])}");
             }
+            tlp.ResumeLayout(); //恢复控件刷新
         }
 
+        /// <summary>
+        /// tlp尺寸改变
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tlpSwitch_Resize(object sender, EventArgs e)
         {
-            PanelInit(tlpSwitch, listSwitch);
+            PanelInit(tlpSwitch, currentControls);
         }
 
     }

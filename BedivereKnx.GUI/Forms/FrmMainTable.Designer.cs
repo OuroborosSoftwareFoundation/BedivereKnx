@@ -376,12 +376,14 @@
             resources.ApplyResources(btnInterface, "btnInterface");
             btnInterface.Name = "btnInterface";
             btnInterface.UseVisualStyleBackColor = true;
+            btnInterface.Click += btnInterface_Click;
             // 
             // btnLink
             // 
             resources.ApplyResources(btnLink, "btnLink");
             btnLink.Name = "btnLink";
             btnLink.UseVisualStyleBackColor = true;
+            btnLink.Click += btnLink_Click;
             // 
             // tlpTool
             // 

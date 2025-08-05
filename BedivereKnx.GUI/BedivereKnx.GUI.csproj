@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>0.7.2</Version>
+    <Version>0.7.3</Version>
     <ApplicationIcon>Icon_BedivereKnx.ico</ApplicationIcon>
     <Title>$(AssemblyName)</Title>
     <Authors>BHC666</Authors>

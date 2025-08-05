@@ -10,7 +10,7 @@ namespace BedivereKnx.GUI.Forms
     public partial class FrmMainHmi : Form
     {
 
-        private readonly KnxSystem knx = Globals.KS!;
+        private readonly KnxSystem knx = Globals.KnxSys!;
         private readonly Dictionary<string, HmiPage> hmi = []; //HMI文件数据字典
         private readonly Dictionary<GroupAddress, List<KnxHmiDigitalFdb>>? fdbAddresses = []; //当前页面反馈组地址对应的控件
 

@@ -123,10 +123,10 @@
   <data name="Hdr_IpFamily" xml:space="preserve">
     <value>IP Family</value>
   </data>
-  <data name="Ex_LocalIp" xml:space="preserve">
+  <data name="MsgEx_LocalIp" xml:space="preserve">
     <value>Invalid KNX routing interface local IP '{0}', modify the configuration?</value>
   </data>
-  <data name="Info_AuthSuccess" xml:space="preserve">
+  <data name="Msg_AuthSuccess" xml:space="preserve">
     <value>Authorization successful, please restart the program.</value>
   </data>
   <data name="NetInterface_Up" xml:space="preserve">
@@ -163,13 +163,13 @@
   <data name="Hdr_ScnName" xml:space="preserve">
     <value>Scene Name</value>
   </data>
-  <data name="Ex_FileNotFound" xml:space="preserve">
+  <data name="MsgEx_FileNotFound" xml:space="preserve">
     <value>File not found.</value>
   </data>
-  <data name="Ex_FileFormatInvalid" xml:space="preserve">
+  <data name="MsgEx_FileFormatInvalid" xml:space="preserve">
     <value>Invalid {0} file format.</value>
   </data>
-  <data name="Ex_Singleton" xml:space="preserve">
+  <data name="MsgEx_Singleton" xml:space="preserve">
     <value>The application is already running.</value>
   </data>
   <data name="Hdr_Id" xml:space="preserve">
@@ -216,5 +216,20 @@
   </data>
   <data name="Hdr_ValFdb" xml:space="preserve">
     <value>Value Feedback</value>
+  </data>
+  <data name="Msg_LoginFail" xml:space="preserve">
+    <value>Password error, login failed.</value>
+  </data>
+  <data name="Msg_PwdCurError" xml:space="preserve">
+    <value>Current password error.</value>
+  </data>
+  <data name="Msg_PwdNewDiff" xml:space="preserve">
+    <value>The new password entered twice is different.</value>
+  </data>
+  <data name="Msg_PwdChangeSuccess" xml:space="preserve">
+    <value>Paasword change successfully.</value>
+  </data>
+  <data name="Msg_PwdChangeConfirm" xml:space="preserve">
+    <value>Confirm password change? \nThis configuration will be saved directly.</value>
   </data>
 </root>

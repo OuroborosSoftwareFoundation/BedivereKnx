@@ -88,42 +88,6 @@ namespace BedivereKnx.GUI.Resources {
         }
         
         /// <summary>
-        ///   查找类似 Invalid {0} file format. 的本地化字符串。
-        /// </summary>
-        internal static string Ex_FileFormatInvalid {
-            get {
-                return ResourceManager.GetString("Ex_FileFormatInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 File not found. 的本地化字符串。
-        /// </summary>
-        internal static string Ex_FileNotFound {
-            get {
-                return ResourceManager.GetString("Ex_FileNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Invalid KNX routing interface local IP &apos;{0}&apos;, modify the configuration? 的本地化字符串。
-        /// </summary>
-        internal static string Ex_LocalIp {
-            get {
-                return ResourceManager.GetString("Ex_LocalIp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 The application is already running. 的本地化字符串。
-        /// </summary>
-        internal static string Ex_Singleton {
-            get {
-                return ResourceManager.GetString("Ex_Singleton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Acount Info 的本地化字符串。
         /// </summary>
         internal static string Hdr_Account {
@@ -306,9 +270,90 @@ namespace BedivereKnx.GUI.Resources {
         /// <summary>
         ///   查找类似 Authorization successful, please restart the program. 的本地化字符串。
         /// </summary>
-        internal static string Info_AuthSuccess {
+        internal static string Msg_AuthSuccess {
             get {
-                return ResourceManager.GetString("Info_AuthSuccess", resourceCulture);
+                return ResourceManager.GetString("Msg_AuthSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Password error, login failed. 的本地化字符串。
+        /// </summary>
+        internal static string Msg_LoginFail {
+            get {
+                return ResourceManager.GetString("Msg_LoginFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Confirm password change? \nThis configuration will be saved directly. 的本地化字符串。
+        /// </summary>
+        internal static string Msg_PwdChangeConfirm {
+            get {
+                return ResourceManager.GetString("Msg_PwdChangeConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Paasword change successfully. 的本地化字符串。
+        /// </summary>
+        internal static string Msg_PwdChangeSuccess {
+            get {
+                return ResourceManager.GetString("Msg_PwdChangeSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Current password error. 的本地化字符串。
+        /// </summary>
+        internal static string Msg_PwdCurError {
+            get {
+                return ResourceManager.GetString("Msg_PwdCurError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The new password entered twice is different. 的本地化字符串。
+        /// </summary>
+        internal static string Msg_PwdNewDiff {
+            get {
+                return ResourceManager.GetString("Msg_PwdNewDiff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Invalid {0} file format. 的本地化字符串。
+        /// </summary>
+        internal static string MsgEx_FileFormatInvalid {
+            get {
+                return ResourceManager.GetString("MsgEx_FileFormatInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 File not found. 的本地化字符串。
+        /// </summary>
+        internal static string MsgEx_FileNotFound {
+            get {
+                return ResourceManager.GetString("MsgEx_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Invalid KNX routing interface local IP &apos;{0}&apos;, modify the configuration? 的本地化字符串。
+        /// </summary>
+        internal static string MsgEx_LocalIp {
+            get {
+                return ResourceManager.GetString("MsgEx_LocalIp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The application is already running. 的本地化字符串。
+        /// </summary>
+        internal static string MsgEx_Singleton {
+            get {
+                return ResourceManager.GetString("MsgEx_Singleton", resourceCulture);
             }
         }
         

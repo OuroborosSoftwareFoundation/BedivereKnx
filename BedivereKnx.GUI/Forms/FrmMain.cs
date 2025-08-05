@@ -25,7 +25,7 @@ namespace BedivereKnx.GUI.Forms
                     btnHmi.Enabled = value;
                     if (!value)
                     {
-                        Globals.KS = null;
+                        Globals.KnxSys = null;
                     }
                 }
             }
@@ -34,7 +34,7 @@ namespace BedivereKnx.GUI.Forms
 
         public FrmMain()
         {
-            if (Globals.AuthInfo is null) Environment.Exit(-2); //位置情况绕过授权验证的情况退出
+            if (Globals.AuthInfo is null) Environment.Exit(-2); //未知情况绕过授权验证的情况退出
             InitializeComponent();
             Text = $"{Globals.AssemblyInfo.ProductName} (Ver {Globals.AssemblyInfo.Version})";
             lblAuth.Text = Globals.AuthInfo.Title;
@@ -63,21 +63,21 @@ namespace BedivereKnx.GUI.Forms
                 PingReply reply = ping.Send(lclIp, 500); //测试通讯
                 lclIpErr = (reply.Status != IPStatus.Success);
             }
-#if !DEBUG
+            //#if !DEBUG
             if (lclIpErr) //KNX路由本地IP有故障的情况
             {
-                DialogResult result = MessageBox.Show(string.Format(Resources.Strings.Ex_LocalIp, Globals.AppConfig.LocalIP), "Info", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                DialogResult result = MessageBox.Show(string.Format(Resources.Strings.MsgEx_LocalIp, Globals.AppConfig.LocalIP), "Info", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
                 if (result == DialogResult.OK) //选择修改IP配置的情况
                 {
                     FrmNetworkInfo frmNetworkInfo = new();
                     if (frmNetworkInfo.ShowDialog() == DialogResult.OK)
                     {
                         Globals.AppConfig.LocalIP = frmNetworkInfo.SelectedIp;
-                        Globals.AppConfig.Save(); //保存bendiIP设置
+                        Globals.AppConfig.SaveOne("LocalIp", Globals.AppConfig.LocalIP?.ToString()); //保存本地IP设置
                     }
                 }
             }
-#endif
+            //#endif
             //自动打开默认数据文件：
             string? defaultFile = Globals.AppConfig.DefaultDataFile;
             if (!string.IsNullOrWhiteSpace(defaultFile))
@@ -92,14 +92,14 @@ namespace BedivereKnx.GUI.Forms
         /// <param name="path"></param>
         private void OpenProject(string path)
         {
-            Globals.KS = KnxSystem.FromExcel(path, Globals.AppConfig.LocalIP); //新建KNX系统对象
-            
-            Globals.KS.PollingStatusChanged += Knx_PollingStatusChanged;
-            Globals.KS.Interfaces.ConnectionChanged += Knx_ConnectionChanged;
-            Globals.KS.Interfaces.ConnectionExceptionOccurred += Knx_ConnectionExceptionOccurred;
-            Globals.KS.Schedule.ScheduleTimerStateChanged += Knx_ScdTimerStateChanged;
-            Globals.KS.Interfaces.AllConnect(Globals.AppConfig.InitPolling); //打开全部KNX接口并初始化读取
-            Globals.KS.Schedule.TimerStart(); //启动定时器
+            Globals.KnxSys = KnxSystem.FromExcel(path, Globals.AppConfig.LocalIP); //新建KNX系统对象
+
+            Globals.KnxSys.PollingStatusChanged += Knx_PollingStatusChanged;
+            Globals.KnxSys.Interfaces.ConnectionChanged += Knx_ConnectionChanged;
+            Globals.KnxSys.Interfaces.ConnectionExceptionOccurred += Knx_ConnectionExceptionOccurred;
+            Globals.KnxSys.Schedule.ScheduleTimerStateChanged += Knx_ScdTimerStateChanged;
+            Globals.KnxSys.Interfaces.AllConnect(Globals.AppConfig.InitPolling); //打开全部KNX接口并初始化读取
+            Globals.KnxSys.Schedule.TimerStart(); //启动定时器
             //CloseFormsOfType<FrmMainTable>(); //关闭全部表格子窗体
             ShowSubForm<FrmMainTable>(); //显示表格子窗体
             ProjectOpened = true; //设置为项目已打开状态
@@ -149,8 +149,8 @@ namespace BedivereKnx.GUI.Forms
         /// </summary>
         private void Knx_ConnectionChanged()
         {
-            if (Globals.KS is null) return;
-            KnxInterfaceCollection infs = Globals.KS.Interfaces;
+            if (Globals.KnxSys is null) return;
+            KnxInterfaceCollection infs = Globals.KnxSys.Interfaces;
             slblIfDefault.Visible = (infs.Default.ConnectionState == Knx.Falcon.BusConnectionState.Connected);
             if (infs.Count == 0) //只有默认接口的情况
             {
@@ -303,7 +303,8 @@ namespace BedivereKnx.GUI.Forms
                     pnlMain.Controls.Remove(existingForm);
                 }
             }
-            Globals.KS = null;
+            projectOpened = false; //项目开启状态设置为false
+            //Globals.KS = null;
         }
 
         /// <summary>

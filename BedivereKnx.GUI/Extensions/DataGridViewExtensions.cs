@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Resources;
 
-namespace BedivereKnx.GUI.Extensions
+namespace BedivereKnx.GUI
 {
 
     internal static class DataGridViewExtensions

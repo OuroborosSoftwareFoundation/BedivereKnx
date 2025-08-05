@@ -1,14 +1,13 @@
-﻿using BedivereKnx.GUI.Extensions;
-using BedivereKnx.Models;
+﻿using System.Net.NetworkInformation;
 using Knx.Falcon;
-using System.Net.NetworkInformation;
+using BedivereKnx.Models;
 
 namespace BedivereKnx.GUI.Forms
 {
     public partial class FrmInterface : Form
     {
 
-        private KnxInterfaceCollection inf = Globals.KS!.Interfaces;
+        private readonly KnxInterfaceCollection inf = Globals.KnxSys!.Interfaces;
 
         public FrmInterface()
         {

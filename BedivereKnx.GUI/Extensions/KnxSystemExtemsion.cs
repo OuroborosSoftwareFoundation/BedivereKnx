@@ -3,7 +3,7 @@
 namespace BedivereKnx.GUI
 {
 
-    internal static class KnxSystemExtemsion
+    internal static class KnxSystemExtension
     {
 
         /// <summary>

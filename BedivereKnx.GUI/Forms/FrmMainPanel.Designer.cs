@@ -30,11 +30,9 @@
         {
             tvArea = new TreeView();
             tlpSwitch = new TableLayoutPanel();
-            tabControl1 = new TabControl();
-            tabPage1 = new TabPage();
-            tabPage2 = new TabPage();
-            tabControl1.SuspendLayout();
-            tabPage1.SuspendLayout();
+            lstGroup = new ListBox();
+            tlpMain = new TableLayoutPanel();
+            tlpMain.SuspendLayout();
             SuspendLayout();
             // 
             // tvArea
@@ -49,62 +47,55 @@
             // tlpSwitch
             // 
             tlpSwitch.AutoScroll = true;
-            tlpSwitch.AutoSize = true;
+            tlpSwitch.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tlpSwitch.ColumnCount = 1;
             tlpSwitch.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpSwitch.Dock = DockStyle.Fill;
             tlpSwitch.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tlpSwitch.Location = new Point(184, 6);
+            tlpSwitch.Location = new Point(153, 3);
             tlpSwitch.Name = "tlpSwitch";
             tlpSwitch.RowCount = 1;
             tlpSwitch.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tlpSwitch.Size = new Size(290, 283);
+            tlpSwitch.Size = new Size(676, 547);
             tlpSwitch.TabIndex = 0;
             tlpSwitch.Resize += tlpSwitch_Resize;
             // 
-            // tabControl1
+            // lstGroup
             // 
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(156, 0);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(798, 541);
-            tabControl1.TabIndex = 6;
+            lstGroup.Dock = DockStyle.Fill;
+            lstGroup.FormattingEnabled = true;
+            lstGroup.Location = new Point(3, 3);
+            lstGroup.Name = "lstGroup";
+            lstGroup.Size = new Size(144, 547);
+            lstGroup.TabIndex = 7;
+            lstGroup.SelectedIndexChanged += lstGroup_SelectedIndexChanged;
             // 
-            // tabPage1
+            // tlpMain
             // 
-            tabPage1.Controls.Add(tlpSwitch);
-            tabPage1.Location = new Point(4, 29);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(790, 508);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
-            tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            tabPage2.Location = new Point(4, 29);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(242, 92);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
-            tabPage2.UseVisualStyleBackColor = true;
+            tlpMain.ColumnCount = 2;
+            tlpMain.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150F));
+            tlpMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlpMain.Controls.Add(lstGroup, 0, 0);
+            tlpMain.Controls.Add(tlpSwitch, 1, 0);
+            tlpMain.Dock = DockStyle.Fill;
+            tlpMain.Location = new Point(150, 0);
+            tlpMain.Name = "tlpMain";
+            tlpMain.RowCount = 1;
+            tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlpMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tlpMain.Size = new Size(832, 553);
+            tlpMain.TabIndex = 8;
             // 
             // FrmMainPanel
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(982, 553);
-            Controls.Add(tabControl1);
+            Controls.Add(tlpMain);
             Controls.Add(tvArea);
-            DoubleBuffered = true;
             Name = "FrmMainPanel";
             Text = "FrmMainPanel";
-            tabControl1.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            tabPage1.PerformLayout();
+            tlpMain.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -112,8 +103,7 @@
 
         internal TreeView tvArea;
         private TableLayoutPanel tlpSwitch;
-        private TabControl tabControl1;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
+        private ListBox lstGroup;
+        private TableLayoutPanel tlpMain;
     }
 }

@@ -61,16 +61,16 @@ namespace BedivereKnx.GUI.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (lvNI.CheckedItems.Count == 0) return;
+            if (lvNI.SelectedItems.Count == 0) return;
             SelectedIp = IPAddress.Parse(lvNI.SelectedItems[0].SubItems[1].Text);
             DialogResult = DialogResult.OK;
-            Close();
+            this.Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            Close();
+            this.Close();
         }
 
     }

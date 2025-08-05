@@ -153,6 +153,16 @@ namespace BedivereKnx.GUI.Resources {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Img_BulbNull {
+            get {
+                object obj = ResourceManager.GetObject("Img_BulbNull", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap Img_BulbOff {
             get {
                 object obj = ResourceManager.GetObject("Img_BulbOff", resourceCulture);
@@ -166,6 +176,56 @@ namespace BedivereKnx.GUI.Resources {
         internal static System.Drawing.Bitmap Img_BulbOn {
             get {
                 object obj = ResourceManager.GetObject("Img_BulbOn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Img_EnLock {
+            get {
+                object obj = ResourceManager.GetObject("Img_EnLock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Img_EnNull {
+            get {
+                object obj = ResourceManager.GetObject("Img_EnNull", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Img_EnOff {
+            get {
+                object obj = ResourceManager.GetObject("Img_EnOff", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Img_EnOn {
+            get {
+                object obj = ResourceManager.GetObject("Img_EnOn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Img_EnUnlock {
+            get {
+                object obj = ResourceManager.GetObject("Img_EnUnlock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -19,13 +19,13 @@ namespace BedivereKnx.GUI
             //判断文件是否存在：
             if (!File.Exists(filePath))
             {
-                throw new FileNotFoundException($"{Resources.Strings.Ex_FileNotFound}{Environment.NewLine}{Path.GetFullPath(filePath)}", filePath);
+                throw new FileNotFoundException($"{Resources.Strings.MsgEx_FileNotFound}{Environment.NewLine}{Path.GetFullPath(filePath)}", filePath);
             }
             //验证文件扩展名：
             string extension = Path.GetExtension(filePath).ToLower();
             if (extension != ".drawio")
             {
-                throw new ArgumentException($"{string.Format(Resources.Strings.Ex_FileFormatInvalid, "Drawio")}{Environment.NewLine}{Path.GetFullPath(filePath)}");
+                throw new ArgumentException($"{string.Format(Resources.Strings.MsgEx_FileFormatInvalid, "Drawio")}{Environment.NewLine}{Path.GetFullPath(filePath)}");
             }
             try
             {

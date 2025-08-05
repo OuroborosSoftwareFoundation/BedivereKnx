@@ -123,10 +123,10 @@
   <data name="Hdr_IpFamily" xml:space="preserve">
     <value>IP类型</value>
   </data>
-  <data name="Ex_LocalIp" xml:space="preserve">
+  <data name="MsgEx_LocalIp" xml:space="preserve">
     <value>无效的KNX路由接口本地IP'{0}'，是否修改配置？</value>
   </data>
-  <data name="Info_AuthSuccess" xml:space="preserve">
+  <data name="Msg_AuthSuccess" xml:space="preserve">
     <value>授权成功，请重启程序</value>
   </data>
   <data name="NetInterface_Up" xml:space="preserve">
@@ -163,13 +163,13 @@
   <data name="Hdr_ScnName" xml:space="preserve">
     <value>场景名称</value>
   </data>
-  <data name="Ex_FileNotFound" xml:space="preserve">
+  <data name="MsgEx_FileNotFound" xml:space="preserve">
     <value>文件未找到。</value>
   </data>
-  <data name="Ex_FileFormatInvalid" xml:space="preserve">
+  <data name="MsgEx_FileFormatInvalid" xml:space="preserve">
     <value>无效的{0}文件类型。</value>
   </data>
-  <data name="Ex_Singleton" xml:space="preserve">
+  <data name="MsgEx_Singleton" xml:space="preserve">
     <value>程序已在运行中，请勿重复启动。</value>
   </data>
   <data name="Hdr_Id" xml:space="preserve">
@@ -216,5 +216,20 @@
   </data>
   <data name="Hdr_ValFdb" xml:space="preserve">
     <value>数值反馈</value>
+  </data>
+  <data name="Msg_LoginFail" xml:space="preserve">
+    <value>密码错误，登录失败。</value>
+  </data>
+  <data name="Msg_PwdCurError" xml:space="preserve">
+    <value>当前密码错误。</value>
+  </data>
+  <data name="Msg_PwdNewDiff" xml:space="preserve">
+    <value>新密码两次输入不同。</value>
+  </data>
+  <data name="Msg_PwdChangeSuccess" xml:space="preserve">
+    <value>密码修改成功。</value>
+  </data>
+  <data name="Msg_PwdChangeConfirm" xml:space="preserve">
+    <value>确认修改密码？此配置将直接保存。</value>
   </data>
 </root>

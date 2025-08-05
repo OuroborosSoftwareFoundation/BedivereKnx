@@ -1,11 +1,9 @@
-﻿using BedivereKnx.GUI.Extensions;
-
-namespace BedivereKnx.GUI.Forms
+﻿namespace BedivereKnx.GUI.Forms
 {
     public partial class FrmLink : Form
     {
 
-        private readonly KnxSystem knx = Globals.KS!;
+        private readonly KnxSystem knx = Globals.KnxSys!;
 
         public FrmLink()
         {
