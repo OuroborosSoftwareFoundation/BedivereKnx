@@ -82,7 +82,7 @@ namespace BedivereKnx.GUI
         private string? defaultHmiFile;
 
         /// <summary>
-        /// 登陆密码（密文）
+        /// 登录密码（密文）
         /// </summary>
         internal string? LoginPwd
         {
@@ -99,7 +99,7 @@ namespace BedivereKnx.GUI
         private string? loginPwd;
 
         /// <summary>
-        /// 是否有登陆密码
+        /// 是否有登录密码
         /// </summary>
         internal bool HasLoginPwd => LoginPwd?.TrimEnd('=') != PasswordUtilitity.EmptyEncryptedPassword;
 
@@ -137,7 +137,7 @@ namespace BedivereKnx.GUI
                 defaultHmiFile = dhp;
             }
 
-            //登陆密码(密文)：
+            //登录密码(密文)：
             string? lpwd = ConfigurationManager.AppSettings["LoginPwd"];
             loginPwd = lpwd;
 

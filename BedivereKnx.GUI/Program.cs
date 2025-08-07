@@ -32,7 +32,7 @@ namespace BedivereKnx.GUI
     //  0   正常
     //  1   授权到期
     //  2   调整授权
-    //  3   登陆密码错误
+    //  3   登录密码错误
     // -1   授权无效
     // -2   授权无效且非法进入主界面
     // -3   授权时间检测异常
@@ -102,8 +102,7 @@ namespace BedivereKnx.GUI
                 DialogResult result = MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
                 if (result == DialogResult.Retry)
                 {
-                    Forms.FrmAuthModify frmAuthModify = new();
-                    frmAuthModify.lblExpMsg.Text = ex.Message;
+                    Forms.FrmAuthModify frmAuthModify = new(ex.Message);
                     frmAuthModify.ShowDialog();
                 }
                 else

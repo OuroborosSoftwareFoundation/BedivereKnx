@@ -103,16 +103,16 @@ namespace BedivereKnx.Models
                     case KnxObjectType.Value:
                         if (obj.ContainsPart(KnxObjectPart.SwitchFeedback))
                         {
-                            row["SwFdb"] = obj[KnxObjectPart.SwitchFeedback];
+                            row["SwitchFeedback"] = obj[KnxObjectPart.SwitchFeedback].Value;
                         }
                         if (obj.ContainsPart(KnxObjectPart.ValueFeedback))
                         {
-                            row["ValFdb"] = obj[KnxObjectPart.ValueFeedback];
+                            row["ValueFeedback"] = obj[KnxObjectPart.ValueFeedback];
                         }
                         break;
                     case KnxObjectType.Enablement:
-                        row["SwFdb"] = obj[KnxObjectPart.SwitchControl];
-                        row["ValFdb"] = null;
+                        row["SwitchFeedback"] = obj[KnxObjectPart.SwitchControl].Value;
+                        row["ValueFeedback"] = null;
                         break;
                     default:
                         throw new Exception(string.Format(ResString.ExMsg_KnxObjectTypeInvalid, objType.ToString()));
@@ -130,8 +130,8 @@ namespace BedivereKnx.Models
             dt.Columns.Add("Id", ResString.Hdr_Id, typeof(int));
             dt.Columns.Add("Code", ResString.Hdr_Code, typeof(string));
             dt.Columns.Add("Name", ResString.Hdr_Name, typeof(string));
-            dt.Columns.Add("SwFdb", ResString.Hdr_SwFdb, typeof(KnxGroup));
-            dt.Columns.Add("ValFdb", ResString.Hdr_ValFdb, typeof(KnxGroup));
+            dt.Columns.Add("SwitchFeedback", ResString.Hdr_SwFdb, typeof(GroupValue));
+            dt.Columns.Add("ValueFeedback", ResString.Hdr_ValFdb, typeof(GroupValue));
             return dt;
         }
 
@@ -370,16 +370,36 @@ namespace BedivereKnx.Models
         public void ReceiveGroupMessage(GroupAddress groupAddress, GroupValue groupValue)
         {
             KnxObjectPart[] parts = [KnxObjectPart.SwitchFeedback, KnxObjectPart.ValueFeedback];
+
             var groups = items.Values
                 .SelectMany(obj =>
                     parts.Where(p => obj.ContainsPart(p))
-                         .Select(p => obj[p])
+                         .Select(p => (Id: obj.Id, Part: p, Group: obj[p]))
                 )
-                .Where(g => g.Address == groupAddress); //查出包含组地址的KnxGroup对象
-            foreach (KnxGroup group in groups)
+                .Where(x => x.Group.Address == groupAddress);
+            foreach (var x in groups)
             {
-                group.Value = groupValue; //设置KnxGroup对象中的值
+                this[x.Id][x.Part].Value = groupValue;
+                try
+                {
+                Table.Rows[x.Id][x.Part.ToString()] = groupValue;
+                }
+                catch (Exception)
+                {
+                    //可能出现异常，不影响读取
+                }
             }
+
+            //var groups = items.Values
+            //    .SelectMany(obj =>
+            //        parts.Where(p => obj.ContainsPart(p))
+            //             .Select(p => obj[p])
+            //    )
+            //    .Where(g => g.Address == groupAddress); //查出包含组地址的KnxGroup对象
+            //foreach (KnxGroup group in groups)
+            //{
+            //    group.Value = groupValue; //设置KnxGroup对象中的值
+            //}
 
             //// 在各地址列中查找收到的组地址
             //var matches = from DataRow row in Table.AsEnumerable()

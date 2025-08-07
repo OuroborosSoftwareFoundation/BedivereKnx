@@ -34,8 +34,11 @@
             Label1 = new Label();
             lblIfDefault = new Label();
             btnConnect = new Button();
+            btnNetTest = new Button();
+            tlpBottom = new TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)dgvIf).BeginInit();
             tlpTop.SuspendLayout();
+            tlpBottom.SuspendLayout();
             SuspendLayout();
             // 
             // dgvIf
@@ -85,18 +88,33 @@
             btnConnect.UseVisualStyleBackColor = true;
             btnConnect.Click += btnConnect_Click;
             // 
+            // btnNetTest
+            // 
+            resources.ApplyResources(btnNetTest, "btnNetTest");
+            btnNetTest.Name = "btnNetTest";
+            btnNetTest.UseVisualStyleBackColor = true;
+            btnNetTest.Click += btnNetTest_Click;
+            // 
+            // tlpBottom
+            // 
+            resources.ApplyResources(tlpBottom, "tlpBottom");
+            tlpBottom.Controls.Add(btnNetTest, 0, 0);
+            tlpBottom.Controls.Add(btnConnect, 1, 0);
+            tlpBottom.Name = "tlpBottom";
+            // 
             // FrmInterface
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(dgvIf);
+            Controls.Add(tlpBottom);
             Controls.Add(tlpTop);
-            Controls.Add(btnConnect);
             Name = "FrmInterface";
             ShowIcon = false;
             Load += FrmInterface_Load;
             ((System.ComponentModel.ISupportInitialize)dgvIf).EndInit();
             tlpTop.ResumeLayout(false);
+            tlpBottom.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -107,5 +125,7 @@
         internal Label Label1;
         internal Label lblIfDefault;
         internal Button btnConnect;
+        private Button btnNetTest;
+        private TableLayoutPanel tlpBottom;
     }
 }

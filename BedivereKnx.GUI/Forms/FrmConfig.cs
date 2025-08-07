@@ -17,6 +17,7 @@ namespace BedivereKnx.GUI.Forms
             tbHmiFile.Text = cfg.DefaultHmiFile;
             tbLocalIp.Text = cfg.LocalIP?.ToString();
             chkInitRead.Checked = cfg.InitPolling;
+            cbLanguage.Items.Add((Value: "default", Display: "(Default)"));
             cbLanguage.Items.Add((Value: "en", Display: "English"));
             cbLanguage.Items.Add((Value: "zh", Display: "中文"));
             cbLanguage.ValueMember = "Value";

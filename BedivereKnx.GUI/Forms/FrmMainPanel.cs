@@ -1,5 +1,6 @@
-﻿using BedivereKnx.Models;
-using BedivereKnx.GUI.Controls;
+﻿using BedivereKnx.GUI.Controls;
+using BedivereKnx.Models;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace BedivereKnx.GUI.Forms
 {
@@ -15,7 +16,9 @@ namespace BedivereKnx.GUI.Forms
         {
             InitializeComponent();
             AreaTreeInit();
-
+            this.HorizontalScroll.Visible = false;
+            tlpMain.HorizontalScroll.Visible = false;
+            tlpSwitch.HorizontalScroll.Visible = false;
         }
 
         /// <summary>
@@ -124,11 +127,11 @@ namespace BedivereKnx.GUI.Forms
 
                         break;
                     case KnxObjectType.Enablement:
-                        KnxHmiEnableBlock en = new((KnxEnablement)obj)
-                        {
-                            Dock = DockStyle.Fill,
-                        };
-                        ctlList.Add(en);
+                        //KnxHmiEnableBlock en = new((KnxEnablement)obj)
+                        //{
+                        //    Dock = DockStyle.Fill,
+                        //};
+                        //ctlList.Add(en);
                         break;
                     default:
                         continue;
@@ -148,7 +151,6 @@ namespace BedivereKnx.GUI.Forms
         {
             //int colCount = (int)Math.Floor((double)tlpMain.Width / T.DefaultWidth); //列的数量
             //int rowCount = (int)Math.Ceiling((double)list.Count / tlp.ColumnCount); //行的数量
-
             tlp.SuspendLayout(); //停止控件刷新
             tlp.Controls.Clear(); //清除原有控件
             tlp.ColumnCount = (int)Math.Floor((double)tlpMain.Width / T.DefaultWidth); //列的数量
@@ -176,16 +178,20 @@ namespace BedivereKnx.GUI.Forms
             tlp.ResumeLayout(); //恢复控件刷新
         }
 
-        /// <summary>
-        /// tlp尺寸改变
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tlpSwitch_Resize(object sender, EventArgs e)
+        private void FrmMainPanel_ResizeEnd(object sender, EventArgs e)
         {
-            PanelInit(tlpSwitch, currentControls);
         }
 
+        private void FrmMainPanel_SizeChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tlpSwitch_SizeChanged(object sender, EventArgs e)
+        {
+            PanelInit(tlpSwitch, currentControls);
+
+        }
     }
 
 }

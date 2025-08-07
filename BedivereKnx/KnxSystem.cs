@@ -470,7 +470,7 @@ namespace BedivereKnx
         /// <exception cref="NotImplementedException"></exception>
         public void PollAllObjects()
         {
-            if (isPolling) return; //上次轮询未完成，不执行任何操作
+            if (IsPolling) return; //上次轮询未完成，不执行任何操作
             if (Interfaces.Ready)
             {
                 Task.Run(PollAllObjects_Internal);
@@ -481,7 +481,7 @@ namespace BedivereKnx
 
         private void PollAllObjects_Internal()
         {
-            isPolling = true;
+            IsPolling = true;
             List<string> listIC
                 = Interfaces
                 .Where(a => a.ConnectionState == BusConnectionState.Connected)
@@ -489,11 +489,11 @@ namespace BedivereKnx
                 .ToList(); //连接成功总线的接口编号列标
             foreach (KnxObject obj in Objects)
             {
-                if (string.IsNullOrWhiteSpace(obj.Code) || listIC.Contains(obj.Code))
-                {
+                //if (string.IsNullOrWhiteSpace(obj.Code) || listIC.Contains(obj.Code))
+                //{
                     ReadObjectFeedback(obj); //读取KNX对象反馈
                     Thread.Sleep(100);
-                }
+                //}
             }
             IsPolling = false;
         }
@@ -599,7 +599,7 @@ namespace BedivereKnx
         ///// <param name="addresses"></param>
         //public void PollAddresses(List<GroupAddress> addresses)
         //{
-        //    if (isPolling) return;
+        //    if (IsPolling) return;
         //    Dictionary<string, List<GroupAddress>> dicGa = []; //接口编号-组地址
         //    foreach (GroupAddress ga in addresses)
         //    {
@@ -675,7 +675,7 @@ namespace BedivereKnx
         /// <param name="deviceId"></param>
         public async void DeviceCheck(int deviceId)
         {
-            if (isPolling) return;
+            if (IsPolling) return;
             KnxDeviceInfo kdi = Devices[deviceId];
             KnxBus bus = Interfaces[kdi.InterfaceCode];
             if (bus.ConnectionState == BusConnectionState.Connected)

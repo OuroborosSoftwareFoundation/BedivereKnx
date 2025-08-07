@@ -1,14 +1,16 @@
-﻿using Knx.Falcon;
+﻿using System.ComponentModel;
+using Knx.Falcon;
 using Knx.Falcon.ApplicationData;
 using Knx.Falcon.ApplicationData.DatapointTypes;
 
 namespace BedivereKnx
 {
 
-    public class KnxGroup
+    public class KnxGroup// : INotifyPropertyChanged
     {
 
         public event ValueChangeHandler<GroupValue>? GroupValueChanged;
+        //public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
         /// 数据类型
@@ -33,6 +35,8 @@ namespace BedivereKnx
                 {
                     _value = value;
                     GroupValueChanged?.Invoke(value); //触发值变化事件
+                    //PropertyChanged?.Invoke(this, new(nameof(Value)));
+                    //PropertyChanged?.Invoke(this, new("ToString"));
                 }
             }
         }

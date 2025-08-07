@@ -39,6 +39,7 @@ namespace BedivereKnx.GUI.Forms
             bool allOK = true;
             foreach (DataGridViewRow row in dgvIf.Rows)
             {
+                if ((row.Cells["Enable"].Value is DBNull) || (bool)row.Cells["Enable"].Value == false) continue;
                 if (row.Cells["NetStatus"].Value is DBNull) continue; //跳过非网络接口
                 switch ((IPStatus)row.Cells["NetStatus"].Value)
                 {
@@ -94,6 +95,11 @@ namespace BedivereKnx.GUI.Forms
             }
             inf.AllConnect(Globals.AppConfig.InitPolling); //打开全部KNX接口并初始化读取
             dgvIfColoring();
+        }
+
+        private void btnNetTest_Click(object sender, EventArgs e)
+        {
+            inf.NetworkTestAll();
         }
 
     }

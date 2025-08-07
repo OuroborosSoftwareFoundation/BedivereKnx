@@ -395,10 +395,10 @@
     <value>NoControl</value>
   </data>
   <data name="numObjVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>691, 3</value>
+    <value>754, 3</value>
   </data>
   <data name="numObjVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 44</value>
+    <value>211, 44</value>
   </data>
   <data name="numObjVal.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -422,7 +422,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>591, 0</value>
+    <value>654, 0</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 50</value>
@@ -455,10 +455,10 @@
     <value>NoControl</value>
   </data>
   <data name="lblObjVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>887, 0</value>
+    <value>971, 0</value>
   </data>
   <data name="lblObjVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 50</value>
+    <value>44, 50</value>
   </data>
   <data name="lblObjVal.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -488,7 +488,7 @@
     <value>3, 3</value>
   </data>
   <data name="btnObjToggle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 44</value>
+    <value>211, 44</value>
   </data>
   <data name="btnObjToggle.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -521,7 +521,7 @@
     <value>51</value>
   </data>
   <data name="dgvLight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>936, 361</value>
+    <value>1018, 405</value>
   </data>
   <data name="dgvLight.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -545,10 +545,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnObjOff.Location" type="System.Drawing.Point, System.Drawing">
-    <value>395, 3</value>
+    <value>437, 3</value>
   </data>
   <data name="btnObjOff.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 44</value>
+    <value>211, 44</value>
   </data>
   <data name="btnObjOff.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -575,10 +575,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnObjOn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 3</value>
+    <value>220, 3</value>
   </data>
   <data name="btnObjOn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 44</value>
+    <value>211, 44</value>
   </data>
   <data name="btnObjOn.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -605,13 +605,13 @@
     <value>Bottom</value>
   </data>
   <data name="tlpObject.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 361</value>
+    <value>0, 405</value>
   </data>
   <data name="tlpObject.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="tlpObject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>936, 50</value>
+    <value>1018, 50</value>
   </data>
   <data name="tlpObject.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -635,7 +635,7 @@
     <value>4, 29</value>
   </data>
   <data name="tpLight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>936, 411</value>
+    <value>1018, 455</value>
   </data>
   <data name="tpLight.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -662,7 +662,7 @@
     <value>3, 3</value>
   </data>
   <data name="tvArea.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 444</value>
+    <value>244, 488</value>
   </data>
   <data name="tvArea.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -836,7 +836,7 @@
     <value>253, 3</value>
   </data>
   <data name="tabMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>944, 444</value>
+    <value>1026, 488</value>
   </data>
   <data name="tabMain.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -920,7 +920,7 @@
     <value>Fill</value>
   </data>
   <data name="tlpTool.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 453</value>
+    <value>3, 497</value>
   </data>
   <data name="tlpTool.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
@@ -980,10 +980,10 @@
     <value>Fill</value>
   </data>
   <data name="lstTelLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 453</value>
+    <value>253, 497</value>
   </data>
   <data name="lstTelLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>944, 94</value>
+    <value>1026, 94</value>
   </data>
   <data name="lstTelLog.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1010,7 +1010,7 @@
     <value>2</value>
   </data>
   <data name="tlpMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1200, 550</value>
+    <value>1282, 594</value>
   </data>
   <data name="tlpMain.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1040,7 +1040,7 @@
     <value>9, 20</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1200, 550</value>
+    <value>1282, 594</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

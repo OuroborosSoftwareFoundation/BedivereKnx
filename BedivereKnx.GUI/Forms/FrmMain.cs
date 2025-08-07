@@ -59,9 +59,16 @@ namespace BedivereKnx.GUI.Forms
             }
             else
             {
-                Ping ping = new();
-                PingReply reply = ping.Send(lclIp, 500); //测试通讯
-                lclIpErr = (reply.Status != IPStatus.Success);
+                try
+                {
+                    Ping ping = new();
+                    PingReply reply = ping.Send(lclIp, 500); //测试通讯
+                    lclIpErr = (reply.Status != IPStatus.Success);
+                }
+                catch (Exception) //电脑从开机开始无网络连接可能报错
+                {
+                    lclIpErr = true;
+                }
             }
             //#if !DEBUG
             if (lclIpErr) //KNX路由本地IP有故障的情况

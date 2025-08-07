@@ -6,9 +6,10 @@ namespace BedivereKnx.GUI.Forms
     public partial class FrmAuthModify : Form
     {
 
-        public FrmAuthModify()
+        public FrmAuthModify(string sourceText)
         {
             InitializeComponent();
+            lblSource.Text = sourceText;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -62,7 +63,7 @@ namespace BedivereKnx.GUI.Forms
         {
             Environment.Exit(-4);
         }
-
+    
     }
 
 }

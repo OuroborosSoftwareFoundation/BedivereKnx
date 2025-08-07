@@ -270,6 +270,35 @@ namespace BedivereKnx.Models
         }
 
         /// <summary>
+        /// 测试网络通讯
+        /// </summary>
+        /// <param name="id">KNX接口的ID</param>
+        private void NetworkTest(int id)
+        {
+            KnxInterface inf = this[id];
+            if (inf.InterfaceType == ConnectorType.IpTunneling) //只测试IP隧道接口
+            {
+                if (inf.Address is null) return; //跳过无地址的接口
+                Ping ping = new();
+                PingReply reply = ping.Send(inf.Address, 100); //Ping接口确认网络状态
+                inf.NetStatus = reply.Status;
+                Table.Rows[inf.Id]["NetStatus"] = inf.NetStatus;
+                ConnectionChanged?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// 测试全部接口网络通讯
+        /// </summary>
+        public void NetworkTestAll()
+        {
+            foreach(KnxInterface inf in this)
+            {
+                NetworkTest(inf.Id);
+            }
+        }
+
+        /// <summary>
         /// 打开全部接口
         /// </summary>
         /// <param name="poll">打开后轮询全部组地址</param>

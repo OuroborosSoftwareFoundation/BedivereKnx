@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMainPanel));
             tvArea = new TreeView();
             tlpSwitch = new TableLayoutPanel();
             lstGroup = new ListBox();
@@ -37,64 +38,41 @@
             // 
             // tvArea
             // 
-            tvArea.Dock = DockStyle.Left;
-            tvArea.Location = new Point(0, 0);
+            resources.ApplyResources(tvArea, "tvArea");
             tvArea.Name = "tvArea";
-            tvArea.Size = new Size(150, 553);
-            tvArea.TabIndex = 5;
             tvArea.AfterSelect += tvArea_AfterSelect;
             // 
             // tlpSwitch
             // 
-            tlpSwitch.AutoScroll = true;
-            tlpSwitch.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-            tlpSwitch.ColumnCount = 1;
-            tlpSwitch.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tlpSwitch.Dock = DockStyle.Fill;
+            resources.ApplyResources(tlpSwitch, "tlpSwitch");
             tlpSwitch.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tlpSwitch.Location = new Point(153, 3);
             tlpSwitch.Name = "tlpSwitch";
-            tlpSwitch.RowCount = 1;
-            tlpSwitch.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tlpSwitch.Size = new Size(676, 547);
-            tlpSwitch.TabIndex = 0;
-            tlpSwitch.Resize += tlpSwitch_Resize;
+            tlpSwitch.SizeChanged += tlpSwitch_SizeChanged;
             // 
             // lstGroup
             // 
-            lstGroup.Dock = DockStyle.Fill;
+            resources.ApplyResources(lstGroup, "lstGroup");
             lstGroup.FormattingEnabled = true;
-            lstGroup.Location = new Point(3, 3);
             lstGroup.Name = "lstGroup";
-            lstGroup.Size = new Size(144, 547);
-            lstGroup.TabIndex = 7;
             lstGroup.SelectedIndexChanged += lstGroup_SelectedIndexChanged;
             // 
             // tlpMain
             // 
-            tlpMain.ColumnCount = 2;
-            tlpMain.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150F));
-            tlpMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tlpMain.Controls.Add(lstGroup, 0, 0);
+            resources.ApplyResources(tlpMain, "tlpMain");
             tlpMain.Controls.Add(tlpSwitch, 1, 0);
-            tlpMain.Dock = DockStyle.Fill;
-            tlpMain.Location = new Point(150, 0);
+            tlpMain.Controls.Add(lstGroup, 0, 0);
             tlpMain.Name = "tlpMain";
-            tlpMain.RowCount = 1;
-            tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlpMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tlpMain.Size = new Size(832, 553);
-            tlpMain.TabIndex = 8;
             // 
             // FrmMainPanel
             // 
-            AutoScaleDimensions = new SizeF(9F, 20F);
+            resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(982, 553);
             Controls.Add(tlpMain);
             Controls.Add(tvArea);
+            DoubleBuffered = true;
             Name = "FrmMainPanel";
-            Text = "FrmMainPanel";
+            ResizeEnd += FrmMainPanel_ResizeEnd;
+            SizeChanged += FrmMainPanel_SizeChanged;
             tlpMain.ResumeLayout(false);
             ResumeLayout(false);
         }

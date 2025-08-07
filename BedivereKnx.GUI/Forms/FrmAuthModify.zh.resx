@@ -118,15 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Label1.Text" xml:space="preserve">
-    <value>默认接口</value>
+    <value>授权码修改触发来源：</value>
   </data>
-  <data name="btnConnect.Text" xml:space="preserve">
-    <value>重新连接</value>
+  <data name="grpMode.Text" xml:space="preserve">
+    <value>请输入授权升级码或全新授权码：</value>
   </data>
-  <data name="btnNetTest.Text" xml:space="preserve">
-    <value>仅测试网络通讯</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tbInput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 27</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>KNX接口</value>
+  <data name="chkModeNew.Text" xml:space="preserve">
+    <value>全新授权码</value>
+  </data>
+  <data name="chkModUpdate.Text" xml:space="preserve">
+    <value>授权升级码</value>
+  </data>
+  <data name="btnOK.Text" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="tbInput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 33</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tbInput.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
 </root>

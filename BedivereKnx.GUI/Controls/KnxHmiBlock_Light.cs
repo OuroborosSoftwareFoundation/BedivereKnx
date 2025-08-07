@@ -23,6 +23,7 @@ namespace BedivereKnx.GUI.Controls
             //{
             //    lblName.Text = knxLight?.Name;
             //}
+            OnGroupValueChanged(knxLight[KnxObjectPart.SwitchFeedback].Value);
         }
 
         private void OnGroupValueChanged(GroupValue? value)
@@ -32,12 +33,21 @@ namespace BedivereKnx.GUI.Controls
                 picFdb.Image = Resources.Images.Img_BulbNull;
                 return;
             }
-            picFdb.Image = value.TypedValue switch
+            if (value.Equals(new GroupValue(true)))
             {
-                false or 0 => Resources.Images.Img_BulbOff,
-                true or > 0 => Resources.Images.Img_BulbOn,
-                _ => Resources.Images.Img_BulbNull,
-            };
+                picFdb.Image = Resources.Images.Img_BulbOn;
+            }
+            else
+            {
+                picFdb.Image = Resources.Images.Img_BulbOff;
+            }
+
+            //picFdb.Image = value.TypedValue switch
+            //{
+            //    false or 0 => Resources.Images.Img_BulbOff,
+            //    true or > 0 => Resources.Images.Img_BulbOn,
+            //    _ => Resources.Images.Img_BulbNull,
+            //};
         }
 
         private void BtnOn_Click(object sender, EventArgs e)
@@ -50,6 +60,12 @@ namespace BedivereKnx.GUI.Controls
         {
             if (knxLight is null) return;
             knxLight.SwitchControl(false);
+        }
+
+        private void picFdb_DoubleClick(object sender, EventArgs e)
+        {
+            if (Globals.KnxSys is null || knxLight is null) return;
+            Globals.KnxSys.ReadObjectFeedback(knxLight.Id);
         }
 
     }

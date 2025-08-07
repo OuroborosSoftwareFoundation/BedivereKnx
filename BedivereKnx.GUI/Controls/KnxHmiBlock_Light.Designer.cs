@@ -51,6 +51,7 @@
             picFdb.SizeMode = PictureBoxSizeMode.Zoom;
             picFdb.TabIndex = 0;
             picFdb.TabStop = false;
+            picFdb.DoubleClick += picFdb_DoubleClick;
             // 
             // tlpButtons
             // 

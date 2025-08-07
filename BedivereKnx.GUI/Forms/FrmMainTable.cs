@@ -1,5 +1,6 @@
-﻿using Knx.Falcon;
-using BedivereKnx.Models;
+﻿using BedivereKnx.Models;
+using Knx.Falcon;
+using System.Diagnostics;
 
 namespace BedivereKnx.GUI.Forms
 {
@@ -64,14 +65,13 @@ namespace BedivereKnx.GUI.Forms
         private void DgvInit()
         {
             //对象：
-            //BindingList<KnxLight> l = new();
             dgvLight.DataSource = knx.Objects[KnxObjectType.Light];
             //使能：
-            dgvEnable.DataSource = knx.Objects[KnxObjectType.Light];
+            dgvEnable.DataSource = knx.Objects[KnxObjectType.Enablement];
             //场景：
-            dgvScene.DataSource = knx.Scenes.ToList();
+            dgvScene.DataSource = knx.Scenes.Table;
             //设备：
-            dgvDevice.DataSource = knx.Devices.ToList();
+            dgvDevice.DataSource = knx.Devices.Table;
         }
 
         /// <summary>
@@ -215,6 +215,18 @@ namespace BedivereKnx.GUI.Forms
             //dgvLight.Columns["SwitchFeedback"].DisplayIndex = dgvLight.ColumnCount - 2;
             //dgvLight.Columns["Dimmable"].DisplayIndex = dgvLight.ColumnCount - 3;
             dgvLight.GetLocalizableHeader();
+            //dgvLight.Columns["SwFdb"].DefaultCellStyle.Format = "Value={0}";
+            dgvLight.CellFormatting += DgvLight_CellFormatting;
+        }
+
+        private void DgvLight_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value is KnxGroup obj)
+            {
+                //Debug.Print(obj.Value?.ToString());
+                e.Value = obj.ToString();
+                //e.FormattingApplied = true;
+            }
         }
 
         private void dgvLight_SelectionChanged(object sender, EventArgs e)
@@ -287,7 +299,7 @@ namespace BedivereKnx.GUI.Forms
             LightSwitch();
             //以下为测试用：
             //if ((dgvLight.CurrentRow is null) || dgvLight.SelectedRows.Count == 0) return;
-            //int id = (int)dgvLight.SelectedRows[0].Cells["Id"].Value;
+            //int id = 326;// (int)dgvLight.SelectedRows[0].Cells["Id"].Value;
             //knx.Objects.Get<KnxLight>(id)[KnxObjectPart.SwitchFeedback].Value = new(1);
             //dgvLight.Refresh();
         }
@@ -398,7 +410,7 @@ namespace BedivereKnx.GUI.Forms
             if ((dgvScene.CurrentRow is null) || dgvScene.SelectedRows.Count == 0) return;
             DataGridViewRow row = dgvScene.SelectedRows[0];
             int id = (int)row.Cells["Id"].Value; //场景ID
-            KnxScene scene = knx.Objects.Get<KnxScene>(id);
+            KnxScene scene = knx.Scenes[id];
             FrmSceneCtl frmSceneCtl = new(scene);
             if (frmSceneCtl.ShowDialog() == DialogResult.OK)
             {

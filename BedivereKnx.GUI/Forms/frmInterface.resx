@@ -133,7 +133,7 @@
     <value>51</value>
   </data>
   <data name="dgvIf.Size" type="System.Drawing.Size, System.Drawing">
-    <value>772, 359</value>
+    <value>772, 353</value>
   </data>
   <data name="dgvIf.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -152,6 +152,60 @@
   </data>
   <data name="tlpTop.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>tlpTop</value>
+  </data>
+  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblIfDefault.Name" xml:space="preserve">
+    <value>lblIfDefault</value>
+  </data>
+  <data name="&gt;&gt;lblIfDefault.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblIfDefault.Parent" xml:space="preserve">
+    <value>tlpTop</value>
+  </data>
+  <data name="&gt;&gt;lblIfDefault.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tlpTop.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="tlpTop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 5</value>
+  </data>
+  <data name="tlpTop.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tlpTop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>772, 40</value>
+  </data>
+  <data name="tlpTop.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;tlpTop.Name" xml:space="preserve">
+    <value>tlpTop</value>
+  </data>
+  <data name="&gt;&gt;tlpTop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpTop.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tlpTop.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tlpTop.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="Label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblIfDefault" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,160,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="Label1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -213,44 +267,14 @@
   <data name="&gt;&gt;lblIfDefault.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tlpTop.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="tlpTop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 5</value>
-  </data>
-  <data name="tlpTop.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tlpTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>772, 40</value>
-  </data>
-  <data name="tlpTop.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;tlpTop.Name" xml:space="preserve">
-    <value>tlpTop</value>
-  </data>
-  <data name="&gt;&gt;tlpTop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tlpTop.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tlpTop.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tlpTop.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="Label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblIfDefault" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,160,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
   <data name="btnConnect.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
+    <value>Fill</value>
   </data>
   <data name="btnConnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 404</value>
+    <value>389, 3</value>
   </data>
   <data name="btnConnect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>772, 44</value>
+    <value>380, 44</value>
   </data>
   <data name="btnConnect.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -265,10 +289,70 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;btnConnect.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>tlpBottom</value>
   </data>
   <data name="&gt;&gt;btnConnect.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnNetTest.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="btnNetTest.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="btnNetTest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 44</value>
+  </data>
+  <data name="btnNetTest.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="btnNetTest.Text" xml:space="preserve">
+    <value>Network Test Only</value>
+  </data>
+  <data name="&gt;&gt;btnNetTest.Name" xml:space="preserve">
+    <value>btnNetTest</value>
+  </data>
+  <data name="&gt;&gt;btnNetTest.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnNetTest.Parent" xml:space="preserve">
+    <value>tlpBottom</value>
+  </data>
+  <data name="&gt;&gt;btnNetTest.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tlpBottom.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="tlpBottom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="tlpBottom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 398</value>
+  </data>
+  <data name="tlpBottom.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tlpBottom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>772, 50</value>
+  </data>
+  <data name="tlpBottom.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;tlpBottom.Name" xml:space="preserve">
+    <value>tlpBottom</value>
+  </data>
+  <data name="&gt;&gt;tlpBottom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tlpBottom.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tlpBottom.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tlpBottom.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnNetTest" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnConnect" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
