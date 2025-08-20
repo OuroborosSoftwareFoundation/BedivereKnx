@@ -36,67 +36,68 @@ namespace BedivereKnx.GUI.Forms
 
         private void CompMappingPlug()
         {
+            //此时的Text属性：名称{*/$}{@=}{数值}{#}{DPT}
             //[需重写】
-            //foreach (HmiPage page in hmi.Values) //遍历HMI页面
-            //{
-            //    foreach (KnxHmiComponent comp in page.Elements.OfType<KnxHmiComponent>()) //遍历页面中的控件
-            //    {
-            //        if (comp.MappingMode != HmiMappingMode.DataTable) continue; //只处理数据表绑定的控件
-            //        if (comp.Text.Contains('*')) //绑定到对象的情况
-            //        {
-            //            string[] texts = comp.Text.Split('*'); //{文本}*{绑定信息}
-            //            bool isSwitch = true; //是-开关，否-数值
-            //            comp.Text = texts[0]; //去除绑定信息之后的字符串作为控件文本使用
-            //            string mapText = texts[1]; //绑定信息
-            //            if (mapText.Contains('#')) //有#代表定义了组地址类型
-            //            {
-            //                string[] gvArry = mapText.Split('#'); //分割数值和数据类型
-            //                string[] dpt = gvArry.Last().Split('.'); //分割DPT和DPST
-            //                if (Convert.ToInt32(dpt[0]) > 2) isSwitch = false;
-            //                mapText = gvArry[0];
-            //            }
+            foreach (HmiPage page in hmi.Values) //遍历HMI页面
+            {
+                foreach (KnxHmiComponent comp in page.Elements.OfType<KnxHmiComponent>()) //遍历页面中的控件
+                {
+                    if (comp.MappingMode != HmiMappingMode.DataTable) continue; //只处理数据表绑定的控件
+                    if (comp.Text.Contains('*')) //绑定到对象的情况
+                    {
+                        string[] texts = comp.Text.Split('*'); //{文本}*{绑定信息}
+                        comp.Text = texts[0]; //去除绑定信息之后的字符串作为控件文本使用
+                        string mapText = texts[1]; //绑定信息
+                        bool isSwitch = true; //是-开关，否-数值
+                        if (mapText.Contains('#')) //有#代表定义了组地址类型
+                        {
+                            string[] gvArry = mapText.Split('#'); //分割数值和数据类型
+                            string[] dpt = gvArry.Last().Split('.'); //分割DPT和DPST
+                            if (Convert.ToInt32(dpt[0]) > 2) isSwitch = false;
+                            mapText = gvArry[0];
+                        }
 
-            //            string objCode = mapText.Split(['=', '@'])[0]; //对象编号
-            //            KnxObjectPart objPart = KnxObjectPart.None;
-            //            switch (comp.Direction)
-            //            {
-            //                case HmiComponentDirection.Control:
-            //                    objPart = isSwitch ? KnxObjectPart.SwitchControl : KnxObjectPart.ValueControl;
-            //                    break;
-            //                case HmiComponentDirection.Feedback:
-            //                    objPart = isSwitch ? KnxObjectPart.SwitchFeedback : KnxObjectPart.DimmingControl;
-            //                    break;
-            //            }
-            //            comp.ObjectId = knx.Objects[objCode][0].Id;
-            //            comp.Group = knx.Objects[objCode][0][objPart];
-            //            comp.Group.GroupValueChanged += GroupValueChanged;
+                        string objCode = mapText.Split(['=', '@'])[0]; //对象编号
+                        KnxObjectPart objPart = KnxObjectPart.None;
+                        switch (comp.Direction)
+                        {
+                            case HmiComponentDirection.Control:
+                                objPart = isSwitch ? KnxObjectPart.SwitchControl : KnxObjectPart.ValueControl;
+                                break;
+                            case HmiComponentDirection.Feedback:
+                                objPart = isSwitch ? KnxObjectPart.SwitchFeedback : KnxObjectPart.DimmingControl;
+                                break;
+                        }
+                        comp.ObjectId = knx.Objects[objCode][0].Id;
+                        comp.Group = knx.Objects[objCode][0][objPart];
+                        comp.Group.GroupValueChanged += GroupValueChanged;
 
-            //            List<GroupValue> vals = [];
-            //            foreach (string v in comp.Mapping.RawValues)
-            //            {
-            //                object val = isSwitch ? (v == "1") : v;
-            //                vals.Add(comp.Group.DPT.ToGroupValue(val));
-            //            }
-            //            comp.Mapping.Values = vals.ToArray();
-            //        }
-            //        else if (comp.Text.Contains('$')) //绑定到场景的情况
-            //        {
-            //            string[] texts = comp.Text.Split('$'); //{文本}${绑定信息}
-            //            comp.Text = texts[0]; //去除绑定信息之后的字符串作为控件文本使用
-            //            string mapText = texts[1]; //绑定信息
-            //            string scnCode = mapText.Split('=')[0]; //场景编号
-            //            comp.Group = knx.Objects.Scenes[scnCode][0][KnxObjectPart.SceneControl];
-            //            comp.Group.GroupValueChanged += GroupValueChanged;
+                        List<GroupValue> vals = [];
+                        foreach (string v in comp.Mapping.RawValues)
+                        {
+                            object val = isSwitch ? (v == "1") : v;
+                            vals.Add(comp.Group.DPT.ToGroupValue(val));
+                        }
+                        comp.Mapping.Values = vals.ToArray();
+                    }
+                    else if (comp.Text.Contains('$')) //绑定到场景的情况
+                    {
+                        string[] texts = comp.Text.Split('$'); //{文本}${绑定信息}
+                        comp.Text = texts[0]; //去除绑定信息之后的字符串作为控件文本使用
+                        string mapText = texts[1]; //绑定信息
+                        string scnCode = mapText.Split('=')[0]; //场景编号
+                        comp.Group = knx.Scenes[scnCode][0][KnxObjectPart.SceneControl];
+                        comp.Group.GroupValueChanged += GroupValueChanged;
 
-            //            List<GroupValue> vals = [];
-            //            foreach (string v in comp.Mapping.RawValues)
-            //            {
-            //                vals.Add(new GroupValue(Convert.ToByte(v)));
-            //            }
-            //            comp.Mapping.Values = vals.ToArray();
-            //        }
-            //    }
-            //}
+                        List<GroupValue> vals = [];
+                        foreach (string v in comp.Mapping.RawValues)
+                        {
+                            vals.Add(new GroupValue(Convert.ToByte(v)));
+                        }
+                        comp.Mapping.Values = vals.ToArray();
+                    }
+                }
+            }
         }
 
         /// <summary>

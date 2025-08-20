@@ -41,14 +41,15 @@ namespace BedivereKnx.GUI.Controls
         internal KnxHmiButton(KnxHmiComponent comp)
         {
             InitializeComponent();
-            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            //SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             Left = comp.RawLocation.X;
             Top = comp.RawLocation.Y;
             Width = comp.RawSize.Width;
             Height = comp.RawSize.Height;
-            BackColor = comp.FillColor;
+            //if (comp.FillColor.A > 0) BackColor = comp.FillColor;
+            BackColor = (comp.FillColor.A > 0) ? comp.FillColor : SystemColors.Control;
             Text = comp.Text;
-            ForeColor = comp.FontColor;
+            if (comp.FontColor.A > 0) ForeColor = comp.FontColor;
             Font = new Font(Font.Name, comp.FontSize);
             Visible = comp.Visible;
             knxGroup = comp.Group;

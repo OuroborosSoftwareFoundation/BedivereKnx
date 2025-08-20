@@ -3,7 +3,6 @@ using Ouroboros.Hmi.Library;
 using Ouroboros.Hmi.Library.Elements;
 using Ouroboros.Hmi.Library.Mapping;
 using Knx.Falcon;
-using BedivereKnx;
 
 namespace BedivereKnx.GUI
 {
@@ -35,7 +34,6 @@ namespace BedivereKnx.GUI
             ["strokeColor"] = Color.Black,
             ["fontColor"] = Color.Black,
         };
-
 
         ///// <summary>
         ///// 动态控件
@@ -152,8 +150,8 @@ namespace BedivereKnx.GUI
                 switch (MappingMode)
                 {
                     case HmiMappingMode.DataTable:
-                        Mapping = new(mappingArry[1]);
-                        Text += $"{textString}{mappingArry[0]}"; //把ObjectCode加在文本后面备用
+                        Mapping = new(mappingArry[1].Split('#')[0]);
+                        //Text = $"{textString}{mappingArry[0]}"; //把ObjectCode加在文本后面备用
                         Text = $"{textString}{mappingString}";
                         break;
                     case HmiMappingMode.Address:

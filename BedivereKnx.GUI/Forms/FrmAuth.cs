@@ -24,9 +24,14 @@ namespace BedivereKnx.GUI.Forms
             lvAuth.Items["Text"]!.SubItems.Add(auth.Title);
             lvAuth.Items["ProductName"]!.SubItems.Add(auth.ProductName);
             lvAuth.Items["Version"]!.SubItems.Add(auth.Version.ToString());
-            if (auth.ExpiryDate.Date < DateTime.MaxValue.Date)
+            //if (auth.ExpiryDate.Date < DateTime.MaxValue.Date)
+            if (auth.ExpiryDate.Date < DateTime.Now.Date.AddMonths(3))
             {
                 lvAuth.Items["ExpiryDate"]!.SubItems.Add("(Hidden)");
+            }
+            else if (auth.ExpiryDate.Date < DateTime.MaxValue.Date)
+            {
+                lvAuth.Items["ExpiryDate"]!.SubItems.Add("(Permanent)");
             }
             else
             {
@@ -45,6 +50,12 @@ namespace BedivereKnx.GUI.Forms
                     MessageBox.Show($"Expiration Date: {auth!.ExpiryDate:d}", "Expiration Date", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+        }
+
+        private void btnModify_Click(object sender, EventArgs e)
+        {
+            FrmAuthModify frmAuthModify = new("User manually modifies.");
+            frmAuthModify.ShowDialog();
         }
 
         private void btnOK_Click(object sender, EventArgs e)

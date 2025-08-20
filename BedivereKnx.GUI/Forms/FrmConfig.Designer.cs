@@ -222,6 +222,7 @@
             resources.ApplyResources(btnLocalIpSel, "btnLocalIpSel");
             btnLocalIpSel.Name = "btnLocalIpSel";
             btnLocalIpSel.UseVisualStyleBackColor = true;
+            btnLocalIpSel.Click += btnLocalIpSel_Click;
             // 
             // tpPwd
             // 

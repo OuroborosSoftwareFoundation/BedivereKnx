@@ -28,65 +28,71 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAuth));
             lvAuth = new ListView();
             Prop = new ColumnHeader();
             Value = new ColumnHeader();
             btnOK = new Button();
+            tlpBottom = new TableLayoutPanel();
+            btnModify = new Button();
+            tlpBottom.SuspendLayout();
             SuspendLayout();
             // 
             // lvAuth
             // 
-            lvAuth.Alignment = ListViewAlignment.Default;
+            resources.ApplyResources(lvAuth, "lvAuth");
             lvAuth.Columns.AddRange(new ColumnHeader[] { Prop, Value });
-            lvAuth.Dock = DockStyle.Fill;
             lvAuth.FullRowSelect = true;
             lvAuth.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            lvAuth.Location = new Point(10, 10);
             lvAuth.MultiSelect = false;
             lvAuth.Name = "lvAuth";
-            lvAuth.Size = new Size(462, 203);
-            lvAuth.TabIndex = 7;
             lvAuth.UseCompatibleStateImageBehavior = false;
             lvAuth.View = View.Details;
             lvAuth.MouseDoubleClick += lvAuth_MouseDoubleClick;
             // 
             // Prop
             // 
-            Prop.Text = "Property";
-            Prop.Width = 100;
+            resources.ApplyResources(Prop, "Prop");
             // 
             // Value
             // 
-            Value.Text = "Value";
-            Value.Width = 200;
+            resources.ApplyResources(Value, "Value");
             // 
             // btnOK
             // 
-            btnOK.Dock = DockStyle.Bottom;
-            btnOK.Location = new Point(10, 213);
+            resources.ApplyResources(btnOK, "btnOK");
             btnOK.Name = "btnOK";
-            btnOK.Size = new Size(462, 30);
-            btnOK.TabIndex = 6;
-            btnOK.Text = "OK";
             btnOK.Click += btnOK_Click;
+            // 
+            // tlpBottom
+            // 
+            resources.ApplyResources(tlpBottom, "tlpBottom");
+            tlpBottom.Controls.Add(btnOK, 0, 1);
+            tlpBottom.Controls.Add(btnModify, 0, 0);
+            tlpBottom.Name = "tlpBottom";
+            // 
+            // btnModify
+            // 
+            resources.ApplyResources(btnModify, "btnModify");
+            btnModify.Name = "btnModify";
+            btnModify.UseVisualStyleBackColor = true;
+            btnModify.Click += btnModify_Click;
             // 
             // FrmAuth
             // 
             AcceptButton = btnOK;
-            AutoScaleDimensions = new SizeF(9F, 20F);
+            resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(482, 253);
+            CancelButton = btnOK;
             Controls.Add(lvAuth);
-            Controls.Add(btnOK);
+            Controls.Add(tlpBottom);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FrmAuth";
-            Padding = new Padding(10);
             ShowIcon = false;
             ShowInTaskbar = false;
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Authorization Information";
+            tlpBottom.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -96,5 +102,7 @@
         internal ColumnHeader Prop;
         internal ColumnHeader Value;
         internal Button btnOK;
+        private TableLayoutPanel tlpBottom;
+        private Button btnModify;
     }
 }

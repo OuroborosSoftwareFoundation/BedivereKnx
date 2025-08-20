@@ -45,7 +45,6 @@
             // tlpSwitch
             // 
             resources.ApplyResources(tlpSwitch, "tlpSwitch");
-            tlpSwitch.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             tlpSwitch.Name = "tlpSwitch";
             tlpSwitch.SizeChanged += tlpSwitch_SizeChanged;
             // 

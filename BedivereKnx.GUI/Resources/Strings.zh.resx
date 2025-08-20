@@ -127,7 +127,7 @@
     <value>无效的KNX路由接口本地IP'{0}'，是否修改配置？</value>
   </data>
   <data name="Msg_AuthSuccess" xml:space="preserve">
-    <value>授权成功，请重启程序</value>
+    <value>授权成功，请重启程序。</value>
   </data>
   <data name="NetInterface_Up" xml:space="preserve">
     <value>已连接</value>
@@ -231,5 +231,8 @@
   </data>
   <data name="Msg_PwdChangeConfirm" xml:space="preserve">
     <value>确认修改密码？此配置将直接保存。</value>
+  </data>
+  <data name="Hdr_ValueFeedback" xml:space="preserve">
+    <value>数值反馈</value>
   </data>
 </root>

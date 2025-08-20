@@ -1,6 +1,5 @@
 ﻿using BedivereKnx.GUI.Controls;
 using BedivereKnx.Models;
-using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace BedivereKnx.GUI.Forms
 {
@@ -153,9 +152,11 @@ namespace BedivereKnx.GUI.Forms
             //int rowCount = (int)Math.Ceiling((double)list.Count / tlp.ColumnCount); //行的数量
             tlp.SuspendLayout(); //停止控件刷新
             tlp.Controls.Clear(); //清除原有控件
-            tlp.ColumnCount = (int)Math.Floor((double)tlpMain.Width / T.DefaultWidth); //列的数量
             tlp.RowStyles.Clear();
             tlp.ColumnStyles.Clear();
+            tlp.AutoScroll = false; //禁用自动滚动
+            //tlp.AutoScrollMinSize = Size.Empty;
+            tlp.ColumnCount = (int)Math.Floor((double)tlpMain.Width / T.DefaultWidth); //列的数量
             for (int c = 0; c < tlp.ColumnCount; c++)
             {
                 tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100)); //设定列的样式
@@ -176,6 +177,7 @@ namespace BedivereKnx.GUI.Forms
                 //Debug.Print($"row={tlp.GetRow(list[i])}, col={tlp.GetColumn(list[i])}");
             }
             tlp.ResumeLayout(); //恢复控件刷新
+            tlp.AutoScroll = true; //启用自动滚动
         }
 
         private void FrmMainPanel_ResizeEnd(object sender, EventArgs e)

@@ -77,6 +77,7 @@
             Controls.Add(tlpBottom);
             Controls.Add(lvNI);
             Name = "FrmNetworkInfo";
+            TopMost = true;
             tlpBottom.ResumeLayout(false);
             ResumeLayout(false);
         }

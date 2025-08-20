@@ -268,6 +268,15 @@ namespace BedivereKnx.GUI.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Value Feedback 的本地化字符串。
+        /// </summary>
+        internal static string Hdr_ValueFeedback {
+            get {
+                return ResourceManager.GetString("Hdr_ValueFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Authorization successful, please restart the program. 的本地化字符串。
         /// </summary>
         internal static string Msg_AuthSuccess {
